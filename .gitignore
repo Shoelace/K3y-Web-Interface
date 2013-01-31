@@ -1,0 +1,4 @@
+*.sublime*
+*.xml
+*.settings
+covers/
