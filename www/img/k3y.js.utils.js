@@ -1,7 +1,7 @@
 ﻿//Some initting
-$(window).hashchange(function() {
+window.onhashchange = function () {
 	Interface.navigation.navigateTo(window.location.hash);
-});
+}
 
 $(document).ready(function() {
 	Interface.init();
@@ -417,7 +417,8 @@ var Interface = {
 				lists.push(list);
 				Interface.data.storage.save();
 				if (Interface.navigation.current().indexOf('favorites') != -1) {
-					$(window).hashchange();
+					//$(window).hashchange();
+					window.onhashchange();
 				}
 			},
 			"addGame" : function (id, name, listName) {
@@ -437,7 +438,8 @@ var Interface = {
 				lists[index].content.push(game);
 				Interface.data.storage.save();
 				if (Interface.navigation.current().indexOf('favorites') != -1) {
-					$(window).hashchange();
+					//$(window).hashchange();
+					window.onhashchange();
 				}
 			},
 			"removeGame" : function (id, listName) {
@@ -455,7 +457,8 @@ var Interface = {
 						content.splice(i, 1);
 						Interface.data.storage.save();
 						if (Interface.navigation.current().indexOf('favorites') != -1) {
-							$(window).hashchange();
+							//$(window).hashchange();
+							window.onhashchange();
 						}
 						return;
 					}
@@ -507,7 +510,8 @@ var Interface = {
 					}
 				}
 				Interface.data.storage.save();
-				$(window).hashchange();
+				//$(window).hashchange();
+				window.onhashchange();
 			},
 			"clear" : function (listName) {
 				var index = Interface.data.lists.indexOf(listName);
@@ -550,18 +554,23 @@ var Interface = {
 
 					Interface.data.storage.save();
 
-					//this.actions[setting]();
+					this.actions[setting]();
 				},
 				"actions" : {
 					"oneclickload" : function () {
-
+						return;
+					},
+					"dynamicfont" : function () {
+						Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
 					}
 				},
 				"settings" : {
-					"oneclickload" : false
+					"oneclickload" : false,
+					"dynamicfont"  : false
 				},
 				"supported" : [
-					"oneclickload"
+					"oneclickload",
+					"dynamicfont"
 				]
 			},
 			"getTimesPlayed" : function (id) {
@@ -648,7 +657,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 3",
+		"version"   : "beta 4",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
@@ -691,6 +700,10 @@ var Interface = {
 				"title"   : "Error",
 				"content" : "An error has occured. You can post this on the forums (link in \"About\") to get support and notify the developer about it<br/>(Error message from the console (F12) will be appreciated):<br/><br/>"
 			},
+			"notify-pagereload" : {
+				"title"   : "Reload",
+				"content" : "For this setting to take full effect, it's advised to reload the page."
+			},
 			"test" : {
 				"title"   : "Testing",
 				"content" : "Let's see if this works"
@@ -699,6 +712,77 @@ var Interface = {
 		"data" : {}
 	},
 	"utils" : {
+		"html" : {
+			"menuItem" : function (obj) {
+				/*
+				{
+					"href" : "",
+					"onclick" : "",
+					"id" : "",
+					"active" : false,
+					"image" : "",
+					"title" : "",
+					"sub" : ""
+				}
+				*/
+				var HTML = '';
+				var fixTitle = false;
+				if (Interface.data.storage.settings.settings.dynamicfont)
+					fixTitle = true;
+
+				if (!obj.href)
+					obj.href = "javascript:void(0);";
+				if (!obj.onclick)
+					obj.onclick = "";
+				if (!obj.id)
+					obj.id = "";
+
+				HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '">';
+				HTML += '<div id="' + obj.id + '" class="main-item ' + (obj.active ? 'active-game' : '') +'">';
+				if (obj.image)
+					HTML += '<img class="list-cover" src="' + obj.image + '"/>';
+
+				var longTitle = '';
+				if (fixTitle) {
+					var width = obj.title.width();
+					if (width > 370) {
+						var size = (2 / (width / 370)).toFixed(2);
+						longTitle = ' style="font-size:'+size+'em"'
+					}
+				}
+				HTML += '<span class="main-item-text item-text"' + longTitle + '>' + obj.title + '</span>';
+				HTML += '<span class="secondary-item-text item-text">' + obj.sub + '</span>';
+				HTML += '</div></a>';
+				return HTML;
+
+				/*var anchor = $('<a>').attr('href', obj.href).attr('onclick', obj.onclick);
+
+				var div = $('<div>').addClass('main-item').attr('id', obj.id);
+				if (obj.active)
+					div.addClass('active-game');
+
+				var image = ""
+				if (obj.image) 
+					image = $('<img/>').addClass('list-cover').attr('src', obj.image)[0].outerHTML;
+
+				var title = $('<span>').addClass('main-item-text item-text').html(obj.title);
+				if (fixTitle) {
+					var width = obj.title.width();
+					if (width > 370) {
+						var size = (2 / (width / 370)).toFixed(2);
+						//longTitle = ' style="font-size:'+size+'em"'
+						title = title.css('font-size', size + 'em');
+					}
+				}
+				
+				title = title[0].outerHTML;
+				var sub = $('<span>').addClass('secondary-item-text item-text').html(obj.sub)[0].outerHTML;
+
+				div = div.html(image + title + sub);
+				var HTML = anchor.html(div)[0].outerHTML;
+				return HTML;*/
+			}
+		},
 		"select" : function (args) {
 			if (Interface.data.storage.settings.settings.oneclickload) {
 				this.launch(args.split("&")[0]);

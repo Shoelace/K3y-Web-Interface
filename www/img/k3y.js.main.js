@@ -16,6 +16,10 @@ Interface.main = {
 		Interface.utils.log("Step 5");
 		
 		$('.logo > img').attr('src', 'img/logo-'+type+'.png');
+		var title = 'xK3y Remote Web Interface';
+		if (type == 'ps3')
+			title = '3Key Remote Web Interface'
+		$('title').html(title)
 		Interface.utils.log("Step 6... init done!");
 
 		//Notify Xbox users that they should change their settings
@@ -120,7 +124,6 @@ Interface.main = {
 					HTML += '<img class="coverwall-game" src="' + cover + '"/>';
 					HTML += '</div></a>';
 				}
-				//$('#coverwall-page > .page-content > .coverwall-container').html(HTML);
 				Interface.navigation.pages.addContent('coverwall-page', HTML);
 				Interface.main.vars.made.coverwall = true;
 			}
@@ -145,20 +148,12 @@ Interface.main = {
 				showLetters = false;
 			}
 
-			//if (!Interface.main.vars.made.gamelist) {
 			if (args != Interface.main.vars.curList || force) {
-				var name, id, cover, activeClass, letter, timesPlayed, lastPlayed;
+				var name, id, cover, activeClass, letter, timesPlayed, lastPlayed, longTitle, obj;
 				var HTML       = '';
 				//var games      = Interface.data.data.sorted;
 				var active     = Interface.data.data.active;
-				var lastLetter ='';
-
-				/*HTML += '<a href="javascript:void(0);>';
-				HTML += '<div class="main-item"><span class="main-item-text item-text">'
-				HTML += '';
-				HTML += '</span><span class="secondary-item-text item-text">';
-				HTML += 'Description';
-				HTML += '</span></div></a>';*/
+				var lastLetter = '';
 
 				var l = games.length;
 				for (var i = 0; i < l; i++) {
@@ -193,19 +188,21 @@ Interface.main = {
 						lastPlayed = lastPlayed.toLocaleDateString();
 					}
 					
-					activeClass = '';
+					activeClass = false;
 					if (id == active) {
-						activeClass = ' active-game';
+						activeClass = true;
 					}
-					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-					HTML += name;
-					HTML += '</span><span class="secondary-item-text item-text">';
-					HTML += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-					HTML += '</span></div></a>';
+
+					obj = {
+						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"active" : activeClass,
+						"image" : cover,
+						"title" : name,
+						"sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+					}
+
+					HTML += Interface.utils.html.menuItem(obj);
 				}
-				//$('#list-page > .page-content').html(HTML);
-				//Interface.navigation.pages.addContent('list-page', HTML);
 				$('#listContent').html(HTML);
 				Interface.main.vars.made.gamelist = true;
 				Interface.main.vars.curList = args;
@@ -217,7 +214,7 @@ Interface.main = {
 				return;
 			}
 			if (!Interface.main.vars.made.folders) {
-				var dir, par, name, id, cover, activeClass, lastPlayed, timesPlayed;
+				var dir, par, name, id, cover, activeClass, lastPlayed, timesPlayed, obj;
 				var active  = Interface.data.data.active;
 				var games   = Interface.data.data.games;
 				var folders = Interface.data.data.folders
@@ -232,12 +229,15 @@ Interface.main = {
 					if (!document.getElementById(dir + '-dir')) {
 						Interface.navigation.pages.new(dir + '-dir', dir);
 
-						HTML = '<a href="#folders-page?'+dir+'-dir">';
-						HTML += '<div class="main-item" id="' + dir + '-item"><span class="main-item-text item-text">';
-						HTML += unescape(dir);
-						HTML += '</span><span class="secondary-item-text item-text">';
-						HTML += 'Folder';
-						HTML += '</span></div></a>';
+						obj = {
+							"href" : '#folders-page?'+dir+'-dir',
+							"id" : dir + '-item',
+							"title" : unescape(dir),
+							"sub" : "Folder"
+						}
+
+						HTML = Interface.utils.html.menuItem(obj);
+
 						if ($.isEmptyObject(HTMLToAppend[par])) {
 							HTMLToAppend[par] = '';
 						}
@@ -264,17 +264,20 @@ Interface.main = {
 						lastPlayed = lastPlayed.toLocaleDateString();
 					}
 
-					activeClass = '';
-					if (id == active){
-						activeClass = ' active-game';
+					activeClass = false;
+					if (id == active) {
+						activeClass = true;
 					}
 
-					HTML = '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-					HTML += name;
-					HTML += '</span><span class="secondary-item-text item-text">';
-					HTML += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-					HTML += '</span></div></a>';
+					obj = {
+						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"active" : activeClass,
+						"image" : cover,
+						"title" : name,
+						"sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+					}
+
+					HTML = Interface.utils.html.menuItem(obj);
 
 					if ($.isEmptyObject(HTMLToAppend[par])) {
 						HTMLToAppend[par] = '';
@@ -294,7 +297,6 @@ Interface.main = {
 						htmlPar = escape(i + '-dir');
 					}
 					//Append all HTML at once to parent container
-					//$(document.getElementById(htmlPar)).children('.page-content').append(HTML);
 					Interface.navigation.pages.addContent(htmlPar, HTML);
 				}
 
@@ -306,12 +308,12 @@ Interface.main = {
 			}
 		},
 		"favorites" : function (args) {
-			if (args && Interface.main.vars.made.favorites) {
+			if (args.length > 0 && Interface.main.vars.made.favorites) {
 				Interface.navigation.navigateTo(args[1]);
 				return;
 			}
 			else {
-				var id, name, cover, href, activeClass, listName, pageName, gameList, gameHTML, timesPlayed, lastPlayed;
+				var id, name, cover, href, activeClass, listName, pageName, gameList, gameHTML, timesPlayed, lastPlayed, obj;
 				var active   = Interface.data.data.active;
 				var lists    = Interface.data.lists.getLists();
 				var mainHTML = '';
@@ -328,12 +330,14 @@ Interface.main = {
 					for (var i = 0; i < l; i++) {
 						listName = lists[i].name;
 						pageName = listName + "-listpage";
-						mainHTML += '<a href="#favorites-page?' + pageName + '">';
-						mainHTML += '<div class="main-item"><span class="main-item-text item-text">';
-						mainHTML += unescape(listName);
-						mainHTML += '</span><span class="secondary-item-text item-text">';
-						mainHTML += 'List';
-						mainHTML += '</span></div></a>';
+
+						obj = {
+							"href" : '#favorites-page?' + pageName,
+							"title" : unescape(listName),
+							"sub" : "List"
+						}
+
+						mainHTML += Interface.utils.html.menuItem(obj);
 
 						gameList = lists[i].content;
 						k = gameList.length;
@@ -355,23 +359,29 @@ Interface.main = {
 								lastPlayed = lastPlayed.toLocaleDateString();
 							}
 
-							activeClass = '';
+							activeClass = false;
 							if (id == active) {
-								activeClass = ' active-game';
+								activeClass = true;
 							}
 
-							gameHTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-							gameHTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-							gameHTML += name;
-							gameHTML += '</span><span class="secondary-item-text item-text">';
-							gameHTML += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-							gameHTML += '</span></div></a>';
+							obj = {
+								"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+								"active" : activeClass,
+								"image" : cover,
+								"title" : name,
+								"sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+							}
+
+							gameHTML += Interface.utils.html.menuItem(obj);
 						}
 						Interface.navigation.pages.addContent(pageName, gameHTML);
 					}
 				}
 				Interface.navigation.pages.addContent('favorites-page', mainHTML);
 				Interface.main.vars.made.favorites = true;
+				if (args.length > 0) {
+					Interface.navigation.navigateTo(args[1]);
+				}
 			}
 		},
 		"favorites_game_manager" : function (args) {
@@ -437,17 +447,20 @@ Interface.main = {
 					name  = list[i].name;
 					cover = 'covers/' + id + '.jpg';
 
-					activeClass = '';
+					activeClass = false;
 					if (id == active) {
-						activeClass = ' active-game';
+						activeClass = true;
 					}
 
-					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-					HTML += name;
-					HTML += '</span><span class="secondary-item-text item-text">';
-					HTML += 'Newly added';
-					HTML += '</span></div></a>';
+					obj = {
+						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"active" : activeClass,
+						"image" : cover,
+						"title" : name,
+						"sub" : 'Newly added'
+					}
+
+					HTML += Interface.utils.html.menuItem(obj);
 				}
 				Interface.navigation.pages.addContent('recent-page', HTML);
 
@@ -478,7 +491,7 @@ Interface.main = {
 				HTML += '<a href="https://github.com/MrWaffle/K3y-Web-Interface" target="_blank"><div class="main-item"><span class="main-item-text item-text">Source on Github</span><span class="secondary-item-text item-text">';
 				HTML += 'https://github.com/MrWaffle/K3y-Web-Interface';
 				HTML += '</span></div></a>';
-				//$('#about-page .page-content').html(HTML);
+
 				Interface.navigation.pages.addContent('about-page', HTML);
 				Interface.main.vars.made.about = true;
 			}

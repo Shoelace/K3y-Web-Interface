@@ -290,3 +290,11 @@ img {
 .gameManagerGameName {
 	font-weight : bold;
 }
+
+#textWidthCalc {
+	position    : absolute;
+	float       : left; 
+	white-space : nowrap;
+	visibility  : hidden;
+	font-size   : 2em;
+}
