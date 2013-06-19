@@ -104,6 +104,8 @@ Interface.main = {
 				var HTML   = '';
 				var games  = Interface.data.data.sorted;
 				var active = Interface.data.data.active;
+
+				var showTitles = Interface.data.storage.settings.get("coverwalltitle");
 				
 				var l      = games.length;
 				for (var i = 0; i < l; i++) {
@@ -118,6 +120,8 @@ Interface.main = {
 
 					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item coverwall-item '+activeClass+'">';
+					if (showTitles)
+						HTML += '<span class="coverwall-gametitle">' + name + '</span>';
 					HTML += '<img class="coverwall-game" src="' + cover + '"/>';
 					HTML += '</div></a>';
 				}
@@ -193,6 +197,7 @@ Interface.main = {
 
 					obj = {
 						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"alt" : true,
 						"active" : activeClass,
 						"image" : cover,
 						"title" : name,
@@ -231,6 +236,7 @@ Interface.main = {
 						obj = {
 							"href" : '#folders-page?'+dir+'-dir',
 							"id" : dir + '-item',
+							"alt" : true,
 							"title" : unescape(dir),
 							"sub" : "Folder"
 						}
@@ -268,6 +274,7 @@ Interface.main = {
 					}
 					obj = {
 						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"alt" : true,
 						"active" : activeClass,
 						"image" : cover,
 						"title" : name,
@@ -333,6 +340,7 @@ Interface.main = {
 
 						obj = {
 							"href" : '#favorites-page?' + pageName,
+							"alt" : true,
 							"title" : unescape(listName),
 							"sub" : desc
 						}
@@ -366,6 +374,7 @@ Interface.main = {
 
 							obj = {
 								"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+								"alt" : true,
 								"active" : activeClass,
 								"image" : cover,
 								"title" : name,
@@ -479,6 +488,7 @@ Interface.main = {
 
 					obj = {
 						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+						"alt" : true,
 						"active" : activeClass,
 						"image" : cover,
 						"title" : name,

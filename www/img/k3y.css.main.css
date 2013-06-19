@@ -190,7 +190,7 @@ img {
 	padding       : 0 0 0px 20px;
 	margin-bottom : 10px;
 	margin-right  : 30px;
-	width         : 370px;
+	width         : 385px;
 	white-space   : nowrap;
 	height        : 54px;
 	overflow      : hidden;
@@ -232,6 +232,7 @@ img {
 	margin-right : 0px;
 	height       : 100%;
 	width        : 44%;
+	position     : relative;
 }
 
 .coverwall-game, .gamepage-game {
@@ -240,6 +241,22 @@ img {
 	max-width : 100%;
 	position  : relative;
 	right     : 10px;
+	z-index   : 1;
+}
+
+.coverwall-gametitle {
+	z-index     : 2;
+	background  : rgb(0, 0, 0);
+	background  : rgba(0, 0, 0, 0.6);
+	color       : white;
+	float       : left;
+	font-size   : 40px;
+	left        : 0;
+	padding     : 0 10px;
+	position    : absolute;
+	top         : 40%;
+	width       : 100%;
+	white-space : normal;
 }
 
 /**
@@ -272,9 +289,9 @@ img {
 	Search
 */
 .searchinput {
-	position: relative;
-	top: -1px;
-	width: 96%;
+	position : relative;
+	top      : -1px;
+	width    : 96%;
 }
 /*.searchinput {
 	padding   : 6px;

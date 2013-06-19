@@ -31,6 +31,7 @@ var Interface = {
 				"favorites-page"              : function(args){Interface.main.create.favorites(args)},
 				"favorites_game_manager-page" : function(args){Interface.main.create.favorites_game_manager(args)},
 				"favorites_list_manager-page" : function(args){Interface.main.create.favorites_list_manager(args)},
+				"favorites_mass_add-page"     : function(){},
 				"recent-page"                 : function(){Interface.main.create.recent()},
 				"about-page"                  : function(){Interface.main.create.about()},
 				"settings-page"               : function(){Interface.main.create.settings()}
@@ -115,6 +116,16 @@ var Interface = {
 				page = escape(page);
 			}
 
+			if (!$.isFunction(allPages[page])) {
+				//PANIC
+				//A non-registered page has been requested
+				//This function handles hashchanges
+				//So it will loop until we get a safe page
+				history.back();
+				//Prevent calling page related functions
+				return;
+			}
+
 			/*if (Interface.data.storage.settings.get("animations")) {
 				//$('.page.active').fadeOut(200, function() {
 					Interface.navigation.postTransition(page, args, allPages);
@@ -128,6 +139,8 @@ var Interface = {
 			//$('.page.active').removeClass('active').hide();
 			//Show requested page
 			//$(document.getElementById(page)).addClass('active');
+			//this.previous = $('.page.active').attr('id');
+
 			if (Interface.utils.supportsAnimation()) {
 				$('.page.active').addClass('animate').removeClass('fullopacity');
 				setTimeout(function(){
@@ -147,32 +160,35 @@ var Interface = {
 				$(document.getElementById(page)).removeClass('animate').addClass('active fullopacity');
 				//$('[id="' + page +'"]').addClass('active');
 			}
+
+			/*if (!this.bareTitle) {
+				this.bareTitle = document.title;
+			}
+			document.title = this.bareTitle + ' - ' + $(document.getElementById(page)).find('div.page-title').html();*/
 			
 			if (page != 'home-page') {
-				$(document.getElementById(page)).find('div.page-title')
+				var title = $(document.getElementById(page)).find('div.page-title');
+				if (!title.hasClass('_buttons')) {
+					title.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
+					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
+					title.addClass('_buttons');
+				}
+				/*$(document.getElementById(page)).find('div.page-title')
 				//$('[id="' + page +'"]').find('div.page-title')
 					.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
-					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
-			}
-			
-			if (!$.isFunction(allPages[page])) {
-				//PANIC
-				//A non-registered page has been requested
-				//This function handles hashchanges
-				//So it will loop until we get a safe page
-				history.back();
-				//Prevent calling page related functions
-				return;
+					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');*/
 			}
 			
 			//Call function related to page
 			allPages[page](args);
 		},
+		"previous" : "",
 		"current" : function () {
 			var page = window.location.hash;
 			page = page.slice(1,page.length);
 			return page;
-		}
+		},
+		"bareTitle" : ""
 	},
 	/**
 		Data
@@ -270,6 +286,9 @@ var Interface = {
 					name  = $(this).find('TITLE').text().replace(/\.iso/gi,"");
 					par   = $(this.parentNode).attr('NAME');
 					cover = "covers/"+id+".jpg";
+					//DEBUG
+					//cover = "img/test.jpg";
+					//DEBUG
 					info  = "covers/"+id+".xml";
 					isos.push({ 
 						"id"     : id,
@@ -426,7 +445,7 @@ var Interface = {
 					window.onhashchange();
 				}
 			},
-			"addGame" : function (id, name, listName) {
+			"addGame" : function (id, name, listName, mass) {
 				if (!id) {
 					id       = $('.listsDataGameID').val();
 					name     = $('.listsDataGameName').val();
@@ -442,8 +461,9 @@ var Interface = {
 
 				var index = Interface.data.lists.indexOf(listName);
 				lists[index].content.push(game);
-				Interface.data.storage.save();
-				if (Interface.navigation.current().indexOf('favorites') != -1) {
+				if (!mass)
+					Interface.data.storage.save();
+				if (Interface.navigation.current().indexOf('favorites_game') != -1) {
 					window.onhashchange();
 				}
 			},
@@ -481,6 +501,18 @@ var Interface = {
 					}
 				}
 				return -1;
+			},
+			"isInList" : function (id, listName) {
+				var lists = this.getLists();
+				var index = this.indexOf(listName);
+				var list = lists[index];
+				var content = list.content;
+				var l = content.length;
+				for (var i = 0; i < l; i++) {
+					if (content[i].id == id)
+						return true;
+				}
+				return false;
 			},
 			"updateRecent" : function () {
 				var games = Interface.data.data.sorted;
@@ -581,10 +613,43 @@ var Interface = {
 				Interface.data.data.storage.favLists[index].desc = desc;
 				Interface.data.storage.save();
 			},
-			"massAddToList" : function (listName) {
-				if (!listName) {
-					listName = $('.listsManagerListName').val();
+			"massAddToList" : function (listName, games) {
+				if (!games) {
+					if (!listName) {
+						listName = $('.listsManagerListName').val();
+						var games = Interface.data.data.sorted;
+						var l = games.length;
+						var name, id, value;
+						var HTML = 'Mass adding to list: ' + listName + '<br/><br/>';
+						for (var i = 0; i < l; i ++) {
+							name = games[i].name;
+							id = games[i].id;
+							value = id + '&' + escape(name);
+							HTML += '<input type="checkbox" value="' + value + '" ' + (this.isInList(id, listName) ? "checked" : "") + '>' + name + '<br/>';
+						}
+						HTML += '<br/><a onclick="Interface.data.lists.massAddToList(\'' + listName + '\')"><span class="prettyButton">Go</span></a><a onclick="history.back();"><span class="prettyButton">Cancel</span></a><br/><br/>';
+						Interface.navigation.pages.setContent('favorites_mass_add-page', HTML);
+						//Interface.navigation.navigateTo('favorites_mass_add-page');
+						window.location.hash = "#favorites_mass_add-page";
+						return;
+					}
+					var checked = $('#favorites_mass_add-page > .page-content > input:checked');
+					games = [];
+					$.each(checked, function(){
+						games.push($(this).val());
+					});
+					history.back();
 				}
+				this.clear(listName);
+				var name, id, temp;
+				var l = games.length;
+				for (var i = 0; i < l; i++) {
+					temp = games[i].split("&");
+					name = unescape(temp[1]);
+					id = temp[0];
+					this.addGame(id, name, listName, true);
+				}
+				Interface.data.storage.save();
 			}
 		},
 		"storage" : {
@@ -600,7 +665,7 @@ var Interface = {
 					}
 				},
 				"get" : function (setting) {
-					return this.settings[setting];
+					return (this.settings[setting] ? this.settings[setting] : false);
 				},
 				"set" : function (setting, value) {
 					this.settings[setting] = Interface.data.data.storage.settings[setting] = value;
@@ -632,6 +697,10 @@ var Interface = {
 					"dynamicfont" : function () {
 						Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
 					},
+					"coverwalltitle" : function () {
+						Interface.main.vars.made.coverwall = false;
+						return;
+					},
 					"prebuild" : function () {
 						return;
 					},
@@ -646,16 +715,18 @@ var Interface = {
 					}
 				},
 				"settings" : {
-					"oneclickload" : false,
-					"dynamicfont"  : false,
-					"prebuild"     : false,
-					"animations"   : true,
-					"updatecheck"  : true,
-					"anondata"     : false
+					"oneclickload"   : false,
+					"dynamicfont"    : false,
+					"coverwalltitle" : true,
+					"prebuild"       : false,
+					"animations"     : true,
+					"updatecheck"    : true,
+					"anondata"       : false
 				},
 				"supported" : [
 					"oneclickload",
 					"dynamicfont",
+					"coverwalltitle",
 					"prebuild",
 					"animations",
 					"updatecheck",
@@ -670,6 +741,10 @@ var Interface = {
 					"dynamicfont" : {
 						"title" : "Dynamic font sizing",
 						"desc"  : "Adjusts the fontsize so the name of the game always fits"
+					},
+					"coverwalltitle" : {
+						"title" : "Coverwall titles",
+						"desc"  : "Adds titles over the covers in Coverwall"
 					},
 					"prebuild" : {
 						"title" : "Prebuild",
@@ -780,7 +855,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 9",
+		"version"   : "beta 10",
 		"type"      : "xbox",
 		"firmware"  : "00.00",
 		"messages"  : {
@@ -816,6 +891,10 @@ var Interface = {
 				"title"   : "Change description",
 				"content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"/> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
 			},
+			"notify-list-massadd" : {
+				"title"   : "Mass Adding",
+				"content" : "Mass adding for list: %s<br/><br/>%l<br/><a onclick=\"Interface.data.lists.massAddToList('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+			},
 			"notify-convert" : {
 				"title"   : "Storage converted",
 				"content" : "Your storage has been converted to the new standard. This WILL break apps that haven't updated their code to work with it. Please notify the developers of these apps and refer them to the API wiki. Thanks!"
@@ -846,7 +925,7 @@ var Interface = {
 			},
 			"changelog" : {
 				"title"   : "Changelog",
-				"content" : "Beta 9<br/>- YouTube link in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
+				"content" : "Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -863,6 +942,7 @@ var Interface = {
 					"href" : "",
 					"onclick" : "",
 					"id" : "",
+					"alt" : true,
 					"active" : false,
 					"image" : "",
 					"title" : "",
@@ -879,7 +959,7 @@ var Interface = {
 				if (!obj.id)
 					obj.id = "";
 
-				HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '">';
+				HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '" title="' + (obj.alt ? obj.title : "") + '">';
 				HTML += '<div id="' + obj.id + '" class="main-item ' + (obj.active ? 'active-game' : '') +'">';
 				if (obj.image)
 					HTML += '<img class="list-cover" src="' + obj.image + '"/>';
@@ -1042,6 +1122,7 @@ var Interface = {
 					//$('#messageBox').css("display", "inline-block").removeClass("invis");
 					$('#messageBoxContainer').removeClass('invis animate').addClass('fullopacity');
 				}
+				$('#overlay').css('height', $(document).height());
 			},
 			"hide" : function (callback) {
 				if (Interface.utils.supportsAnimation()) {
@@ -1093,6 +1174,7 @@ var Interface = {
 					$('#overlay').removeClass('animate invis').addClass('overlayshade');
 					//$('#overlay').show().removeClass("invis");
 				}
+				$('#overlay').css('height', $(document).height());
 			},
 			"hide" : function() {
 				if (Interface.utils.supportsAnimation()) {
