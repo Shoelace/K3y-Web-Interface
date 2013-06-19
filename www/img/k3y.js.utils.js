@@ -570,7 +570,7 @@ var Interface = {
 						var msg = {};
 						msg.title = message.title;
 						msg.content = message.content;
-						msg.content = msg.content.replace(/%s/g, listName);
+						msg.content = msg.content.replace(/%s/g, unescape(listName));
 						Interface.utils.messageBox.create(msg);
 						return;
 					}
@@ -780,7 +780,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 8",
+		"version"   : "beta 9",
 		"type"      : "xbox",
 		"firmware"  : "00.00",
 		"messages"  : {
@@ -846,7 +846,7 @@ var Interface = {
 			},
 			"changelog" : {
 				"title"   : "Changelog",
-				"content" : "Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
+				"content" : "Beta 9<br/>- YouTube link in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -1112,7 +1112,7 @@ var Interface = {
 			"t" : 0
 		},
 		"checkUpdate" : function () {
-			var lastCheck = Interface.data.data.storage.lastUpdateCheck;
+			var lastCheck = Interface.data.data.storage.vars.lastUpdateCheck;
 			var today = new Date();
 			today = new Date(today.toDateString());
 
@@ -1122,8 +1122,6 @@ var Interface = {
 			}
 			else {
 				lastCheck = new Date(lastCheck);
-				console.log(today);
-				console.log(lastCheck);
 				if (lastCheck.getDate() < today.getDate()) {
 					doUpdate = true;
 				}
@@ -1132,13 +1130,13 @@ var Interface = {
 				var url = "http://bwerkt.nl/k3y/update/check.php";
 				var params = {};
 				var device = Interface.data.type;
+				var guid = Interface.data.data.storage.guid;
 				//debug
 				if (device == "wiikeu") {
 					device = "wkey";
 				}
 				//debug
 				if (Interface.data.storage.settings.get("anondata")) {
-					var guid = Interface.data.data.storage.guid;
 					var version = Interface.data.firmware;
 					var games = Interface.data.data.games.length;
 					params = {
@@ -1150,7 +1148,8 @@ var Interface = {
 				}
 				 else {
 				 	params = {
-				 		"device" : device
+				 		"device" : device,
+				 		"guid" : guid
 				 	}
 				 }
 
@@ -1165,7 +1164,8 @@ var Interface = {
 				 		Interface.utils.messageBox.create(msg);
 				 	}
 				 });
-				 Interface.data.data.storage.lastUpdateCheck = today;
+				 Interface.data.data.storage.vars.lastUpdateCheck = today;
+				 Interface.data.storage.save();
 			}
 		},
 		"easter" : function () {

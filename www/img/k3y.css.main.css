@@ -291,9 +291,13 @@ img {
 	width : 30%;
 }
 
-.gamepage-info {
+.gamepage-info, .gamepage-info a {
 	/*font-style : italic;*/
 	color : #888888;
+}
+
+.gamepage-info a {
+	text-decoration : underline;
 }
 
 .gamepage-buttonContainer {
