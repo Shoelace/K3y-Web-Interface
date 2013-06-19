@@ -1,8 +1,12 @@
-.page-title {
+.page-title, .messageBox-title {
 	background-image : url(../img/xbox-bar.png)!important;
 }
 
-.list-item-accent, .active-game {
+.list-item-accent {
+	border-left : 6px solid #74AB11!important;
+}
+
+.active-game, .setting-enabled {
 	border-left : 4px solid #74AB11!important;
 }
 

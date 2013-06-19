@@ -28,6 +28,7 @@ Interface.main = {
 			var targs = args[1].split("&");
 			var name  = targs[1];
 			var id    = targs[0];
+
 			var URL   = "covers/" + id + ".xml";
 
 			var page = $("#game-page");
@@ -84,9 +85,9 @@ Interface.main = {
 				HTML += '</span>';
 				HTML += summary;
 
-				HTML += '</br>';
+				HTML += '<br/><br/>';
 				HTML += '<div class="gamepage-buttonContainer">';
-				HTML += '<a href="javascript:Interface.utils.launch(\'' + id + '\')"><span class="prettyButton">Play</span></a>';
+				HTML += '<a href="javascript:void(0)" onclick="Interface.utils.launch(\'' + id + '\')"><span class="prettyButton">Play</span></a>';
 				HTML += '<a href="#favorites_game_manager-page?' + id + '&' + name + '"><span class="prettyButton">Manage lists</span></a>';
 				HTML += '</div>';
 
@@ -114,7 +115,7 @@ Interface.main = {
 						activeClass = 'active-game';
 					}
 
-					HTML += '<a href="#game-page?' + id + '&' + escape(name) + '">';
+					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item coverwall-item '+activeClass+'">';
 					HTML += '<img class="coverwall-game" src="' + cover + '"/>';
 					HTML += '</div></a>';
@@ -124,42 +125,79 @@ Interface.main = {
 				Interface.main.vars.made.coverwall = true;
 			}
 		},
-		"gamelist" : function () {
-			if (!Interface.main.vars.made.gamelist) {
+		"gamelist" : function (force) {
+			//var args = args[1];
+			var args = document.getElementById('gameSortSelect').value;
+			var games = [];
+			var showLetters = true;
+
+			if (args == "alphabetic") {
+				games = Interface.data.data.sorted;
+				showLetters = true;
+				force = false;
+			}
+			else if (args == "mostplayed") {
+				games = Interface.utils.getMostPlayed();
+				showLetters = false;
+			}
+			else if (args == "lastplayed") {
+				games = Interface.utils.getLastPlayed();
+				showLetters = false;
+			}
+
+			//if (!Interface.main.vars.made.gamelist) {
+			if (args != Interface.main.vars.curList || force) {
 				var name, id, cover, activeClass, letter, timesPlayed, lastPlayed;
 				var HTML       = '';
-				var games      = Interface.data.data.sorted;
+				//var games      = Interface.data.data.sorted;
 				var active     = Interface.data.data.active;
 				var lastLetter ='';
-				
+
+				/*HTML += '<a href="javascript:void(0);>';
+				HTML += '<div class="main-item"><span class="main-item-text item-text">'
+				HTML += '';
+				HTML += '</span><span class="secondary-item-text item-text">';
+				HTML += 'Description';
+				HTML += '</span></div></a>';*/
+
 				var l = games.length;
 				for (var i = 0; i < l; i++) {
 					name   = games[i].name;
 					id     = games[i].id;
 					cover  = games[i].cover;
-					letter = name.charAt(0).toUpperCase();
+					
 					timesPlayed = Interface.data.storage.getTimesPlayed(id);
 					lastPlayed  = Interface.data.storage.getLastPlayed(id);
+
+					if ((timesPlayed == 0 && lastPlayed == 0) && (args == 'mostplayed' || args == 'lastplayed')) {
+						continue;
+					}
+
+					if (showLetters) {
+						letter = name.charAt(0).toUpperCase();
+						if(Interface.utils.isNumber(letter)) {
+							letter = '#';
+						}
+						if (HTML.indexOf('list-divider-'+letter)==-1) {
+							HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
+							HTML       += letter;
+							HTML       += '</span></div>';
+							lastLetter = letter;
+						}
+					}
+
 					if (lastPlayed == 0) {
 						lastPlayed = 'never';
 					} else {
 						lastPlayed = new Date(lastPlayed);
 						lastPlayed = lastPlayed.toLocaleDateString();
 					}
-					if(Interface.utils.isNumber(letter)) {
-						letter = '#';
-					}
-					if (HTML.indexOf('list-divider-'+letter)==-1) {
-						HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
-						HTML       += letter;
-						HTML       += '</span></div>';
-						lastLetter = letter;
-					}
+					
 					activeClass = '';
 					if (id == active) {
 						activeClass = ' active-game';
 					}
-					HTML += '<a href="#game-page?' + id + '&' + escape(name) + '">';
+					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 					HTML += name;
 					HTML += '</span><span class="secondary-item-text item-text">';
@@ -167,12 +205,14 @@ Interface.main = {
 					HTML += '</span></div></a>';
 				}
 				//$('#list-page > .page-content').html(HTML);
-				Interface.navigation.pages.addContent('list-page', HTML);
+				//Interface.navigation.pages.addContent('list-page', HTML);
+				$('#listContent').html(HTML);
 				Interface.main.vars.made.gamelist = true;
+				Interface.main.vars.curList = args;
 			}
 		},
 		"folders" : function (args) {
-			if (args && Interface.main.vars.made.folders) {
+			if (args.length > 0 && Interface.main.vars.made.folders) {
 				Interface.navigation.navigateTo(args[1]);
 				return;
 			}
@@ -229,7 +269,7 @@ Interface.main = {
 						activeClass = ' active-game';
 					}
 
-					HTML = '<a href="#game-page?' + id + '&' + escape(name) + '">';
+					HTML = '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 					HTML += name;
 					HTML += '</span><span class="secondary-item-text item-text">';
@@ -259,7 +299,7 @@ Interface.main = {
 				}
 
 				Interface.main.vars.made.folders = true;
-				if (args) {
+				if (args.length > 0) {
 					Interface.navigation.navigateTo(args[1]);
 				}
 				return;
@@ -305,7 +345,6 @@ Interface.main = {
 							id    = gameList[j].id;
 							name  = gameList[j].name;
 							cover = 'covers/' + id + '.jpg';
-							href  = '#game-page?' + id + '&' + name;
 
 							timesPlayed = Interface.data.storage.getTimesPlayed(id);
 							lastPlayed  = Interface.data.storage.getLastPlayed(id);
@@ -321,7 +360,7 @@ Interface.main = {
 								activeClass = ' active-game';
 							}
 
-							gameHTML += '<a href="' + href + '">';
+							gameHTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 							gameHTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 							gameHTML += name;
 							gameHTML += '</span><span class="secondary-item-text item-text">';
@@ -397,14 +436,13 @@ Interface.main = {
 					id    = list[i].id;
 					name  = list[i].name;
 					cover = 'covers/' + id + '.jpg';
-					href  = '#game-page?' + id + '&' + name;
 
 					activeClass = '';
 					if (id == active) {
 						activeClass = ' active-game';
 					}
 
-					HTML += '<a href="' + href + '">';
+					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 					HTML += name;
 					HTML += '</span><span class="secondary-item-text item-text">';
@@ -459,7 +497,8 @@ Interface.main = {
 			"about"                  : false, 
 			"index"                  : [
 				"gamelist", "coverwall", "folders", "recent", "about"
-			]
+			],
+			"curList"				 : ""
 		}
 	}
 }

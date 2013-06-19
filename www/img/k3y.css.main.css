@@ -19,7 +19,7 @@ html {
 	position    : absolute;
 	width       : 100%;
 	text-align  : center;
-	padding-top : 10px;
+	padding-top : 15px;
 	/* background-image:url(../img/main-texture.png); */
 	/* white-space:nowrap; */
 	/*z-index:-1;*/
@@ -165,7 +165,7 @@ img {
 	width         : 370px;
 	white-space   : nowrap;
 	height        : 54px;
-	overflow-x    : hidden;
+	overflow      : hidden;
 }
 
 .item-text {
@@ -185,6 +185,10 @@ img {
 	color      : #aaaaaa;
 	font-size  : .8em;
 	font-style : italic;
+}
+
+.active-game, .setting-enabled {
+	padding : 0 0 0 17px;
 }
 
 /**
@@ -223,7 +227,7 @@ img {
 }
 
 .list-item-accent {
-	padding-left : 17px !important;
+	padding-left : 15px !important;
 	display      : block;
 }
 
@@ -238,11 +242,16 @@ img {
 	Search
 */
 .searchinput {
+	position: relative;
+	top: -6px;
+	width: 96%;
+}
+/*.searchinput {
 	padding   : 6px;
 	max-width : 865px;
 	min-width : 385px;
 	width     : 97%;
-}
+}*/
 
 /**
 	Gamepage

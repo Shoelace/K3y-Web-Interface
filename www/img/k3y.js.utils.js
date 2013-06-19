@@ -1,13 +1,12 @@
-//Some initting
+﻿//Some initting
 $(window).hashchange(function() {
 	Interface.navigation.navigateTo(window.location.hash);
 });
 
 $(document).ready(function() {
 	Interface.init();
+	window.onerror = Interface.utils.errorHandler;
 });
-
-var tempStorage = JSON.parse('{"Settings":{"accent":"purple","metro":true,"language":"English","slideChance":"100","orientationNotification":false},"FavLists":{"Pinned":[{"id":"ecb9d3f80f04a7985508567b04372a421bc5c6c0","name":"SSX"},{"id":"5ad5e4cae5729d7c9d96c58deb39205ad9d5d040","name":"Forza Motorsport 4 Disc 2"}],"Recently Added":[{"id":"09834ce1795306a740ab3f8fb865c04bd7415932","name":"Assassin\'s CreedÂ® III Disc 1"},{"id":"c682c0436c9b69ffdb89bee30db33fbb5e18b1ed","name":"Assassin\'s CreedÂ® III Disc 2"},{"id":"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0","name":"Borderlands 2"},{"id":"3954a72fddee9122631eb8dabf95ad445394da35","name":"DiRT 3 -- Complete Edition"},{"id":"d70dfd7c39331fda8a006c32c9b7cc3e3589447a","name":"DiRT Showdown"},{"id":"41d0d5b6489878b7a77b5ec95ccf57d0fe79b908","name":"Far Cry 3"},{"id":"2a4eb4c5155d0c605240082acc8207ba685f0410","name":"FIFA 13"},{"id":"fd06f24b8b184ef95ab6d639c028c99a20c6b95e","name":"Forza Horizon"},{"id":"8dc3891c06f22f4e56ef5f4284c80a5c8be69f56","name":"Halo 4 Disc 1"},{"id":"43885cbbeb26493dc9a07f17f9db3baab9ce6a6c","name":"Halo 4 Disc 2"},{"id":"4236cbaf8093bd99395596a7fd4f4fa660607fe4","name":"Hitman Absolution"},{"id":"c9be79ab9f653e3e08e53ebd101994da3e09527f","name":"NEED FOR SPEED MOST WANTED"},{"id":"d11be4e9eb3aea311ddeb1bfaf51a90ba84406dc","name":"Saints Row The Third"},{"id":"1dcf450b8036e8d39773e5b8dcc367517264aa97","name":"Saints Row The Third DLC"}],"RPG":[{"id":"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf","name":"The Elder Scrolls V Skyrim"},{"id":"8edef05d3eae48e0463452d53c8cce88031ca644","name":"Fable III"},{"id":"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f","name":"Fable II -- Game of the Year Edition"}],"List 2":[{"id":"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0","name":"Borderlands 2"},{"id":"ed8c27c72df81e5dfdb3a74319407ab58989b0b9","name":"Brink"},{"id":"4236cbaf8093bd99395596a7fd4f4fa660607fe4","name":"Hitman Absolution"},{"id":"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7","name":"Gears of War 3"}],"List 3":[{"id":"c7c87f5b0ebb2f706da0fcc606933288fc8b0312","name":"Rage Disc 3"},{"id":"99a427cbc5cb193741e12ea43251723dc40b6584","name":"Syndicate"},{"id":"e9431a66c3bff887b84f81b3b6ade8b0581eadda","name":"Max Payne 3 Disc 1"},{"id":"9b4f7282309dcec6403809a8d5373f8b833acbee","name":"Army of Two The 40th Day"}]},"1ad214f9143283a89c207f4d870fd5bbd24915ed":{"known":true},"eecc99971efbb838522c31337da068323655a880":{"known":true},"27808d3ffd6cc37f95780e8d8c962b929b15351f":{"known":true},"49a217cb1a6e879b8a7308e3e5ead480f460e472":{"known":true},"f3aaf6c154948d51d65bc7a45155871c14cd7b07":{"known":true},"20ebde8c190d00bf984c09fc9b30dff98cf5197d":{"known":true},"ed8c27c72df81e5dfdb3a74319407ab58989b0b9":{"known":true},"17877d6a5a56953e718f62296e28353d150fc6a4":{"known":true},"fe4b0175639b21eed78625e23f76de0acb60c0e8":{"known":true},"2a3cec920c56909559adc4cf19f8e62109ec5faf":{"known":true},"a76ccaa648d25e19b52868b5098ae415c6795adc":{"known":true},"8da77abcb7f97dd3c46e30e4174d958b12d5080d":{"known":true},"8b7950435a207f6ca424bd73f28df3f894e7b6a1":{"known":true},"03055cd0317422ed3bd3212f28a4d50981de5a0b":{"known":true},"cb0995bd155c18106d2875f598d4bc4ae9a3009f":{"known":true},"921cb10ec486adf97dfaed66468b378c56769b93":{"known":true},"9b182a4b4c0ebc3dfe7fe696cdee11a74cc18dbf":{"known":true},"8edef05d3eae48e0463452d53c8cce88031ca644":{"known":true},"d1ba1bbe85d95329a27666e2ad33a27a9aab6624":{"known":true},"ef1e2fd91ed15c9a316b85bb189a4743476adb58":{"known":true},"9e2f4e07d49f9e9c436cbbbddc62afb59093defc":{"known":true},"b2a53a44ff9f8efe75139f521ab4a49eed0b1834":{"known":true},"2022b9cbf91ffd1c8b1e8ec7d4fefccd47fd4808":{"known":true},"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7":{"known":true},"0c2dab94a8fd423b61c5b3d2cc76f2e876b72faf":{"known":true},"ad510ca8d6d6467a01608afb9aab8e24008ddf45":{"known":true},"538b824034f52f57017231ca5a72aa5b740cdd06":{"known":true},"722f2b8ecda48fe326ff78a43f57e6bceef7c04c":{"known":true},"29fc25852851bdb874adb8191acd8d60f24543dc":{"known":true},"1945cac203e9a03bde9f9d1e7350565b4f74f757":{"known":true},"817f29773e6878285b420e9e8ee8f12f6a12f2e3":{"known":true},"9ef95c926299e0f6af88fddf0390dbb912165f01":{"known":true},"f16028eb36eccdb691a4f668d2c67b1dfbce7cf9":{"known":true},"49c415b035b7d8e0593baad0f7b52a80954194d5":{"known":true},"22f4b23e18cde5c34f69b623f96bd0e8b0292406":{"known":true},"55d035e6e08e7f5e5e137604e0dffff58b551ed7":{"known":true},"24114d7e66c47ce476e4eb6bb48f4cc1165792f0":{"known":true},"966b0c9b6e033f7736f0a56b9fe530d79c352372":{"known":true},"63f582ed2321610b01ce09709fd51d9c08d29fb9":{"known":true},"cd7139c54832c6b15e5a89dc9fb1ec01924ef93c":{"known":true},"aae30ac6f9d06b5d20bddec3312d1feb1f86ff2a":{"known":true},"aca07b659fef7b41bf3fd64f09a3f7198927fe8b":{"known":true},"20270cce12b5cc17d3887cd93ba055720fe6c1da":{"known":true},"70cfdf0c9e8679815f8260cb75519467fcaf7c01":{"known":true},"19dccaa6dd5d75fcb4f4139a04322a45e1ee401d":{"known":true},"14c68d77b33da6415cdefe64c9a3011fcf90968d":{"known":true},"45dd7ac85393b503f8ea117d32b7b0b10a07feee":{"known":true},"d937f6040ea2141db832fb2c5b58546e222e4c66":{"known":true},"3b296de66161ec1946d51c6adea54c01f70a021d":{"known":true},"eb0af5f14486fdd28ebffcdac21a3c49e8338fc3":{"known":true},"a0c539e167df88a8cc4cb652bc5f16d2233fdf82":{"known":true},"aac1d40b29cbe173fc079f1c4f0e136750d6746b":{"known":true},"4596614439da8abad9de6342936d056ce80ad7cb":{"known":true},"d8808554429ec953c56344f13c2246a024e16313":{"known":true},"fc5e4d3d9684768817cf715562955bd1d6651e2f":{"known":true},"e8ed8cc8aff3c542a58ac36f0d6ed63069e6c4c3":{"known":true},"10f8b9a1f9f0803c59202c52d7115c8e92a05bc9":{"known":true},"6cb2c2e5d7ae0f30bdbf04551886ce3578633c82":{"known":true},"a309db163478e0c542961eaece83a26dbc7786bb":{"known":true},"24d81c87f75170068bf4887ca9de90f9f0cf099b":{"known":true},"ecb9d3f80f04a7985508567b04372a421bc5c6c0":{"known":true},"a40206c501411aaf8cba74f12cd3f509aae0ec35":{"known":true},"0d4ffd85a16efec07edbc60fd04bc1a166f8fe13":{"known":true},"99a427cbc5cb193741e12ea43251723dc40b6584":{"known":true},"e51e3a1cbc5dbce3b663cd8ba566506f1dd96766":{"known":true},"cb4a7710270d209bf1860eee937d8a944cad967f":{"known":true},"246090b169be8ed6e1f8448cf96aa2167e050960":{"known":true},"9b4f7282309dcec6403809a8d5373f8b833acbee":{"known":true},"2986390017bf34375724cf36648b9ce3350b3dd6":{"known":true},"b6aecaf976c663ad2dbc8c7464d74035dbc61538":{"known":true},"1d99141dbb49350ca3d3a9e5f41c4864f4958f54":{"known":true},"4b3f97a1b14bf470a2cabded2b9212be3651eb72":{"known":true},"62c3401db5acb1905072cf34f11e3f5b75196974":{"known":true},"628afe27b64f4e4e94a165a65852d1aca4a1c920":{"known":true},"bd16de59dee4f2bc1fd122c68e39737816d4f4e8":{"known":true},"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f":{"known":true},"2623ec8ba138a18bd1f7f441d270cc566339d815":{"known":true},"5ad5e4cae5729d7c9d96c58deb39205ad9d5d040":{"known":true},"aef69965ab97eace2b85f729e30297fe8aee8fc5":{"known":true},"e9826d4cd8b09d8f06454268751c0d2438afbf9b":{"known":true},"df4fea8fce85a77884829938e8958956a5e91fae":{"known":true},"d6330aa716c985312a0a4e4986d3f7b1fd995dc4":{"known":true},"1bf21eec453a1eaf8ecc04a54c68283f0883882d":{"known":true},"f66e5a8f464ecc71e96562b6f3cd1918b2469344":{"known":true},"140d5928da7a06bbabd09f638bd672f053feec80":{"known":true},"11deb6dcaf48480e3215f475ea26fb303d71aa39":{"known":true},"8abc3f7be32b24baecca74cef8402704994932bb":{"known":true},"2912b4afe8595fe417161cabc259691b70a6eff9":{"known":true},"e9431a66c3bff887b84f81b3b6ade8b0581eadda":{"known":true},"7fc6519f3619b3ecd293edd8ceadd72a07614288":{"known":true},"38841b7f5ff36c3a40ec96da30ecfb466c8011d0":{"known":true},"b05e18c41faf9d1d12d0d9314d45df01bab5f657":{"known":true},"4ae33589be68d34d0ff8ae3aa25242dfe61db888":{"known":true},"3cba284cb468db496d4cf1aa6ffb7d316ce19715":{"known":true},"c7c87f5b0ebb2f706da0fcc606933288fc8b0312":{"known":true},"772b38dd9685fb730dbd81b8009d367350abc739":{"known":true},"acb634e951626b40d316c8ef9c41ddac33e7110d":{"known":true},"f00f2ea3c8f0d5aced0e953f3c9272f9c8030b27":{"known":true},"9a54a6cf2b836a6c0ba2f65200e367777a7b205d":{"known":true},"2fef52209a6ca08d89458b09231a94bea5150565":{"known":true},"3bb6cc479ea5f39f5038188ee49be964186f462c":{"known":true},"3b91dd77323a8face25ccfbc68db7207f6543ef0":{"known":true},"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf":{"known":true},"a6dc73e32c0bad3fbab9fd3019ed5de24ea301b5":{"known":true},"8f53ec14274ec3af0e507ecef18a28b9cb41a0dc":{"known":true},"09834ce1795306a740ab3f8fb865c04bd7415932":{"known":true},"c682c0436c9b69ffdb89bee30db33fbb5e18b1ed":{"known":true},"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0":{"known":true},"3954a72fddee9122631eb8dabf95ad445394da35":{"known":true},"d70dfd7c39331fda8a006c32c9b7cc3e3589447a":{"known":true},"41d0d5b6489878b7a77b5ec95ccf57d0fe79b908":{"known":true},"2a4eb4c5155d0c605240082acc8207ba685f0410":{"known":true},"fd06f24b8b184ef95ab6d639c028c99a20c6b95e":{"known":true},"8dc3891c06f22f4e56ef5f4284c80a5c8be69f56":{"known":true},"43885cbbeb26493dc9a07f17f9db3baab9ce6a6c":{"known":true},"4236cbaf8093bd99395596a7fd4f4fa660607fe4":{"known":true},"c9be79ab9f653e3e08e53ebd101994da3e09527f":{"known":true},"d11be4e9eb3aea311ddeb1bfaf51a90ba84406dc":{"known":true},"1dcf450b8036e8d39773e5b8dcc367517264aa97":{"known":true}}');
 
 var Interface = {
 	/**
@@ -34,7 +33,7 @@ var Interface = {
 				"recent-page"                 : function(){Interface.main.create.recent()},
 				"search-page"                 : function(){},
 				"about-page"                  : function(){Interface.main.create.about()},
-				"settings-page"               : function(){}
+				"settings-page"               : function(){Interface.data.storage.settings.init()}
 			},
 			"new" : function (id, name, func) {
 				if (id.indexOf('%') == -1) {
@@ -74,8 +73,9 @@ var Interface = {
 			}
 		},
 		"navigateTo" : function (page) {
+			//console.log(page);
 			var allPages = this.pages.list;
-			var args;
+			var args = [];
 			if (!page) {
 				page = 'home-page';
 			}
@@ -121,7 +121,7 @@ var Interface = {
 
 				if (page != 'home-page') {
 					$(document.getElementById(page)).find('div.page-title')
-						.prepend('<a href="javascript:history.back()"><img class="back-button" src="img/back.png"/></a>')
+						.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
 						.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
 				}
 				
@@ -170,7 +170,7 @@ var Interface = {
 						type: "GET",
 						url: "store.sh",
 						dataType: "json",
-						cache: false,
+						/*cache: false,*/
 						success: function(storage) {
 							if (storage == null || storage == "")
 								storage = {};
@@ -229,7 +229,6 @@ var Interface = {
 				Interface.data.type = "ps3";
 			}
 			Interface.utils.log("Device = "+Interface.data.type);
-			//storage = tempStorage;
 			if ($.isEmptyObject(storage.games)) {
 				storage = Interface.data.storage.convert(storage);
 				//storage.games = {};
@@ -289,6 +288,9 @@ var Interface = {
 			//Lists
 			if (storage.favLists != undefined) {
 				lists = storage.favLists;
+			}
+			if (storage.settings != undefined) {
+				Interface.data.storage.settings.settings = storage.settings;
 			}
 			
 			//Sort games
@@ -521,6 +523,47 @@ var Interface = {
 			}
 		},
 		"storage" : {
+			"settings" : {
+				"init" : function () {
+					var l = this.supported.length;
+					for (var i = 0; i < l; i++) {
+						var key = this.supported[i];
+						var setting = this.settings[key];
+						if (setting) {
+							$('#setting-' + key).addClass("setting-enabled");
+						}
+					}
+				},
+				"handle" : function (element) {
+					var div = element.children[0];
+					var setting = div.id.split("-")[1];
+					if (setting == "clear") {
+						Interface.data.storage.clear();
+						return;
+					}
+					var entry = this.settings[setting];
+					entry = this.settings[setting] = !entry;
+					if (entry)
+						$(div).addClass("setting-enabled");
+					else 
+						$(div).removeClass("setting-enabled");
+
+					Interface.data.storage.save();
+
+					//this.actions[setting]();
+				},
+				"actions" : {
+					"oneclickload" : function () {
+
+					}
+				},
+				"settings" : {
+					"oneclickload" : false
+				},
+				"supported" : [
+					"oneclickload"
+				]
+			},
 			"getTimesPlayed" : function (id) {
 				return Interface.data.data.storage.games[id].timesPlayed;
 			},
@@ -584,11 +627,28 @@ var Interface = {
 			},
 			"save" : function () {
 				$.post('store.sh', JSON.stringify(Interface.data.data.storage));
+			},
+			"clear" : function (confirm) {
+				if (!confirm) {
+					Interface.utils.messageBox.create(Interface.data.messages["notify-clear"]);
+					return;
+				}
+				var storage = Interface.data.data.storage.games;
+				for (i in storage.games) {
+					storage.games[i] = {
+						"lastPlayed" : 0,
+						"timesPlayed" : 0,
+						"known" : false,
+					};
+				}
+				storage.favLists = [];
+				storage.settings = {};
+				this.save();
 			}
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 2",
+		"version"   : "beta 3",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
@@ -603,6 +663,10 @@ var Interface = {
 				"title"   : "Loading Notification",
 				"content" : "Please open your DVD tray"
 			},
+			"notify-gameloaded" : {
+				"title"   : "Loading Notification",
+				"content" : "Game loaded, have fun playing!"
+			},
 			"notify-reload" : {
 				"title"   : "Loading Notification",
 				"content" : "A game appears to be already loaded, please open your DVD tray and click 'Reload'<br/><br/>"
@@ -615,9 +679,17 @@ var Interface = {
 				"title"   : "Storage converted",
 				"content" : "Your storage has been converted to the new standard. This WILL break apps that haven't updated their code to work with it. Please notify the developers of these apps and refer them to the API wiki. Thanks!"
 			},
+			"notify-clear" : {
+				"title"   : "Clearing data",
+				"content" : "This will clear all your data, are you sure?<br/><br/><a href=\"#settings-page\" onclick=\"Interface.data.storage.clear(true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><br/><br/>"
+			},
 			"notify-init" : {
 				"title"   : "Loading",
 				"content" : "Please wait while data is being loaded and processed..."
+			},
+			"notify-error" : {
+				"title"   : "Error",
+				"content" : "An error has occured. You can post this on the forums (link in \"About\") to get support and notify the developer about it<br/>(Error message from the console (F12) will be appreciated):<br/><br/>"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -627,6 +699,14 @@ var Interface = {
 		"data" : {}
 	},
 	"utils" : {
+		"select" : function (args) {
+			if (Interface.data.storage.settings.settings.oneclickload) {
+				this.launch(args.split("&")[0]);
+			} else {
+				//Interface.navigation.navigateTo("#game-page?"+args)
+				window.location.hash = "#game-page?" + args;
+			}
+		},
 		"launch" : function (id) {
 			var url = "launchgame.sh?"+id;
 			$.ajax({
@@ -638,16 +718,17 @@ var Interface = {
 					var guistate = $(xml).find("GUISTATE").text();
 					if (tray == 0) {
 						$.get(url);
+						Interface.utils.messageBox.create(Interface.data.messages["notify-gameloaded"]);
 						Interface.utils.updateGameInfo(id);
 		            }
 					else if (tray == 1 && guistate == 1) {
-						Interface.utils.messageBox.create(Interface.data.messages["notify-opentray"]);
 						$.get(url);
+						Interface.utils.messageBox.create(Interface.data.messages["notify-opentray"]);
 						Interface.utils.updateGameInfo(id);
 					}
 					else if (tray == 1 && guistate == 2) {
 						var message = Interface.data.messages["notify-reload"];
-						message.content += '<a href="javascript:Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
+						message.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
 						Interface.utils.messageBox.create(message);	
 					}
 				}
@@ -664,7 +745,29 @@ var Interface = {
 
 			var HTML = 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
 
-			$('a[href*="'+id+'"] > div > span.secondary-item-text').html(HTML);
+			$('a[onclick*="'+id+'"] > div > span.secondary-item-text').html(HTML);
+
+			if (Interface.navigation.current() == 'list-page') {
+				Interface.main.create.gamelist(true);
+			}
+		},
+		"getMostPlayed" : function () {
+			var games = Interface.data.data.sorted.slice();
+			games.sort(function(x,y) {
+				var a = Interface.data.storage.getTimesPlayed(x.id);
+				var b = Interface.data.storage.getTimesPlayed(y.id);
+				return b - a;
+			});
+			return games;
+		},
+		"getLastPlayed" : function () {
+			var games = Interface.data.data.sorted.slice();
+			games.sort(function(x,y) {
+				var a = Interface.data.storage.getLastPlayed(x.id);
+				var b = Interface.data.storage.getLastPlayed(y.id);
+				return b - a;
+			});
+			return games;
 		},
 		"messageBox" : {
 			"create" : function(message){
@@ -672,12 +775,20 @@ var Interface = {
 					var messageBox = $('#messageBox');
 
 					messageBox.find('.messageBox-title').html(message.title)
-						.append('<a href="javascript:Interface.utils.messageBox.remove()"><img class="close-button" src="img/close.png"/></a>');
+						.append('<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove()"><img class="close-button" src="img/close.png"/></a>');
 					messageBox.find('.messageBox-content').html(message.content);
 					this.active = message;
 
 					Interface.utils.overlay.show();
 					this.show();
+					this.scroll = window.scrollY;
+					window.scrollTo(0, 0);
+					$(document).keydown(function(e){
+						if (e.keyCode == 27) {
+							Interface.utils.messageBox.remove();
+							return false;
+						}
+					});
 				} else {
 					this.queue.push(message);
 				}
@@ -692,6 +803,8 @@ var Interface = {
 				else {
 					this.hide();
 					Interface.utils.overlay.hide();
+					$(document).keydown(function(){});
+					window.scrollTo(0, this.scroll);
 				}
 			},
 			"show" : function () {
@@ -708,7 +821,8 @@ var Interface = {
 				});
 			},
 			"active" : "",
-			"queue" : []
+			"queue" : [],
+			"scroll" : 0
 		},
 		"overlay" : {
 			"show" : function() {
@@ -733,31 +847,61 @@ var Interface = {
 		"search" : function (input) {
 			var HTML = '';
 			if (input.length == 0) {
-				HTML = 'No results';
+				$('#searchResults').hide();
 			}
 			else {
 				var games   = Interface.data.data.sorted;
 				var pattern = new RegExp(input,"i");
-				var name, id, cover;
+				var name, id, cover
+				var lastLetter ='';;
 				var l       = Interface.data.data.sorted.length;
 				for (var i = 0; i < l; i++) {
 					if (pattern.test(games[i].name)) {
 						name  = games[i].name;
 						id    = games[i].id;
 						cover = games[i].cover;
+
+						timesPlayed = Interface.data.storage.getTimesPlayed(id);
+						lastPlayed  = Interface.data.storage.getLastPlayed(id);
+						if (lastPlayed == 0) {
+							lastPlayed = 'never';
+						} else {
+							lastPlayed = new Date(lastPlayed);
+							lastPlayed = lastPlayed.toLocaleDateString();
+						}
+						letter = name.charAt(0).toUpperCase();
+						if(Interface.utils.isNumber(letter)) {
+							letter = '#';
+						}
+						if (HTML.indexOf('list-divider-'+letter)==-1) {
+							HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
+							HTML       += letter;
+							HTML       += '</span></div>';
+							lastLetter = letter;
+						}
+
+						HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 						HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 						HTML  += name;
 						HTML  += '</span><span class="secondary-item-text item-text">';
-						HTML  += 'Times played + last played will go here';
-						HTML  += '</span></div>';
+						HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
+						HTML  += '</span></div></a>';
 					}
 				}
-				
-				if (HTML == '') {
-					HTML = 'No results';
-				}
 			}
-			document.getElementById('searchResults').innerHTML = HTML;
+			if (HTML == '') {
+				$('#searchResults').hide();
+				$('#listContent').show();
+			} else {
+				document.getElementById('searchResults').innerHTML = HTML;
+				$('#listContent').hide();
+				$('#searchResults').show();
+			}
+		},
+		"errorHandler" : function (msg, url, line) {
+			var message = Interface.data.messages["notify-error"];
+			message.content += "Error: " + msg + "<br/>At line: " + line + "<br/>For: " + url + "<br/>";
+			Interface.utils.messageBox.create(message)
 		}
 	}
 }

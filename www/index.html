@@ -91,7 +91,7 @@
 						</div>
 					</a>
 					
-					<a href="#search-page">
+					<!-- <a href="#search-page">
 						<div class="main-item">
 							<span class="main-item-text item-text">
 								Search
@@ -100,7 +100,7 @@
 								Search for a game
 							</span>
 						</div>
-					</a>
+					</a> -->
 					
 					<a href="#about-page">
 						<div class="main-item">
@@ -143,7 +143,82 @@
 					Game list
 				</div>
 				<div class="page-content">
-					
+					<!-- <div class="main-item list-item-accent">
+						<span class="letter-item-text">
+							Sorting options
+						</span>
+					</div> -->
+
+					<!-- <a href="javascript:void(0);">
+						<div class="main-item setting-enabled">
+							<span class="main-item-text item-text">
+								Alphabetic
+							</span>
+							<span class="secondary-item-text item-text">
+								Sort games alphabetically
+							</span>
+						</div>
+					</a>
+
+					<a href="javascript:void(0);">
+						<div class="main-item">
+							<span class="main-item-text item-text">
+								Most played
+							</span>
+							<span class="secondary-item-text item-text">
+								Show the 10 most played games
+							</span>
+						</div>
+					</a>
+
+					<a href="javascript:void(0);">
+						<div class="main-item">
+							<span class="main-item-text item-text">
+								Last played
+							</span>
+							<span class="secondary-item-text item-text">
+								Show the 10 last played games
+							</span>
+						</div>
+					</a> -->
+
+					<div class="main-item">
+						<span class="main-item-text item-text">
+							Sort
+						</span>
+						<span class="secondary-item-text item-text">
+							<select id="gameSortSelect" class="searchinput" onchange="Interface.main.create.gamelist()">
+								<option value="alphabetic">Alphabetic</option>
+								<option value="mostplayed">Most Played</option>
+								<option value="lastplayed">Last Played</option>
+							</select>
+						</span>
+					</div>
+
+					<a href="javascript:void(0);" onclick="$(this).find('input').focus()">
+						<div class="main-item">
+							<span class="main-item-text item-text">
+								Search
+							</span>
+							<span class="secondary-item-text item-text">
+								<input class="searchinput" type="text" onkeyup="Interface.utils.search(this.value)">
+							</span>
+						</div>
+					</a>
+
+					<!-- <a href="javascript:void(0);">
+						<div class="main-item">
+							<span class="main-item-text item-text">
+								Name
+							</span>
+							<span class="secondary-item-text item-text">
+								Description
+							</span>
+						</div>
+					</a> -->
+
+					<div id="listContent"></div>
+					<div id="searchResults"></div>
 				</div>
 			</div>
 
@@ -199,7 +274,41 @@
 					Settings
 				</div>
 				<div class="page-content">
-
+					<!-- Setting item -->
+					<a href="#settings-page" onclick="Interface.data.storage.settings.handle(this)">
+						<div class="main-item setting" id="setting-oneclickload">
+							<span class="main-item-text item-text">
+								One click load
+							</span>
+							<span class="secondary-item-text item-text">
+								Disables the game page and loads the game instantly
+							</span>
+						</div>
+					</a>
+					<!-- Setting item -->
+					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
+						<div class="main-item setting" id="setting-clear">
+							<span class="main-item-text item-text">
+								Clear data
+							</span>
+							<span class="secondary-item-text item-text">
+								Delete all the saved data
+							</span>
+						</div>
+					</a>
+					<!-- Setting item -->
+					<!--
+					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
+						<div class="main-item setting" id="setting-">
+							<span class="main-item-text item-text">
+								SettingName
+							</span>
+							<span class="secondary-item-text item-text">
+								SettingDescription
+							</span>
+						</div>
+					</a>
+					-->
 				</div>
 			</div>
 			
