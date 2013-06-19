@@ -202,6 +202,7 @@ img {
 
 .coverwall-game, .gamepage-game {
 	float     : left;
+	min-width : 100%;
 	max-width : 100%;
 	position  : relative;
 	right     : 10px;

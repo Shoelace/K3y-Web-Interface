@@ -24,60 +24,77 @@ Interface.main = {
 		}
 	},
 	"create" : {
-		"gamepage" : function (args) {
-			var args = args[1].split("&");
-			var name = args[1];
-			var id   = args[0];
-			var URL  = "covers/" + id + ".xml";
-			$.ajax({
-				type: "GET",
-				url: URL,
-				success: function(data) {
-					var xml = $(data);
-					var title, summary, HTML, cover;
-					
-					title = xml.find("title").text();
-					if (title == "No Title") {
-						title = unescape(name);
+		"gamepage" : function (args, xml) {
+			var targs = args[1].split("&");
+			var name  = targs[1];
+			var id    = targs[0];
+			var URL   = "covers/" + id + ".xml";
+
+			var page = $("#game-page");
+			page.find("#game-title").html("Loading " + unescape(name));
+			page.find(".page-content").html("Loading info...");
+
+			if (!xml) {
+				$.ajax({
+					type: "GET",
+					url: URL,
+					success: function(data) {
+						var xml = $(data);
+						Interface.main.create.gamepage(args, xml);
+					},
+					error: function() {
+						$.ajax({
+							type: "GET",
+							url: "img/empty.xml",
+							success: function(data) {
+								var xml = $(data);
+								Interface.main.create.gamepage(args, xml);
+							}
+						});
 					}
-
-					cover   = "covers/" + id + ".jpg";
-					
-					summary = xml.find("summary").text();
-
-					var infoitems = "";
-					xml.find("infoitem").each(function() {
-						var item   = $(this);
-						var string = item.text();
-						if (string.indexOf('www')==0 || string.indexOf('http')==0) {
-							string = '<a href="'+string+'" target="_blank">'+string+'</a>';
-						}
-						infoitems += item.attr("name") + ": "+ string+'<br/>';
-					});
-
-					infoitems += "<br/>";
-
-					HTML = '<div class="main-item gamepage-item active-game">';
-					HTML += '<img class="gamepage-game" src="' + cover + '"/></div>';
-					HTML += '<span class="gamepage-info">'
-					HTML += infoitems;
-					HTML += '</span>';
-					HTML += summary;
-
-					HTML += '</br>';
-					HTML += '<div class="gamepage-buttonContainer">';
-					HTML += '<a href="javascript:Interface.utils.launch(\'' + id + '\')"><span class="prettyButton">Play</span></a>';
-					HTML += '<a href="#favorites_game_manager-page?' + id + '&' + name + '"><span class="prettyButton">Manage lists</span></a>';
-					HTML += '</div>';
-
-					HTML += '<br class="clear"/>'
-
-					var page = $("#game-page");
-					page.find("#game-title").html(title);
-					page.find(".page-content").html(HTML);
-
+				});
+			}
+			else {
+				var title, summary, HTML, cover;
+				title = xml.find("title").text();
+				if (title == "No Title") {
+					title = unescape(name);
 				}
-			})
+
+				cover   = "covers/" + id + ".jpg";
+				
+				summary = xml.find("summary").text();
+
+				var infoitems = "";
+				xml.find("infoitem").each(function() {
+					var item   = $(this);
+					var string = item.text();
+					if (string.indexOf('www')==0 || string.indexOf('http')==0) {
+						string = '<a href="'+string+'" target="_blank">'+string+'</a>';
+					}
+					infoitems += item.attr("name") + ": "+ string+'<br/>';
+				});
+
+				infoitems += "<br/>";
+
+				HTML = '<div class="main-item gamepage-item active-game">';
+				HTML += '<img class="gamepage-game" src="' + cover + '"/></div>';
+				HTML += '<span class="gamepage-info">'
+				HTML += infoitems;
+				HTML += '</span>';
+				HTML += summary;
+
+				HTML += '</br>';
+				HTML += '<div class="gamepage-buttonContainer">';
+				HTML += '<a href="javascript:Interface.utils.launch(\'' + id + '\')"><span class="prettyButton">Play</span></a>';
+				HTML += '<a href="#favorites_game_manager-page?' + id + '&' + name + '"><span class="prettyButton">Manage lists</span></a>';
+				HTML += '</div>';
+
+				HTML += '<br class="clear"/>'
+
+				page.find("#game-title").html(title);
+				page.find(".page-content").html(HTML);
+			}
 		},
 		"coverwall" : function () {
 			if (!Interface.main.vars.made.coverwall) {
@@ -308,7 +325,7 @@ Interface.main = {
 							gameHTML += '<div class="main-item '+activeClass+'"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
 							gameHTML += name;
 							gameHTML += '</span><span class="secondary-item-text item-text">';
-							HTML += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
+							gameHTML += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
 							gameHTML += '</span></div></a>';
 						}
 						Interface.navigation.pages.addContent(pageName, gameHTML);

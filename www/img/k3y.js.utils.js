@@ -15,6 +15,7 @@ var Interface = {
 	*/
 	"init" : function () {
 		Interface.data.poll(true);
+		Interface.utils.messageBox.create(Interface.data.messages["notify-init"]);
 	},
 	/**
 		Navigation
@@ -350,6 +351,7 @@ var Interface = {
 			Interface.utils.log("Updated!");
 			Interface.utils.log("Games: "+isos.length);
 			Interface.data.storage.save();
+			Interface.utils.messageBox.remove();
 		},
 		"lists" : {
 			"getLists" : function (id) {
@@ -586,7 +588,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 1",
+		"version"   : "beta 2",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
@@ -613,12 +615,16 @@ var Interface = {
 				"title"   : "Storage converted",
 				"content" : "Your storage has been converted to the new standard. This WILL break apps that haven't updated their code to work with it. Please notify the developers of these apps and refer them to the API wiki. Thanks!"
 			},
+			"notify-init" : {
+				"title"   : "Loading",
+				"content" : "Please wait while data is being loaded and processed..."
+			},
 			"test" : {
 				"title"   : "Testing",
 				"content" : "Let's see if this works"
 			}
 		},
-		"data"      : {}
+		"data" : {}
 	},
 	"utils" : {
 		"launch" : function (id) {
