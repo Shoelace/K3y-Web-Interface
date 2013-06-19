@@ -20,6 +20,7 @@ html {
 	width       : 100%;
 	text-align  : center;
 	padding-top : 15px;
+	z-index     : 90;
 	/* background-image:url(../img/main-texture.png); */
 	/* white-space:nowrap; */
 	/*z-index:-1;*/
@@ -46,13 +47,17 @@ html {
 
 #overlay {
 	background-color : black;
-	opacity          : 0.8;
 	z-index          : 9900;
 	position         : absolute;
 	top              : 0px;
 	left             : 0px;
 	width            : 100%;
 	height           : 100%;
+	opacity          : 0.8;
+}
+
+.overlayshade {
+	opacity : 0.8!important;
 }
 
 #messageBox {
@@ -60,8 +65,13 @@ html {
 	max-width   : 800px;
 	min-width   : 400px;
 	width       : 80%;
-	padding-top : 20px;
+	padding-top : 30px;
+	opacity     : 1;
 	/*position:absolute;*/
+}
+
+#messageBoxContainer {
+	opacity : 0;
 }
 
 #messageBox, .messageBox-title {
@@ -78,6 +88,15 @@ html {
 
 .invis {
 	display : none !important;
+	opacity : 0;
+}
+
+.fullopacity {
+	opacity: 1!important;
+}
+
+.nullopacity {
+	opacity: 0!important;
 }
 
 a {
@@ -113,6 +132,14 @@ img {
 	color : white;
 }
 
+.animate {
+	transition : opacity 0.2s ease-in-out;
+}
+
+.notify {
+	animation : notify-bounce 1s;
+}
+
 /**
 	Page
 */
@@ -122,6 +149,7 @@ img {
 	width          : 95%;
 	max-width      : 900px;
 	min-width      : 420px;
+	opacity        : 0;
 	/* margin: 10px; */
 	/* position:relative;
 	width:100%;
@@ -169,7 +197,7 @@ img {
 }
 
 .item-text {
-	color   : #888888;
+	color   : #777777;
 	display : block;
 }
 
@@ -299,4 +327,12 @@ img {
 	white-space : nowrap;
 	visibility  : hidden;
 	font-size   : 2em;
+}
+
+@keyframes notify-bounce
+{
+0%   {transform:scale(1.0);}
+25%  {transform:scale(0.95);}
+50%  {transform:scale(1.05);}
+100% {transform:scale(1.0);}
 }

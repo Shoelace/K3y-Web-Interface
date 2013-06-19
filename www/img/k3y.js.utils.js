@@ -1,4 +1,4 @@
-﻿"use strict"
+"use strict"
 //Some initting
 window.onhashchange = function () {
 	Interface.navigation.navigateTo(window.location.hash);
@@ -115,26 +115,36 @@ var Interface = {
 				page = escape(page);
 			}
 
-			if (Interface.data.storage.settings.get("animations")) {
-				$('.page.active').fadeOut(200, function() {
+			/*if (Interface.data.storage.settings.get("animations")) {
+				//$('.page.active').fadeOut(200, function() {
 					Interface.navigation.postTransition(page, args, allPages);
-				});
-			} else {
-				Interface.navigation.postTransition(page, args, allPages);
-			}
+				//});
+			} else {*/
+				Interface.navigation.transition(page, args, allPages);
+			//}
 			//console.timeEnd("navigate");
 		},
-		"postTransition" : function (page, args, allPages) {
-			$('.page.active').removeClass('active').hide();
+		"transition" : function (page, args, allPages) {
+			//$('.page.active').removeClass('active').hide();
 			//Show requested page
 			//$(document.getElementById(page)).addClass('active');
 			if (Interface.data.storage.settings.get("animations")) {
-				$(document.getElementById(page)).fadeIn(200).addClass('active');
+				$('.page.active').addClass('animate').removeClass('fullopacity');
+				setTimeout(function(){
+					$('.page.active').removeClass('active');
+					$(document.getElementById(page)).addClass('animate active');
+					setTimeout(function(){$(document.getElementById(page)).addClass('fullopacity')}, 20);
+				}, 200);
+				//$(document.getElementById(page)).fadeIn(200).addClass('active');
+				//$(document.getElementById(page)).addClass('active fullopacity');
+				//$(document.getElementById(page)).addClass('active');
+				//setTimeout(function(){$(document.getElementById(page)).addClass('fullopacity')}, 2000);
 				//$('[id="' + page +'"]').fadeIn(200).addClass('active');
 				//Sometimes animation is a bitch, so we force opacity
-				document.getElementById(page).style.opacity = 1;
+				//document.getElementById(page).style.opacity = 1;
 			} else {
-				$(document.getElementById(page)).addClass('active');
+				$('.page.active').removeClass('active animate');
+				$(document.getElementById(page)).removeClass('animate').addClass('active fullopacity');
 				//$('[id="' + page +'"]').addClass('active');
 			}
 			
@@ -240,8 +250,13 @@ var Interface = {
 			if ($.isEmptyObject(storage.games)) {
 				storage = Interface.data.storage.convert(storage);
 			}
-			if (!storage.guid)
+			if (!storage.guid || !storage.vars || !storage.vars.askedAnon){
 				storage.guid = Interface.utils.guid();
+				if (!storage.vars)
+					storage.vars = {};
+				storage.vars.askedAnon = true;
+				Interface.utils.messageBox.create(Interface.data.messages["notify-anondata"]);
+			}
 
 			xml.find('MOUNT').each(function() {
 				hdd = $(this).attr('NAME');
@@ -271,7 +286,7 @@ var Interface = {
 						storage.games[id] = {
 							"lastPlayed" : 0,
 							"timesPlayed" : 0,
-							"known" : false,
+							"known" : false
 						};
 					}
 					storage.games[id].hdd = hdd;
@@ -290,6 +305,7 @@ var Interface = {
 			}
 			if (storage.settings != undefined) {
 				$.extend(Interface.data.storage.settings.settings, storage.settings);
+				storage.settings = Interface.data.storage.settings.settings;
 			}
 			
 			//Sort games
@@ -342,7 +358,7 @@ var Interface = {
 		"lists" : {
 			"getLists" : function (id) {
 				if (id) {
-					var lists        = Interface.data.data.lists;
+					var lists        = Interface.data.data.storage.favLists;
 					var returnObject = {"isAvailable":[], "isIn":[]};
 
 					var content, game, k;
@@ -371,7 +387,7 @@ var Interface = {
 					return returnObject;
 				}
 				else {
-					return Interface.data.data.lists;
+					return Interface.data.data.storage.favLists;
 				}
 			},
 			"createList" : function (listName, id, name) {
@@ -380,7 +396,8 @@ var Interface = {
 					name     = $('.listsDataGameName').val();
 					listName = $('.listsNewListInput').val();
 				}
-				var lists = Interface.data.data.lists;
+				//var lists = Interface.data.data.storage.favLists;
+				var lists = this.getLists();
 				listName = escape(listName);
 
 				if (Interface.data.lists.indexOf(listName) != -1) {
@@ -394,6 +411,7 @@ var Interface = {
 				}
 				var list  = {
 					"name"    : listName,
+					"desc"    : "List",
 					"content" : [
 						game
 					]
@@ -415,7 +433,8 @@ var Interface = {
 					"name" : name,
 					"hdd"  : Interface.data.data.storage.games[id].hdd
 				}
-				var lists = Interface.data.data.lists;
+				//var lists = Interface.data.data.storage.favLists;
+				var lists = this.getLists();
 
 				var index = Interface.data.lists.indexOf(listName);
 				lists[index].content.push(game);
@@ -429,7 +448,8 @@ var Interface = {
 					id       = $('.listsDataGameID').val();
 					listName = $('.listsDataRemoveListName').val();
 				}
-				var lists = Interface.data.data.lists;
+				//var lists = Interface.data.data.lists;
+				var lists = this.getLists();
 				var index   = Interface.data.lists.indexOf(listName);
 				var content = lists[index].content;
 				var l       = content.length;
@@ -445,7 +465,8 @@ var Interface = {
 				}
 			},
 			"indexOf" : function (listName) {
-				var lists = Interface.data.data.lists;
+				//var lists = Interface.data.data.lists;
+				var lists = this.getLists();
 				if (listName.indexOf('%') == -1) {
 					listName = escape(listName);
 				}
@@ -461,7 +482,8 @@ var Interface = {
 				var games = Interface.data.data.sorted;
 				var l = games.length;
 				var listName = "Recently Added";
-				var lists = Interface.data.lists.getLists();
+				//var lists = Interface.data.lists.getLists();
+				var lists = this.getLists();
 				var listExists = (Interface.data.lists.indexOf(listName) == -1 ? false : true);
 				var storage = Interface.data.data.storage;
 
@@ -496,15 +518,63 @@ var Interface = {
 			},
 			"clear" : function (listName) {
 				var index = Interface.data.lists.indexOf(listName);
-				Interface.data.data.lists[index].content = [];
+				//Interface.data.data.lists[index].content = [];
+				Interface.data.data.storage.favLists[index].content = [];
 				Interface.data.storage.save();
 			},
 			"removeList" : function (listName) {
+				if (!listName) {
+					listName = $('.listsManagerListName').val();
+				}
 				var index = Interface.data.lists.indexOf(listName);
 				if (index != -1) {
-					Interface.data.data.lists.splice(index, 1);
+					//Interface.data.data.lists.splice(index, 1);
+					Interface.data.data.storage.favLists.splice(index, 1);
 				}
 				Interface.data.storage.save();
+				if (Interface.navigation.current().indexOf('favorites') != -1) {
+					window.onhashchange();
+				}
+			},
+			"renameList" : function (listName, newName) {
+				if (!newName) {
+					if (!listName) {
+						listName = $('.listsManagerListName').val();
+						var message = Interface.data.messages["notify-list-rename"];
+						message.content = message.content.replace(/%s/g, listName);
+						Interface.utils.messageBox.create(message);
+						return;
+					}
+					newName = $('.listsRenameListInput').val();
+					Interface.utils.messageBox.remove();
+				}
+				var index = this.indexOf(listName);
+				Interface.data.data.storage.favLists[index].name = newName;
+				Interface.data.storage.save();
+				if (Interface.navigation.current().indexOf('favorites') != -1) {
+					window.onhashchange();
+				}
+			},
+			"changeListDescription" : function (listName, desc) {
+				if (!desc) {
+					if (!listName) {
+						listName = $('.listsManagerListName').val();
+						var message = Interface.data.messages["notify-list-desc"];
+						message.content = message.content.replace(/%s/g, listName);
+						Interface.utils.messageBox.create(message);
+						return;
+					}
+					desc = $('.listsListDescInput').val();
+					Interface.utils.messageBox.remove();
+				}
+				var index = this.indexOf(listName);
+				Interface.data.data.storage.favLists[index].desc = desc;
+				Interface.data.storage.save();
+			},
+			"massAddToList" : function (listName) {
+				if (!listName) {
+					listName = $('.listsManagerListName').val();
+				}
 			}
 		},
 		"storage" : {
@@ -521,6 +591,11 @@ var Interface = {
 				},
 				"get" : function (setting) {
 					return this.settings[setting];
+				},
+				"set" : function (setting, value) {
+					this.settings[setting] = Interface.data.data.storage.settings[setting] = value;
+					Interface.data.storage.save();
+					return;
 				},
 				"handle" : function (element) {
 					var div = element.children[0];
@@ -552,19 +627,29 @@ var Interface = {
 					},
 					"animations" : function () {
 						return;
+					},
+					"updatecheck" : function () {
+						return;
+					},
+					"anondata" : function () {
+						return;
 					}
 				},
 				"settings" : {
 					"oneclickload" : false,
 					"dynamicfont"  : false,
 					"prebuild"     : false,
-					"animations"   : true
+					"animations"   : true,
+					"updatecheck"  : true,
+					"anondata"     : false
 				},
 				"supported" : [
 					"oneclickload",
 					"dynamicfont",
 					"prebuild",
 					"animations",
+					"updatecheck",
+					"anondata",
 					"clear"
 				],
 				"strings" : {
@@ -583,6 +668,14 @@ var Interface = {
 					"animations" : {
 						"title" : "Animations",
 						"desc"  : "Show animations during page transition"
+					},
+					"updatecheck" : {
+						"title" : "Check for updates",
+						"desc"  : "Check for updates on every first launch of a day"
+					},
+					"anondata" : {
+						"title" : "Anonymous data",
+						"desc"  : "Allow anonymous usage data collection with the random GUID"
 					},
 					"clear" : {
 						"title" : "Clear data",
@@ -643,13 +736,14 @@ var Interface = {
 						}
 						newStorage.favLists.push({
 							"name" : escape(key),
+							"desc" : "List",
 							"content" : temp
 						});
 					}
 				}
 				if (!$.isEmptyObject(storage.Settings))
 					newStorage.settings = storage.Settings;
-				Interface.utils.messageBox.create(Interface.data.messages['notify-convert']);
+				//Interface.utils.messageBox.create(Interface.data.messages['notify-convert']);
 				return newStorage;
 			},
 			"get" : function () {
@@ -676,12 +770,12 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 6",
+		"version"   : "beta 7",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
 				"title"   : "Xbox IE Settings",
-				"content" : "I see you're using your Xbox to view this interface. I'm prepared for that! <br/><br/> Can I just recommend that you tick the option \"Use my whole TV to show the webpage\" in IE's settings? Thanks!"
+				"content" : "I see you're using your Xbox to view this interface. I'm prepared for that!<br/><br/>Can I just recommend that you tick the option \"Use my whole TV to show the webpage\" in IE's settings? Thanks!"
 			},
 			"notify-dataUpdate" : {
 				"title"   : "Data updated",
@@ -703,6 +797,14 @@ var Interface = {
 				"title"   : "List exists",
 				"content" : "This list already exists, please pick another name!"
 			},
+			"notify-list-rename" : {
+				"title"   : "Rename list",
+				"content" : "Old name: <em>%s</em><br/>New name:<br/><input type=\"text\" class=\"listsRenameListInput\"/> <a onclick=\"Interface.data.lists.renameList('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+			},
+			"notify-list-desc" : {
+				"title"   : "Change description",
+				"content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"/> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+			},
 			"notify-convert" : {
 				"title"   : "Storage converted",
 				"content" : "Your storage has been converted to the new standard. This WILL break apps that haven't updated their code to work with it. Please notify the developers of these apps and refer them to the API wiki. Thanks!"
@@ -710,6 +812,10 @@ var Interface = {
 			"notify-clear" : {
 				"title"   : "Clearing data",
 				"content" : "This will clear all your data, are you sure?<br/><br/><a href=\"#settings-page\" onclick=\"Interface.data.storage.clear(true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><br/><br/>"
+			},
+			"notify-anondata" : {
+				"title"   : "Anonymous usage data",
+				"content" : "Allow anonymous usage data to be collected for informational purposes?<br/><br/><a onclick=\"Interface.data.storage.settings.set('anondata', true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><a onclick=\"Interface.data.storage.settings.set('anondata', false);Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">No</span></a><br/><br/>"
 			},
 			"notify-init" : {
 				"title"   : "Loading",
@@ -722,6 +828,10 @@ var Interface = {
 			"notify-pagereload" : {
 				"title"   : "Reload",
 				"content" : "For this setting to take full effect, it's advised to reload the page."
+			},
+			"changelog" : {
+				"title"   : "Changelog",
+				"content" : "- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>-Added list manager"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -745,9 +855,7 @@ var Interface = {
 				}
 				*/
 				var HTML = '';
-				var fixTitle = false;
-				if (Interface.data.storage.settings.get("dynamicfont"))
-					fixTitle = true;
+				var fixTitle = Interface.data.storage.settings.get("dynamicfont");
 
 				if (!obj.href)
 					obj.href = "javascript:void(0);";
@@ -790,7 +898,8 @@ var Interface = {
 				url: "data.xml",
 				dataType: "xml",
 				success: function(xml) {
-					var tray = $(xml).find('TRAYSTATE').text();
+					var tray = (Interface.data.type == "ps3key" ? 0 : $(xml).find('TRAYSTATE').text());
+					//var tray = $(xml).find('TRAYSTATE').text();
 					var guistate = $(xml).find("GUISTATE").text();
 					if (tray == 0) {
 						$.get(url);
@@ -802,7 +911,7 @@ var Interface = {
 						Interface.utils.messageBox.create(Interface.data.messages["notify-opentray"]);
 						Interface.utils.updateGameInfo(id);
 					}
-					else if (tray == 1 && guistate == 2) {
+					else if (guistate == 2) {
 						var message = Interface.data.messages["notify-reload"];
 						message.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
 						Interface.utils.messageBox.create(message);
@@ -855,8 +964,13 @@ var Interface = {
 					messageBox.find('.messageBox-content').html(message.content);
 					this.active = message;
 
-					Interface.utils.overlay.show();
+					/*Interface.utils.overlay.show();
+					this.t = setTimeout(function() {
+						Interface.utils.messageBox.show();
+					}, 200);*/
+					// this.show();
 					this.show();
+
 					this.scroll = window.scrollY;
 					window.scrollTo(0, 0);
 					$(document).keydown(function(e){
@@ -872,36 +986,73 @@ var Interface = {
 			"remove" : function(){
 				this.active = "";
 				if (this.queue.length > 0) {
-					this.hide(function() {
+					//this.hide(function() {
+						if (Interface.data.storage.settings.get("animations")) {
+							$('#messageBox').removeClass('notify');
+							setTimeout(function() {
+								$('#messageBox').addClass('notify');
+							}, 10);
+						}
+						
 						Interface.utils.messageBox.create(Interface.utils.messageBox.queue.shift());
-					});
+						
+					//});
 				}
 				else {
+					$('#messageBox').removeClass('notify');
 					this.hide();
-					Interface.utils.overlay.hide();
+					//Interface.utils.overlay.hide();
 					$(document).keydown(function(){});
 					window.scrollTo(0, this.scroll);
 				}
 			},
 			"show" : function () {
 				$('.other-container').addClass("overlap");
-				if (Interface.data.storage.settings.get("animations"))
-					$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
-				else 
-					$('#messageBox').css("display", "inline-block").removeClass("invis");
+				if (Interface.data.storage.settings.get("animations")) {
+					/*//$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
+					$('#messageBox').css("display", "inline-block").addClass('active animate');
+					this.t = setTimeout(function() {
+						$('#messageBox').addClass('fullopacity');
+					}, 10);*/
+					$('#messageBoxContainer').removeClass('invis').addClass('animate');
+					this.t = setTimeout(function() {
+						$('#messageBoxContainer').addClass('fullopacity');
+					}, 10);
+				}	
+				else {
+					/*$('#messageBox').css("display", "inline-block").removeClass('animate').addClass('active fullopacity');*/
+					//$('#messageBox').css("display", "inline-block").removeClass("invis");
+					$('#messageBoxContainer').removeClass('invis animate').addClass('fullopacity');
+				}
 			},
 			"hide" : function (callback) {
 				if (Interface.data.storage.settings.get("animations")) {
-					$('#messageBox').fadeOut(200, function(){
+					/*$('#messageBox').addClass('animate').removeClass('fullopacity');
+					clearTimeout(this.t);
+					setTimeout(function() {
+						$('#messageBox').removeClass('active');
+						$('#messageBox').css("display", "");
 						Interface.utils.messageBox.end(callback);
-					});
+					}, 200);*/
+					/*$('#messageBox').fadeOut(200, function(){
+						Interface.utils.messageBox.end(callback);
+					});*/
+					clearTimeout(this.t);
+					$('#messageBoxContainer').addClass('animate').removeClass('fullopacity');
+					setTimeout(function() {
+						$('#messageBoxContainer').addClass('invis');
+						Interface.utils.messageBox.end(callback);
+					}, 200);
 				} else {
-					$('#messageBox').hide();
+					//$('#messageBox').hide();
+					/*$('#messageBox').removeClass('animate fullopacity active').css('display', '');
+					Interface.utils.messageBox.end(callback);*/
+					$('#messageBoxContainer').removeClass('fullopacity animate').addClass('invis');
 					Interface.utils.messageBox.end(callback);
 				}
 			},
 			"end" : function (callback) {
-				$('#messageBox').addClass("invis");
+				//$('#messageBox').addClass("invis");
 				$('.other-container').removeClass("overlap");
 				if (callback) {
 					callback();
@@ -909,25 +1060,38 @@ var Interface = {
 			},
 			"active" : "",
 			"queue" : [],
-			"scroll" : 0
+			"scroll" : 0,
+			"t" : 0
 		},
 		"overlay" : {
 			"show" : function() {
 				if (Interface.data.storage.settings.get("animations")) {
-					$('#overlay').fadeIn(200).removeClass("invis");
+					//$('#overlay').fadeIn(200).removeClass("invis");
+					$('#overlay').removeClass('invis').addClass('animate');
+					this.t = setTimeout(function() {
+						$('#overlay').addClass('overlayshade');
+					}, 10);
 				} else {
-					$('#overlay').show().removeClass("invis");
+					$('#overlay').removeClass('animate invis').addClass('overlayshade');
+					//$('#overlay').show().removeClass("invis");
 				}
 			},
 			"hide" : function() {
 				if (Interface.data.storage.settings.get("animations")) {
-					$('#overlay').fadeOut(200, function(){
+					/*$('#overlay').fadeOut(200, function(){
 						$(this).addClass("invis");
-					});
+					});*/
+					$('#overlay').addClass('animate').removeClass('overlayshade');
+					clearTimeout(this.t);
+					setTimeout(function() {
+						$('#overlay').addClass('invis');
+					}, 200);
 				} else {
-					$('#overlay').hide().addClass("invis");
+					//$('#overlay').hide().addClass("invis");
+					$('#overlay').removeClass('animate overlayshade').addClass('invis');
 				}
-			}
+			},
+			"t" : 0
 		},
 		"easter" : function () {
 			var type = Interface.data.type;
@@ -958,8 +1122,8 @@ var Interface = {
 			else {
 				var games   = Interface.data.data.sorted;
 				var pattern = new RegExp(input,"i");
-				var name, id, cover
-				var lastLetter ='';;
+				var name, id, cover, timesPlayed, lastPlayed, letter;
+				var lastLetter ='';
 				var l       = Interface.data.data.sorted.length;
 				for (var i = 0; i < l; i++) {
 					if (pattern.test(games[i].name)) {

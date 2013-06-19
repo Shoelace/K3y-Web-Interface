@@ -13,14 +13,16 @@
 	<body>
 		<!-- Overlay Placeholder -->
 		<div class="other-container">
-			<div id="overlay" class="invis"></div>
-			<div id="messageBox" class="page invis">
-				<div class="messageBox-title">
-					Messagebox Title
+			<div id="messageBoxContainer" class="invis">
+				<div id="messageBox" class="page">
+					<div class="messageBox-title">
+						Messagebox Title
+					</div>
+					<div class="messageBox-content">
+						Messagebox Message
+					</div>
 				</div>
-				<div class="messageBox-content">
-					Messagebox Message
-				</div>
+				<div id="overlay" class=""></div>
 			</div>
 		</div>
 		
@@ -28,7 +30,7 @@
 		<div class="main-container" id="main">
 			
 			<!-- Home page -->
-			<div id="home-page" class="page active">
+			<div id="home-page" class="page active fullopacity">
 				<div class="page-title">
 					Home
 				</div>
@@ -272,7 +274,51 @@
 					<input type="hidden" class="listsDataGameName"/>
 					<input type="hidden" class="listsDataAddListName"/>
 					<input type="hidden" class="listsDataRemoveListName"/>
+				</div>
+			</div>
 
+			<!-- Favorites List Manager Page -->
+			<div id="favorites_list_manager-page" class="page">
+				<div class="page-title">
+					List Manager
+				</div>
+				<div class="page-content">
+					<div class="listManagerNoLists invis">
+						There are no lists to manage, go create some!
+					</div>
+					<div class="listManagerSelectList">
+						Select a list to manage:<br/>
+						<select class="listsManagerSelector" onchange="$('.listsManagerListName').attr('value', this.value)">
+							<option value="">If you see this, something went wrong</option>
+						</select>
+						<br/><br/>
+					</div>
+					<div class="listManagerCreateList invis">
+						Create a new list:<br/>
+						<input type="text" class="listsNewListInput"/>
+						<a onclick="Interface.data.lists.createList()">
+							<span class="prettyButton">Go</span>
+						</a>
+						<br/><br/>
+					</div>
+					<div class="listManagerOptions">
+						<hr/><br/>
+						<a onclick="Interface.data.lists.changeListDescription()">
+							<span class="prettyButton">Change description</span>
+						</a>
+						<a onclick="Interface.data.lists.renameList()">
+							<span class="prettyButton">Rename list</span>
+						</a>
+						<a onclick="Interface.data.lists.massAddToList()">
+							<span class="prettyButton">Mass Add to list</span>
+						</a>
+						<a onclick="Interface.data.lists.removeList()">
+							<span class="prettyButton">Remove list</span>
+						</a>
+						<br/><br/>
+					</div>
+
+					<input type="hidden" class="listsManagerListName"/>
 				</div>
 			</div>
 			

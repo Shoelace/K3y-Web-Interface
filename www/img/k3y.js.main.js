@@ -127,7 +127,7 @@ Interface.main = {
 		},
 		"gamelist" : function (force) {
 			//var args = args[1];
-			console.time("gamelist");
+			//console.time("gamelist");
 			var args = document.getElementById('gameSortSelect').value;
 			var games = [];
 			var showLetters = true;
@@ -311,16 +311,16 @@ Interface.main = {
 				return;
 			}
 			else {
-				var id, name, cover, href, activeClass, listName, pageName, gameList, gameHTML, timesPlayed, lastPlayed, obj;
+				var id, name, cover, href, activeClass, listName, desc, pageName, gameList, gameHTML, timesPlayed, lastPlayed, obj;
 				var active   = Interface.data.data.active;
 				var lists    = Interface.data.lists.getLists();
 				var mainHTML = '';
 				if (lists.length == 0) {
-					mainHTML += '<div class="main-item"><span class="main-item-text item-text">';
-					mainHTML += 'No lists yet'
-					mainHTML += '</span><span class="secondary-item-text item-text">';
-					mainHTML += 'Go make some!';
-					mainHTML += '</span></div>';
+					obj = {
+						"title" : 'No lists yet',
+						"sub" : 'Go make some!'
+					}
+					mainHTML += Interface.utils.html.menuItem(obj);
 				}
 				else {
 					var k, page;
@@ -328,11 +328,12 @@ Interface.main = {
 					for (var i = 0; i < l; i++) {
 						listName = lists[i].name;
 						pageName = listName + "-listpage";
+						desc     = (lists[i].desc ? lists[i].desc : "List");
 
 						obj = {
 							"href" : '#favorites-page?' + pageName,
 							"title" : unescape(listName),
-							"sub" : "List"
+							"sub" : desc
 						}
 
 						mainHTML += Interface.utils.html.menuItem(obj);
@@ -372,8 +373,18 @@ Interface.main = {
 
 							gameHTML += Interface.utils.html.menuItem(obj);
 						}
+
 						Interface.navigation.pages.setContent(pageName, gameHTML);
 					}
+				}
+				if (lists.length != 0) {
+					obj = {
+						"href" : "#favorites_list_manager-page",
+						"title" : "List manager",
+						"sub" : "Manage your lists",
+						"active" : true
+					}
+					mainHTML += Interface.utils.html.menuItem(obj);
 				}
 				Interface.navigation.pages.setContent('favorites-page', mainHTML);
 				Interface.main.vars.made.favorites = true;
@@ -423,12 +434,27 @@ Interface.main = {
 			$('.gameManagerGameName').html(name);
 		},
 		"favorites_list_manager" : function (args) {
-
+			var lists    = Interface.data.lists.getLists();
+			var HTML = '';
+			var l    = lists.length;
+			if (l > 0) {
+				for (var i = 0; i < l; i++) {
+					HTML += '<option value="' + lists[i].name + '">' + unescape(lists[i].name) + '</option>';
+				}
+				$('.listsManagerSelector').html(HTML);
+				$('.listsManagerListName').attr('value', lists[0].name);
+				$('.listManagerSelectList, .listManagerOptions').removeClass("invis");
+				$('.listManagerNoLists').addClass('invis');
+			}
+			else {
+				$('.listManagerSelectList, .listManagerOptions').addClass("invis");
+				$('.listManagerNoLists').removeClass('invis');
+			}
 		},
 		"recent" : function () {
 			if (!Interface.main.vars.made.recentList) {
-				Interface.data.lists.updateRecent();
 				Interface.main.vars.made.recentList = true;
+				Interface.data.lists.updateRecent();
 				return;
 			}
 			if (!Interface.main.vars.made.recent) {
@@ -477,7 +503,7 @@ Interface.main = {
 					HTML += temp.value;
 					HTML += '</span></div>';
 				}
-				HTML += '<div onclick="Interface.utils.easter();" class="main-item"><span class="main-item-text item-text">Interface version</span><span class="secondary-item-text item-text">';
+				HTML += '<div onclick="Interface.utils.easter();Interface.utils.messageBox.create(Interface.data.messages.changelog);" class="main-item"><span class="main-item-text item-text">Interface version</span><span class="secondary-item-text item-text">';
 				HTML += Interface.data.version;
 				HTML += '</span></div>';
 
