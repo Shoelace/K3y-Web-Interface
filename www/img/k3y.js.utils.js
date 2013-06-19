@@ -1,4 +1,4 @@
-"use strict"
+﻿"use strict"
 //Some initting
 window.onhashchange = function () {
 	Interface.navigation.navigateTo(window.location.hash);
@@ -128,7 +128,7 @@ var Interface = {
 			//$('.page.active').removeClass('active').hide();
 			//Show requested page
 			//$(document.getElementById(page)).addClass('active');
-			if (Interface.data.storage.settings.get("animations")) {
+			if (Interface.utils.supportsAnimation()) {
 				$('.page.active').addClass('animate').removeClass('fullopacity');
 				setTimeout(function(){
 					$('.page.active').removeClass('active');
@@ -241,12 +241,9 @@ var Interface = {
 		"update" : function (xml, storage, init) {
 			xml        = $(xml);
 			var drives = [], dirs = [], isos = [], about = [], lists = [];
-			var dir, par, id, name, cover, info, hdd;
+			var dir, par, id, name, cover, info, hdd, value;
 			Interface.data.type = xml.get(0).documentElement.nodeName.toLowerCase();
 
-			//DEBUG
-			//storage = tempStorage;
-			//DEBUG
 			if ($.isEmptyObject(storage.games)) {
 				storage = Interface.data.storage.convert(storage);
 			}
@@ -294,7 +291,11 @@ var Interface = {
 			});
 
 			xml.find('ABOUT').find('ITEM').each(function() {
-				about.push({item: $(this).attr('NAME'), value: $(this).text()});
+				name = $(this).attr('NAME');
+				value = $(this).text();
+				if (name == "App")
+					Interface.data.firmware = value;
+				about.push({"item": name, "value": value});
 			});
 
 			//Active game
@@ -342,6 +343,9 @@ var Interface = {
 					Interface.navigation.navigateTo(window.location.hash);
 				}
 				Interface.main.init();
+				if (Interface.data.storage.settings.get("updatecheck")) {
+					Interface.utils.checkUpdate();
+				}
 			}
 			else if (!init) {
 				if (window.location.hash != '') {
@@ -541,8 +545,11 @@ var Interface = {
 					if (!listName) {
 						listName = $('.listsManagerListName').val();
 						var message = Interface.data.messages["notify-list-rename"];
-						message.content = message.content.replace(/%s/g, listName);
-						Interface.utils.messageBox.create(message);
+						var msg = {};
+						msg.title = message.title;
+						msg.content = message.content;
+						msg.content = message.content.replace(/%s/g, listName);
+						Interface.utils.messageBox.create(msg);
 						return;
 					}
 					newName = $('.listsRenameListInput').val();
@@ -560,8 +567,11 @@ var Interface = {
 					if (!listName) {
 						listName = $('.listsManagerListName').val();
 						var message = Interface.data.messages["notify-list-desc"];
-						message.content = message.content.replace(/%s/g, listName);
-						Interface.utils.messageBox.create(message);
+						var msg = {};
+						msg.title = message.title;
+						msg.content = message.content;
+						msg.content = msg.content.replace(/%s/g, listName);
+						Interface.utils.messageBox.create(msg);
 						return;
 					}
 					desc = $('.listsListDescInput').val();
@@ -770,8 +780,9 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 7",
+		"version"   : "beta 8",
 		"type"      : "xbox",
+		"firmware"  : "00.00",
 		"messages"  : {
 			"notify-xbox" : {
 				"title"   : "Xbox IE Settings",
@@ -829,9 +840,13 @@ var Interface = {
 				"title"   : "Reload",
 				"content" : "For this setting to take full effect, it's advised to reload the page."
 			},
+			"notify-firmware-update" : {
+				"title"   : "Update available",
+				"content" : "A new firmware is available for your device! Head over to the forums to download it!<br/><br/>"
+			},
 			"changelog" : {
 				"title"   : "Changelog",
-				"content" : "- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>-Added list manager"
+				"content" : "Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -913,8 +928,11 @@ var Interface = {
 					}
 					else if (guistate == 2) {
 						var message = Interface.data.messages["notify-reload"];
-						message.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
-						Interface.utils.messageBox.create(message);
+						var msg = {};
+						msg.title = message.title;
+						msg.content = message.content;
+						msg.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/><br/>';
+						Interface.utils.messageBox.create(msg);
 					}
 				}
 			});
@@ -987,7 +1005,7 @@ var Interface = {
 				this.active = "";
 				if (this.queue.length > 0) {
 					//this.hide(function() {
-						if (Interface.data.storage.settings.get("animations")) {
+						if (Interface.utils.supportsAnimation()) {
 							$('#messageBox').removeClass('notify');
 							setTimeout(function() {
 								$('#messageBox').addClass('notify');
@@ -1008,7 +1026,7 @@ var Interface = {
 			},
 			"show" : function () {
 				$('.other-container').addClass("overlap");
-				if (Interface.data.storage.settings.get("animations")) {
+				if (Interface.utils.supportsAnimation()) {
 					/*//$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
 					$('#messageBox').css("display", "inline-block").addClass('active animate');
 					this.t = setTimeout(function() {
@@ -1026,7 +1044,7 @@ var Interface = {
 				}
 			},
 			"hide" : function (callback) {
-				if (Interface.data.storage.settings.get("animations")) {
+				if (Interface.utils.supportsAnimation()) {
 					/*$('#messageBox').addClass('animate').removeClass('fullopacity');
 					clearTimeout(this.t);
 					setTimeout(function() {
@@ -1065,7 +1083,7 @@ var Interface = {
 		},
 		"overlay" : {
 			"show" : function() {
-				if (Interface.data.storage.settings.get("animations")) {
+				if (Interface.utils.supportsAnimation()) {
 					//$('#overlay').fadeIn(200).removeClass("invis");
 					$('#overlay').removeClass('invis').addClass('animate');
 					this.t = setTimeout(function() {
@@ -1077,7 +1095,7 @@ var Interface = {
 				}
 			},
 			"hide" : function() {
-				if (Interface.data.storage.settings.get("animations")) {
+				if (Interface.utils.supportsAnimation()) {
 					/*$('#overlay').fadeOut(200, function(){
 						$(this).addClass("invis");
 					});*/
@@ -1092,6 +1110,63 @@ var Interface = {
 				}
 			},
 			"t" : 0
+		},
+		"checkUpdate" : function () {
+			var lastCheck = Interface.data.data.storage.lastUpdateCheck;
+			var today = new Date();
+			today = new Date(today.toDateString());
+
+			var doUpdate = false;
+			if (!lastCheck) {
+				doUpdate = true;
+			}
+			else {
+				lastCheck = new Date(lastCheck);
+				console.log(today);
+				console.log(lastCheck);
+				if (lastCheck.getDate() < today.getDate()) {
+					doUpdate = true;
+				}
+			}
+			if (doUpdate) {
+				var url = "http://bwerkt.nl/k3y/update/check.php";
+				var params = {};
+				var device = Interface.data.type;
+				//debug
+				if (device == "wiikeu") {
+					device = "wkey";
+				}
+				//debug
+				if (Interface.data.storage.settings.get("anondata")) {
+					var guid = Interface.data.data.storage.guid;
+					var version = Interface.data.firmware;
+					var games = Interface.data.data.games.length;
+					params = {
+						"device" : device,
+						"guid" : guid,
+						"version" : version,
+						"games" : games
+					}
+				}
+				 else {
+				 	params = {
+				 		"device" : device
+				 	}
+				 }
+
+				 $.post(url, params, function (data) {
+				 	if (Interface.data.firmware < data) {
+				 		var message = Interface.data.messages["notify-firmware-update"];
+				 		var msg = {};
+				 		msg.title = message.title;
+				 		msg.content = message.content;
+				 		msg.content += "Your version: " + Interface.data.firmware + "<br/>";
+				 		msg.content += "New version: " + data + "<br/><br/>";
+				 		Interface.utils.messageBox.create(msg);
+				 	}
+				 });
+				 Interface.data.data.storage.lastUpdateCheck = today;
+			}
 		},
 		"easter" : function () {
 			var type = Interface.data.type;
@@ -1168,10 +1243,21 @@ var Interface = {
 				$('#searchResults').show();
 			}
 		},
-		"errorHandler" : function (msg, url, line) {
+		"supportsAnimation" : function () {
+			var s = document.body.style;
+			if( s['transition'] == '' ) {
+				if (Interface.data.storage.settings.get("animations"))
+					return true;
+			}
+			return false;
+		},
+		"errorHandler" : function (error, url, line) {
 			var message = Interface.data.messages["notify-error"];
-			message.content += "Error: " + msg + "<br/>At line: " + line + "<br/>For: " + url + "<br/>";
-			Interface.utils.messageBox.create(message)
+			var msg = {};
+			msg.title = message.title;
+			msg.content = message.content;
+			msg.content += "Error: " + error + "<br/>At line: " + line + "<br/>For: " + url + "<br/>";
+			Interface.utils.messageBox.create(msg)
 		}
 	}
 }

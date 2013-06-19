@@ -204,6 +204,7 @@ Interface.main = {
 				$('#listContent').html(HTML);
 				Interface.main.vars.made.gamelist = true;
 				Interface.main.vars.curList = args;
+				//console.timeEnd("gamelist");
 			}
 		},
 		"folders" : function (args) {
