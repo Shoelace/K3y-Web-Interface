@@ -353,6 +353,10 @@ var Interface = {
 			Interface.utils.log("Updated!");
 			Interface.utils.log("Games: "+isos.length);
 			Interface.data.storage.save();
+			if (Interface.data.storage.settings.settings.prebuild) {
+				Interface.main.create.gamelist();
+				Interface.main.create.folders([]);
+			}
 			Interface.utils.messageBox.remove();
 		},
 		"lists" : {
@@ -562,15 +566,20 @@ var Interface = {
 					},
 					"dynamicfont" : function () {
 						Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
+					},
+					"prebuild" : function () {
+						return;
 					}
 				},
 				"settings" : {
 					"oneclickload" : false,
-					"dynamicfont"  : false
+					"dynamicfont"  : false,
+					"prebuild"     : false,
 				},
 				"supported" : [
 					"oneclickload",
-					"dynamicfont"
+					"dynamicfont",
+					"prebuild"
 				]
 			},
 			"getTimesPlayed" : function (id) {
@@ -643,12 +652,15 @@ var Interface = {
 					return;
 				}
 				var storage = Interface.data.data.storage.games;
-				for (i in storage.games) {
-					storage.games[i] = {
+				for (i in storage) {
+					/*storage[i] = {
 						"lastPlayed" : 0,
 						"timesPlayed" : 0,
 						"known" : false,
-					};
+					};*/
+					storage[i].lastPlayed = 0;
+					storage[i].timesPlayed = 0;
+					storage[i].known = false;
 				}
 				storage.favLists = [];
 				storage.settings = {};
@@ -657,7 +669,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 4",
+		"version"   : "beta 5",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
@@ -745,8 +757,8 @@ var Interface = {
 				var longTitle = '';
 				if (fixTitle) {
 					var width = obj.title.width();
-					if (width > 370) {
-						var size = (2 / (width / 370)).toFixed(2);
+					if (width > 330) {
+						var size = (2 / (width / 330)).toFixed(2);
 						longTitle = ' style="font-size:'+size+'em"'
 					}
 				}
