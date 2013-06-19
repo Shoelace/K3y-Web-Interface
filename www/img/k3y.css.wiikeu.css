@@ -10,7 +10,7 @@
 	border-left : 4px solid #FF8D01!important;
 }
 
-.letter-item-text {
+.letter-item-text, .messageBox-content a {
 	color : #FF8D01 !important;
 }
 

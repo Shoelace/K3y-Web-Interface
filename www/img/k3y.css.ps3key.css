@@ -10,7 +10,7 @@
 	border-left : 4px solid #137EAF!important;
 }
 
-.letter-item-text {
+.letter-item-text, .messageBox-content a {
 	color : #137EAF !important;
 }
 

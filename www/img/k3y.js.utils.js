@@ -252,7 +252,9 @@ var Interface = {
 			}
 		},
 		"pollError" : function () {
-			
+			clearInterval(this.pollTimer);
+			var message = Interface.data.messages["notify-pollError"];
+			Interface.utils.messageBox.create(message);
 		},
 		"update" : function (xml, storage, init) {
 			xml        = $(xml);
@@ -855,7 +857,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 10",
+		"version"   : "beta 11",
 		"type"      : "xbox",
 		"firmware"  : "00.00",
 		"messages"  : {
@@ -866,6 +868,10 @@ var Interface = {
 			"notify-dataUpdate" : {
 				"title"   : "Data updated",
 				"content" : "It looks like the number of HDD's changed. This also means that the games have changed. In order to make sure that I continue to function properly, I updated myself, and reset you to the homepage to prevent any errors. <br/>Thanks for understanding!"
+			},
+			"notify-pollError" : {
+				"title"   : "Poll error",
+				"content" : "There has been an error while retreiving data. Make sure the *K3y is turned on!<br/>Polling has been paused, press \"Restart\" to restart polling.<br/><br/><a onclick=\"Interface.data.startPoll(); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Restart</span></a><br/><br/>"
 			},
 			"notify-opentray" : {
 				"title"   : "Loading Notification",
@@ -921,11 +927,11 @@ var Interface = {
 			},
 			"notify-firmware-update" : {
 				"title"   : "Update available",
-				"content" : "A new firmware is available for your device! Head over to the forums to download it!<br/><br/>"
+				"content" : "A new firmware is available for your device!<br/><br/>"
 			},
 			"changelog" : {
 				"title"   : "Changelog",
-				"content" : "Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
+				"content" : "Beta 11<br/>- Fixed saving of lastUpdateCheck<br/>- Updated update return message<br/>- Added poll error handling<br/><br/>Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -1204,12 +1210,13 @@ var Interface = {
 			}
 			else {
 				lastCheck = new Date(lastCheck);
-				if (lastCheck.getDate() < today.getDate()) {
+				if (lastCheck < today) {
 					doUpdate = true;
 				}
 			}
 			if (doUpdate) {
 				var url = "http://bwerkt.nl/k3y/update/check.php";
+				//var url = "http://xkeydownloads.com/check.php";
 				var params = {};
 				var device = Interface.data.type;
 				var guid = Interface.data.data.storage.guid;
@@ -1236,17 +1243,27 @@ var Interface = {
 				 }
 
 				 $.post(url, params, function (data) {
-				 	if (Interface.data.firmware < data) {
+				 	var result = {};
+				 	try {
+				 		result = JSON.parse(data);
+				 	}
+				 	catch (e) {
+				 		result["firmware"] = "-1";
+				 	}
+				 	var fw = result.firmware;
+				 	var link = result.download;
+				 	if (Interface.data.firmware < fw) {
 				 		var message = Interface.data.messages["notify-firmware-update"];
 				 		var msg = {};
 				 		msg.title = message.title;
 				 		msg.content = message.content;
 				 		msg.content += "Your version: " + Interface.data.firmware + "<br/>";
-				 		msg.content += "New version: " + data + "<br/><br/>";
+				 		msg.content += "New version: " + fw + "<br/><br/>";
+				 		msg.content += "<a href='" + link + "' target='_BLANK'>Click here to download the new firmware!</a><br/><br/>";
 				 		Interface.utils.messageBox.create(msg);
 				 	}
 				 });
-				 Interface.data.data.storage.vars.lastUpdateCheck = today;
+				 Interface.data.data.storage.vars.lastUpdateCheck = today.toDateString();
 				 Interface.data.storage.save();
 			}
 		},
