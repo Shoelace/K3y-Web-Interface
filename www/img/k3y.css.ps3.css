@@ -1,0 +1,19 @@
+.page-title {
+	background-image : url(../img/ps-bar.png)!important;
+}
+
+.list-item-accent, .active-game {
+	border-left : 4px solid #137EAF!important;
+}
+
+.letter-item-text {
+	color : #137EAF !important;
+}
+
+.prettyButton {
+	background : url(../img/ps-button.png) 0 36px!important;
+}
+
+.prettyButton:hover {
+	background : url(../img/ps-button.png) 0 0px!important;
+}
