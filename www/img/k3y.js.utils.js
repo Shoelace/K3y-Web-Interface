@@ -1,4 +1,5 @@
-﻿//Some initting
+﻿"use strict"
+//Some initting
 window.onhashchange = function () {
 	Interface.navigation.navigateTo(window.location.hash);
 }
@@ -31,9 +32,8 @@ var Interface = {
 				"favorites_game_manager-page" : function(args){Interface.main.create.favorites_game_manager(args)},
 				"favorites_list_manager-page" : function(args){Interface.main.create.favorites_list_manager(args)},
 				"recent-page"                 : function(){Interface.main.create.recent()},
-				"search-page"                 : function(){},
 				"about-page"                  : function(){Interface.main.create.about()},
-				"settings-page"               : function(){Interface.data.storage.settings.init()}
+				"settings-page"               : function(){Interface.main.create.settings()}
 			},
 			"new" : function (id, name, func) {
 				if (id.indexOf('%') == -1) {
@@ -41,7 +41,7 @@ var Interface = {
 				}
 				var page = '<div id="'+ id +'" class="page"><div class="page-title">'+unescape(name)+'</div><div class="page-content"></div></div>';
 				//#main is the main container, append page to there
-				document.getElementById('main').innerHTML += page;
+				$('#main').append(page);
 				if (!func) {
 					func = function(){};
 				}
@@ -60,20 +60,31 @@ var Interface = {
 				delete Interface.navigation.pages.list[id];
 			},
 			"exists" : function (id) {
-				for (page in Interface.navigation.pages.list) {
+				for (var page in Interface.navigation.pages.list) {
 					if (page == id) {
 						return true;
 					}
 				}
 				return false;
 			},
-			"addContent" : function (id, HTML) {
+			"setContent" : function (id, HTML) {
+				//$('#' + id).children('.page-content').html(HTML);
+				$('[id="' + id +'"]').children('.page-content').html(HTML);
+			},
+			"addContent" : function (id, HTML, prepend) {
 				//$('#' + id + ' > .page-content').html(HTML);
-				$(document.getElementById(id)).children('.page-content').html(HTML);
+				//$(document.getElementById(id)).children('.page-content').html(HTML);
+				//$('#' + id).children('.page-content').html(HTML);
+				if (!prepend)
+					$('[id="' + id +'"]').children('.page-content').append(HTML);
+					//$('#' + id).children('.page-content').append(HTML);
+				else 
+					$('#' + id).children('.page-content').prepend(HTML);
 			}
 		},
 		"navigateTo" : function (page) {
 			//console.log(page);
+			//console.time("navigate");
 			var allPages = this.pages.list;
 			var args = [];
 			if (!page) {
@@ -99,45 +110,53 @@ var Interface = {
 			if (page == 'overlay') {
 				history.back();
 			}
-			//Do we have a "#" in the page string? cut it off
-			/*if (page.indexOf('#') == 0) {
-				page = page.slice(1,page.length);
-			}*/
 			//No "%"? Escape the page string to make sure we get it right
 			if (page.indexOf('%') == -1) {
 				page = escape(page);
 			}
-			//Hide currently active page
-			//$('.page.active').removeClass('active');
-			//console.log(page);
-			$('.page.active').fadeOut(200, function() {
-				$('.page.active').removeClass('active');
-				
-				//Show requested page
-				//$(document.getElementById(page)).addClass('active');
+
+			if (Interface.data.storage.settings.get("animations")) {
+				$('.page.active').fadeOut(200, function() {
+					Interface.navigation.postTransition(page, args, allPages);
+				});
+			} else {
+				Interface.navigation.postTransition(page, args, allPages);
+			}
+			//console.timeEnd("navigate");
+		},
+		"postTransition" : function (page, args, allPages) {
+			$('.page.active').removeClass('active').hide();
+			//Show requested page
+			//$(document.getElementById(page)).addClass('active');
+			if (Interface.data.storage.settings.get("animations")) {
 				$(document.getElementById(page)).fadeIn(200).addClass('active');
+				//$('[id="' + page +'"]').fadeIn(200).addClass('active');
 				//Sometimes animation is a bitch, so we force opacity
 				document.getElementById(page).style.opacity = 1;
-
-				if (page != 'home-page') {
-					$(document.getElementById(page)).find('div.page-title')
-						.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
-						.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
-				}
-				
-				if (!$.isFunction(allPages[page])) {
-					//PANIC
-					//A non-registered page has been requested
-					//This function handles hashchanges
-					//So it will loop until we get a safe page
-					history.back();
-					//Prevent calling page related functions
-					return;
-				}
-				
-				//Call function related to page
-				allPages[page](args);
-			});
+			} else {
+				$(document.getElementById(page)).addClass('active');
+				//$('[id="' + page +'"]').addClass('active');
+			}
+			
+			if (page != 'home-page') {
+				$(document.getElementById(page)).find('div.page-title')
+				//$('[id="' + page +'"]').find('div.page-title')
+					.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
+					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
+			}
+			
+			if (!$.isFunction(allPages[page])) {
+				//PANIC
+				//A non-registered page has been requested
+				//This function handles hashchanges
+				//So it will loop until we get a safe page
+				history.back();
+				//Prevent calling page related functions
+				return;
+			}
+			
+			//Call function related to page
+			allPages[page](args);
 		},
 		"current" : function () {
 			var page = window.location.hash;
@@ -148,7 +167,6 @@ var Interface = {
 	/**
 		Data
 	*/
-	
 	"data" : {
 		"startPoll" : function () {
 			var pollTime   = this.pollTime;
@@ -163,14 +181,12 @@ var Interface = {
 				type: "GET",
 				url: "data.xml",
 				dataType: "xml",
-				// cache: false,
 				success: function(xml) {
 					Interface.utils.log("Poll success!");
 					$.ajax({
 						type: "GET",
 						url: "store.sh",
 						dataType: "json",
-						/*cache: false,*/
 						success: function(storage) {
 							if (storage == null || storage == "")
 								storage = {};
@@ -213,76 +229,59 @@ var Interface = {
 			
 		},
 		"update" : function (xml, storage, init) {
-			Interface.utils.log("Update started!");
 			xml        = $(xml);
-			Interface.utils.log("XML Parsed!");
-			var drives = [];
-			var dirs   = [];
-			var isos   = [];
-			var about  = [];
-			var lists  = [];
+			var drives = [], dirs = [], isos = [], about = [], lists = [];
 			var dir, par, id, name, cover, info, hdd;
-			if (xml.find('XKEY').length != 0) {
-				Interface.data.type = "xbox";
-			}
-			else if (xml.find('3KEY') != 0) {
-				Interface.data.type = "ps3";
-			}
-			Interface.utils.log("Device = "+Interface.data.type);
+			Interface.data.type = xml.get(0).documentElement.nodeName.toLowerCase();
+
+			//DEBUG
+			//storage = tempStorage;
+			//DEBUG
 			if ($.isEmptyObject(storage.games)) {
 				storage = Interface.data.storage.convert(storage);
-				//storage.games = {};
 			}
-			
-			//Array of HDDs
+			if (!storage.guid)
+				storage.guid = Interface.utils.guid();
+
 			xml.find('MOUNT').each(function() {
-				drives.push($(this).attr('NAME'));
-			});
-			Interface.utils.log("HDD parsed: "+drives.length);
-			//Directories
-			xml.find('DIR').each(function() {
-				dir = $(this).attr('NAME');
-				par = $(this.parentNode).attr('NAME');
-				dirs.push({"dir" : dir, "par" : par});
-			});
-			Interface.utils.log("Folders parsed: "+dirs.length);
-			//Parse ISO data
-			xml.find('ISO').each(function() {
-				id    = $(this).find('ID').text();
-				name  = $(this).find('TITLE').text().replace(/\.iso/gi,"");
-				par   = $(this.parentNode).attr('NAME');
-				hdd   = $(this).parents('MOUNT').attr('NAME');
-				cover = "covers/"+id+".jpg";
-				//DEBUG
-				//cover = "img/test.jpg";
-				info  = "covers/"+id+".xml";
-				isos.push({ 
-					"id"     : id,
-					"name"   : name,
-					"parent" : par,
-					"hdd"    : hdd,
-					"cover"  : cover,
-					"info"   : info
+				hdd = $(this).attr('NAME');
+				drives.push(hdd);
+
+				$(this).find('DIR').each(function() {
+					dir = $(this).attr('NAME');
+					par = $(this.parentNode).attr('NAME');
+					dirs.push({"dir" : dir, "par" : par});
 				});
-				if ($.isEmptyObject(storage.games[id])) {
-					storage.games[id] = {
-						"lastPlayed" : 0,
-						"timesPlayed" : 0,
-						"known" : false,
-					};
-				}
-				storage.games[id].hdd = hdd;
-				//Cache images
-				//cacheImage = new Image();
-				//cacheImage.src = "covers/"+id+".jpg";
-				//cache.push(cacheImage);
+
+				$(this).find('ISO').each(function() {
+					id    = $(this).find('ID').text();
+					name  = $(this).find('TITLE').text().replace(/\.iso/gi,"");
+					par   = $(this.parentNode).attr('NAME');
+					cover = "covers/"+id+".jpg";
+					info  = "covers/"+id+".xml";
+					isos.push({ 
+						"id"     : id,
+						"name"   : name,
+						"parent" : par,
+						"hdd"    : hdd,
+						"cover"  : cover,
+						"info"   : info
+					});
+					if ($.isEmptyObject(storage.games[id])) {
+						storage.games[id] = {
+							"lastPlayed" : 0,
+							"timesPlayed" : 0,
+							"known" : false,
+						};
+					}
+					storage.games[id].hdd = hdd;
+				});
 			});
-			Interface.utils.log("Games parsed: "+isos.length);
-			//About info
+
 			xml.find('ABOUT').find('ITEM').each(function() {
 				about.push({item: $(this).attr('NAME'), value: $(this).text()});
 			});
-			Interface.utils.log("About info parsed");
+
 			//Active game
 			var active = xml.find('ACTIVE').text();
 			//Lists
@@ -290,7 +289,7 @@ var Interface = {
 				lists = storage.favLists;
 			}
 			if (storage.settings != undefined) {
-				Interface.data.storage.settings.settings = storage.settings;
+				$.extend(Interface.data.storage.settings.settings, storage.settings);
 			}
 			
 			//Sort games
@@ -304,8 +303,8 @@ var Interface = {
 					return -1
 				return 0;
 			});
-			Interface.utils.log("Games sorted!");
-			var data = {
+
+			Interface.data.data = {
 				"games"   : isos,
 				"sorted"  : sorted,
 				"folders" : dirs,
@@ -314,46 +313,27 @@ var Interface = {
 				"active"  : active,
 				"lists"   : lists,
 				"storage" : storage
-			}
-			Interface.data.data = data;
-			Interface.utils.log("Saved everything!");
-			Interface.utils.log("Attempting to flag all pages as not made...");
-			//PS3 browser is retarded
-			for (var i = 0; i < Interface.main.vars.made.index.length; i++) {
-			/*for (page in Interface.main.vars.made) {*/
-				Interface.utils.log("Inside the loop now...")
-				/*Interface.main.vars.made[page] = false;*/
-				//Interface.main.vars.made[i].made = false;
-				Interface.main.vars.made[Interface.main.vars.made.index[i]] = false;
-			}
-			//See if this works
-			Interface.utils.log("See if another approach works");
+			};
+
 			$.each(Interface.main.vars.made, function(key){
-				Interface.utils.log("INSIDE THE OTHER ONE!");
 				if (key != "index") {
 					Interface.main.vars.made[key] = false;
 				}
 			});
-			Interface.utils.log("Success with the above ^^");
+
 			if (init) {
-				Interface.utils.log("init, so navigate to current hash");
 				if (window.location.hash != '') {
 					Interface.navigation.navigateTo(window.location.hash);
 				}
-				Interface.utils.log("That should've worked");
-				Interface.utils.log("Attempting init...");
 				Interface.main.init();
-				Interface.utils.log("Init done!");
 			}
 			else if (!init) {
 				if (window.location.hash != '') {
 					Interface.navigation.navigateTo('');
 				}
 			}
-			Interface.utils.log("Updated!");
-			Interface.utils.log("Games: "+isos.length);
 			Interface.data.storage.save();
-			if (Interface.data.storage.settings.settings.prebuild) {
+			if (Interface.data.storage.settings.get("prebuild")) {
 				Interface.main.create.gamelist();
 				Interface.main.create.folders([]);
 			}
@@ -421,7 +401,6 @@ var Interface = {
 				lists.push(list);
 				Interface.data.storage.save();
 				if (Interface.navigation.current().indexOf('favorites') != -1) {
-					//$(window).hashchange();
 					window.onhashchange();
 				}
 			},
@@ -442,7 +421,6 @@ var Interface = {
 				lists[index].content.push(game);
 				Interface.data.storage.save();
 				if (Interface.navigation.current().indexOf('favorites') != -1) {
-					//$(window).hashchange();
 					window.onhashchange();
 				}
 			},
@@ -452,7 +430,6 @@ var Interface = {
 					listName = $('.listsDataRemoveListName').val();
 				}
 				var lists = Interface.data.data.lists;
-
 				var index   = Interface.data.lists.indexOf(listName);
 				var content = lists[index].content;
 				var l       = content.length;
@@ -461,7 +438,6 @@ var Interface = {
 						content.splice(i, 1);
 						Interface.data.storage.save();
 						if (Interface.navigation.current().indexOf('favorites') != -1) {
-							//$(window).hashchange();
 							window.onhashchange();
 						}
 						return;
@@ -470,7 +446,9 @@ var Interface = {
 			},
 			"indexOf" : function (listName) {
 				var lists = Interface.data.data.lists;
-				listName = escape(listName);
+				if (listName.indexOf('%') == -1) {
+					listName = escape(listName);
+				}
 				var l = lists.length;
 				for (var i = 0; i < l; i++) {
 					if (lists[i].name == listName) {
@@ -514,7 +492,6 @@ var Interface = {
 					}
 				}
 				Interface.data.storage.save();
-				//$(window).hashchange();
 				window.onhashchange();
 			},
 			"clear" : function (listName) {
@@ -542,6 +519,9 @@ var Interface = {
 						}
 					}
 				},
+				"get" : function (setting) {
+					return this.settings[setting];
+				},
 				"handle" : function (element) {
 					var div = element.children[0];
 					var setting = div.id.split("-")[1];
@@ -550,7 +530,7 @@ var Interface = {
 						return;
 					}
 					var entry = this.settings[setting];
-					entry = this.settings[setting] = !entry;
+					entry = this.settings[setting] = Interface.data.data.storage.settings[setting] = !entry;
 					if (entry)
 						$(div).addClass("setting-enabled");
 					else 
@@ -569,18 +549,50 @@ var Interface = {
 					},
 					"prebuild" : function () {
 						return;
+					},
+					"animations" : function () {
+						return;
 					}
 				},
 				"settings" : {
 					"oneclickload" : false,
 					"dynamicfont"  : false,
 					"prebuild"     : false,
+					"animations"   : true
 				},
 				"supported" : [
 					"oneclickload",
 					"dynamicfont",
-					"prebuild"
-				]
+					"prebuild",
+					"animations",
+					"clear"
+				],
+				"strings" : {
+					"oneclickload" : {
+						"title" : "One click load",
+						"desc"  : "Disables the game page and loads the game instantly"
+					},
+					"dynamicfont" : {
+						"title" : "Dynamic font sizing",
+						"desc"  : "Adjusts the fontsize so the name of the game always fits"
+					},
+					"prebuild" : {
+						"title" : "Prebuild",
+						"desc"  : "Prebuild Folders &amp; Lists during init"
+					},
+					"animations" : {
+						"title" : "Animations",
+						"desc"  : "Show animations during page transition"
+					},
+					"clear" : {
+						"title" : "Clear data",
+						"desc"  : "Delete all the saved data"
+					}
+					/*"" : {
+						"title" : "",
+						"desc"  : ""
+					}*/
+				}
 			},
 			"getTimesPlayed" : function (id) {
 				return Interface.data.data.storage.games[id].timesPlayed;
@@ -651,16 +663,11 @@ var Interface = {
 					Interface.utils.messageBox.create(Interface.data.messages["notify-clear"]);
 					return;
 				}
-				var storage = Interface.data.data.storage.games;
-				for (i in storage) {
-					/*storage[i] = {
-						"lastPlayed" : 0,
-						"timesPlayed" : 0,
-						"known" : false,
-					};*/
-					storage[i].lastPlayed = 0;
-					storage[i].timesPlayed = 0;
-					storage[i].known = false;
+				var storage = Interface.data.data.storage;
+				for (var i in storage.games) {
+					storage.games[i].lastPlayed = 0;
+					storage.games[i].timesPlayed = 0;
+					storage.games[i].known = false;
 				}
 				storage.favLists = [];
 				storage.settings = {};
@@ -669,7 +676,7 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 5",
+		"version"   : "beta 6",
 		"type"      : "xbox",
 		"messages"  : {
 			"notify-xbox" : {
@@ -739,7 +746,7 @@ var Interface = {
 				*/
 				var HTML = '';
 				var fixTitle = false;
-				if (Interface.data.storage.settings.settings.dynamicfont)
+				if (Interface.data.storage.settings.get("dynamicfont"))
 					fixTitle = true;
 
 				if (!obj.href)
@@ -766,37 +773,10 @@ var Interface = {
 				HTML += '<span class="secondary-item-text item-text">' + obj.sub + '</span>';
 				HTML += '</div></a>';
 				return HTML;
-
-				/*var anchor = $('<a>').attr('href', obj.href).attr('onclick', obj.onclick);
-
-				var div = $('<div>').addClass('main-item').attr('id', obj.id);
-				if (obj.active)
-					div.addClass('active-game');
-
-				var image = ""
-				if (obj.image) 
-					image = $('<img/>').addClass('list-cover').attr('src', obj.image)[0].outerHTML;
-
-				var title = $('<span>').addClass('main-item-text item-text').html(obj.title);
-				if (fixTitle) {
-					var width = obj.title.width();
-					if (width > 370) {
-						var size = (2 / (width / 370)).toFixed(2);
-						//longTitle = ' style="font-size:'+size+'em"'
-						title = title.css('font-size', size + 'em');
-					}
-				}
-				
-				title = title[0].outerHTML;
-				var sub = $('<span>').addClass('secondary-item-text item-text').html(obj.sub)[0].outerHTML;
-
-				div = div.html(image + title + sub);
-				var HTML = anchor.html(div)[0].outerHTML;
-				return HTML;*/
 			}
 		},
 		"select" : function (args) {
-			if (Interface.data.storage.settings.settings.oneclickload) {
+			if (Interface.data.storage.settings.get("oneclickload")) {
 				this.launch(args.split("&")[0]);
 			} else {
 				//Interface.navigation.navigateTo("#game-page?"+args)
@@ -825,7 +805,7 @@ var Interface = {
 					else if (tray == 1 && guistate == 2) {
 						var message = Interface.data.messages["notify-reload"];
 						message.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
-						Interface.utils.messageBox.create(message);	
+						Interface.utils.messageBox.create(message);
 					}
 				}
 			});
@@ -905,16 +885,27 @@ var Interface = {
 			},
 			"show" : function () {
 				$('.other-container').addClass("overlap");
-				$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
+				if (Interface.data.storage.settings.get("animations"))
+					$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
+				else 
+					$('#messageBox').css("display", "inline-block").removeClass("invis");
 			},
 			"hide" : function (callback) {
-				$('#messageBox').fadeOut(200, function(){
-					$(this).addClass("invis");
-					$('.other-container').removeClass("overlap");
-					if (callback) {
-						callback();
-					}
-				});
+				if (Interface.data.storage.settings.get("animations")) {
+					$('#messageBox').fadeOut(200, function(){
+						Interface.utils.messageBox.end(callback);
+					});
+				} else {
+					$('#messageBox').hide();
+					Interface.utils.messageBox.end(callback);
+				}
+			},
+			"end" : function (callback) {
+				$('#messageBox').addClass("invis");
+				$('.other-container').removeClass("overlap");
+				if (callback) {
+					callback();
+				}
 			},
 			"active" : "",
 			"queue" : [],
@@ -922,13 +913,32 @@ var Interface = {
 		},
 		"overlay" : {
 			"show" : function() {
-				$('#overlay').fadeIn(200).removeClass("invis");
+				if (Interface.data.storage.settings.get("animations")) {
+					$('#overlay').fadeIn(200).removeClass("invis");
+				} else {
+					$('#overlay').show().removeClass("invis");
+				}
 			},
 			"hide" : function() {
-				$('#overlay').fadeOut(200, function(){
-					$(this).addClass("invis");
-				});
+				if (Interface.data.storage.settings.get("animations")) {
+					$('#overlay').fadeOut(200, function(){
+						$(this).addClass("invis");
+					});
+				} else {
+					$('#overlay').hide().addClass("invis");
+				}
 			}
+		},
+		"easter" : function () {
+			var type = Interface.data.type;
+			if (type == "wiikeu")
+				$('.logo > img').attr('src', 'img/logo-homemadeyo.png');
+		},
+		"guid" : function () {
+			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			    return v.toString(16);
+			});
 		},
 		"log" : function (message) {
 			var log = $('#debug');

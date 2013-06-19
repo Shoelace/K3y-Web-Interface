@@ -91,17 +91,6 @@
 						</div>
 					</a>
 					
-					<!-- <a href="#search-page">
-						<div class="main-item">
-							<span class="main-item-text item-text">
-								Search
-							</span>
-							<span class="secondary-item-text item-text">
-								Search for a game
-							</span>
-						</div>
-					</a> -->
-					
 					<a href="#about-page">
 						<div class="main-item">
 							<span class="main-item-text item-text">
@@ -143,45 +132,6 @@
 					Game list
 				</div>
 				<div class="page-content">
-					<!-- <div class="main-item list-item-accent">
-						<span class="letter-item-text">
-							Sorting options
-						</span>
-					</div> -->
-
-					<!-- <a href="javascript:void(0);">
-						<div class="main-item setting-enabled">
-							<span class="main-item-text item-text">
-								Alphabetic
-							</span>
-							<span class="secondary-item-text item-text">
-								Sort games alphabetically
-							</span>
-						</div>
-					</a>
-
-					<a href="javascript:void(0);">
-						<div class="main-item">
-							<span class="main-item-text item-text">
-								Most played
-							</span>
-							<span class="secondary-item-text item-text">
-								Show the 10 most played games
-							</span>
-						</div>
-					</a>
-
-					<a href="javascript:void(0);">
-						<div class="main-item">
-							<span class="main-item-text item-text">
-								Last played
-							</span>
-							<span class="secondary-item-text item-text">
-								Show the 10 last played games
-							</span>
-						</div>
-					</a> -->
-
 					<div class="main-item">
 						<span class="main-item-text item-text">
 							Sort
@@ -248,17 +198,6 @@
 
 				</div>
 			</div>
-
-			<div id="search-page" class="page">
-				<div class="page-title">
-					Search
-				</div>
-				<div class="page-content">
-					<input name="searchInput" type="text" value="Search..." class="searchinput" onkeyup="Interface.utils.search(this.value)" onclick="this.select()"/>
-					<br/><br/>
-					<div id="searchResults"></div>
-				</div>
-			</div>
 			
 			<div id="about-page" class="page">
 				<div class="page-title">
@@ -274,63 +213,7 @@
 					Settings
 				</div>
 				<div class="page-content">
-					<!-- Setting item -->
-					<a href="#settings-page" onclick="Interface.data.storage.settings.handle(this)">
-						<div class="main-item setting" id="setting-oneclickload">
-							<span class="main-item-text item-text">
-								One click load
-							</span>
-							<span class="secondary-item-text item-text">
-								Disables the game page and loads the game instantly
-							</span>
-						</div>
-					</a>
-					<!-- Setting item -->
-					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
-						<div class="main-item setting" id="setting-dynamicfont">
-							<span class="main-item-text item-text">
-								Dynamic font sizing
-							</span>
-							<span class="secondary-item-text item-text">
-								Adjusts the fontsize so the name of the game always fits
-							</span>
-						</div>
-					</a>
-					<!-- Setting item -->
-					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
-						<div class="main-item setting" id="setting-prebuild">
-							<span class="main-item-text item-text">
-								Prebuild
-							</span>
-							<span class="secondary-item-text item-text">
-								Prebuild Folders &amp; Lists during init
-							</span>
-						</div>
-					</a>
-					<!-- Setting item -->
-					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
-						<div class="main-item setting" id="setting-clear">
-							<span class="main-item-text item-text">
-								Clear data
-							</span>
-							<span class="secondary-item-text item-text">
-								Delete all the saved data
-							</span>
-						</div>
-					</a>
-					<!-- Setting item -->
-					<!--
-					<a href="#settings-page" onclick="javascript:Interface.data.storage.settings.handle(this)">
-						<div class="main-item setting" id="setting-">
-							<span class="main-item-text item-text">
-								SettingName
-							</span>
-							<span class="secondary-item-text item-text">
-								SettingDescription
-							</span>
-						</div>
-					</a>
-					-->
+
 				</div>
 			</div>
 			
@@ -364,7 +247,7 @@
 					<div class="gameManagerAddGame">
 						<hr/>
 						Select a list to add this game to:<br/>
-						<select class="listsAddGameSelector" onchange="$('.listsDataListName').attr('value', this.value)">
+						<select class="listsAddGameSelector" onchange="$('.listsDataAddListName').attr('value', this.value)">
 							<option value="">If you see this, something went wrong</option>
 						</select>
 						<br/><br/>
@@ -376,7 +259,7 @@
 					<div class="gameManagerRemoveGame">
 						<hr/>
 						Select a list to remove this game from:<br/>
-						<select class="listsRemoveGameSelector">
+						<select class="listsRemoveGameSelector" onchange="$('.listsDataRemoveListName').attr('value', this.value)">
 							<option value="">If you see this, something went wrong</option>
 						</select>
 						<br/><br/>

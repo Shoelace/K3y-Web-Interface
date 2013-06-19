@@ -1,0 +1,23 @@
+.page-title, .messageBox-title {
+	background-image : url(../img/wiiu-bar.png)!important;
+}
+
+.list-item-accent {
+	border-left : 6px solid #FF8D01!important;
+}
+
+.active-game, .setting-enabled {
+	border-left : 4px solid #FF8D01!important;
+}
+
+.letter-item-text {
+	color : #FF8D01 !important;
+}
+
+.prettyButton {
+	background : url(../img/wiiu-button.png) 0 36px!important;
+}
+
+.prettyButton:hover {
+	background : url(../img/wiiu-button.png) 0 0px!important;
+}

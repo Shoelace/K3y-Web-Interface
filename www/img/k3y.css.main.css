@@ -185,6 +185,8 @@ img {
 	color      : #aaaaaa;
 	font-size  : .8em;
 	font-style : italic;
+	position   : relative;
+	bottom     : 5px;
 }
 
 .active-game, .setting-enabled {
@@ -243,7 +245,7 @@ img {
 */
 .searchinput {
 	position: relative;
-	top: -6px;
+	top: -1px;
 	width: 96%;
 }
 /*.searchinput {

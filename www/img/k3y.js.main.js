@@ -1,26 +1,23 @@
+"use strict"
 Interface.main = {
 	"init" : function () {
-		Interface.utils.log("Init function called!");
 		var type      = Interface.data.type;
-		Interface.utils.log("Step 1");
 		var headID    = document.getElementsByTagName("head")[0];
-		Interface.utils.log("Step 2");
 		var cssNode   = document.createElement('link');
-		Interface.utils.log("Step 3");
 		cssNode.type  = 'text/css';
 		cssNode.rel   = 'stylesheet';
 		cssNode.href  = 'img/k3y.css.' + type + '.css';
 		cssNode.media = 'screen';
-		Interface.utils.log("Step 4");
 		headID.appendChild(cssNode);
-		Interface.utils.log("Step 5");
 		
 		$('.logo > img').attr('src', 'img/logo-'+type+'.png');
-		var title = 'xK3y Remote Web Interface';
+		var title = type.toUpperCase() + ' Remote Web Interface';
+		/*var title = 'xK3y Remote Web Interface';
 		if (type == 'ps3')
 			title = '3Key Remote Web Interface'
+		else if (type == 'wiiu')
+			title = 'WiiKeU Remote Web Interface'*/
 		$('title').html(title)
-		Interface.utils.log("Step 6... init done!");
 
 		//Notify Xbox users that they should change their settings
 		if (navigator.userAgent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; Xbox)") {
@@ -124,12 +121,13 @@ Interface.main = {
 					HTML += '<img class="coverwall-game" src="' + cover + '"/>';
 					HTML += '</div></a>';
 				}
-				Interface.navigation.pages.addContent('coverwall-page', HTML);
+				Interface.navigation.pages.setContent('coverwall-page', HTML);
 				Interface.main.vars.made.coverwall = true;
 			}
 		},
 		"gamelist" : function (force) {
 			//var args = args[1];
+			console.time("gamelist");
 			var args = document.getElementById('gameSortSelect').value;
 			var games = [];
 			var showLetters = true;
@@ -214,7 +212,8 @@ Interface.main = {
 				return;
 			}
 			if (!Interface.main.vars.made.folders) {
-				var dir, par, name, id, cover, activeClass, lastPlayed, timesPlayed, obj;
+				//console.time("folders");
+				var dir, par, name, id, cover, activeClass, lastPlayed, timesPlayed, obj, htmlPar;
 				var active  = Interface.data.data.active;
 				var games   = Interface.data.data.games;
 				var folders = Interface.data.data.folders
@@ -228,7 +227,6 @@ Interface.main = {
 					par = folders[i].par;
 					if (!document.getElementById(dir + '-dir')) {
 						Interface.navigation.pages.new(dir + '-dir', dir);
-
 						obj = {
 							"href" : '#folders-page?'+dir+'-dir',
 							"id" : dir + '-item',
@@ -238,7 +236,7 @@ Interface.main = {
 
 						HTML = Interface.utils.html.menuItem(obj);
 
-						if ($.isEmptyObject(HTMLToAppend[par])) {
+						if (!HTMLToAppend[par]) {
 							HTMLToAppend[par] = '';
 						}
 						HTMLToAppend[par] += HTML;
@@ -247,7 +245,6 @@ Interface.main = {
 						
 					}
 				}
-
 				var l = games.length;
 				for (var i = 0; i < l; i++) {
 					name  = games[i].name;
@@ -268,7 +265,6 @@ Interface.main = {
 					if (id == active) {
 						activeClass = true;
 					}
-
 					obj = {
 						"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
 						"active" : activeClass,
@@ -278,13 +274,14 @@ Interface.main = {
 					}
 
 					HTML = Interface.utils.html.menuItem(obj);
-
-					if ($.isEmptyObject(HTMLToAppend[par])) {
+					/*if ($.isEmptyObject(HTMLToAppend[par])) {
+						HTMLToAppend[par] = '';
+					}*/
+					if (!HTMLToAppend[par]) {
 						HTMLToAppend[par] = '';
 					}
 					HTMLToAppend[par] += HTML;
 				}
-
 				for (var i in HTMLToAppend) {
 					//Get the HTML
 					HTML = HTMLToAppend[i];
@@ -304,6 +301,7 @@ Interface.main = {
 				if (args.length > 0) {
 					Interface.navigation.navigateTo(args[1]);
 				}
+				//console.timeEnd("folders");
 				return;
 			}
 		},
@@ -374,10 +372,10 @@ Interface.main = {
 
 							gameHTML += Interface.utils.html.menuItem(obj);
 						}
-						Interface.navigation.pages.addContent(pageName, gameHTML);
+						Interface.navigation.pages.setContent(pageName, gameHTML);
 					}
 				}
-				Interface.navigation.pages.addContent('favorites-page', mainHTML);
+				Interface.navigation.pages.setContent('favorites-page', mainHTML);
 				Interface.main.vars.made.favorites = true;
 				if (args.length > 0) {
 					Interface.navigation.navigateTo(args[1]);
@@ -437,7 +435,7 @@ Interface.main = {
 				var list = Interface.data.lists.getLists();
 				var index = Interface.data.lists.indexOf("Recently Added");
 				list = list[index].content;
-				var id, name, cover, href, activeClass;
+				var id, name, cover, href, activeClass, obj;
 				var active = Interface.data.data.active;
 
 				var HTML = '';
@@ -462,13 +460,10 @@ Interface.main = {
 
 					HTML += Interface.utils.html.menuItem(obj);
 				}
-				Interface.navigation.pages.addContent('recent-page', HTML);
+				Interface.navigation.pages.setContent('recent-page', HTML);
 
 				Interface.main.vars.made.recent = true;
 			}
-		},
-		"search" : function () {
-
 		},
 		"about" : function () {
 			if (!Interface.main.vars.made.about) {
@@ -482,18 +477,46 @@ Interface.main = {
 					HTML += temp.value;
 					HTML += '</span></div>';
 				}
-				HTML += '<div class="main-item"><span class="main-item-text item-text">Interface version</span><span class="secondary-item-text item-text">';
+				HTML += '<div onclick="Interface.utils.easter();" class="main-item"><span class="main-item-text item-text">Interface version</span><span class="secondary-item-text item-text">';
 				HTML += Interface.data.version;
 				HTML += '</span></div>';
+
+				HTML += '<div class="main-item"><span class="main-item-text item-text">GUID</span><span class="secondary-item-text item-text">';
+				HTML += Interface.data.data.storage.guid;
+				HTML += '</span></div>';
+
 				HTML += '<a href="http://k3yforums.com/" target="_blank"><div class="main-item"><span class="main-item-text item-text">Support</span><span class="secondary-item-text item-text">';
 				HTML += 'http://k3yforums.com/';
 				HTML += '</span></div></a>';
+
 				HTML += '<a href="https://github.com/MrWaffle/K3y-Web-Interface" target="_blank"><div class="main-item"><span class="main-item-text item-text">Source on Github</span><span class="secondary-item-text item-text">';
 				HTML += 'https://github.com/MrWaffle/K3y-Web-Interface';
 				HTML += '</span></div></a>';
 
-				Interface.navigation.pages.addContent('about-page', HTML);
+				Interface.navigation.pages.setContent('about-page', HTML);
 				Interface.main.vars.made.about = true;
+			}
+		},
+		"settings" : function () {
+			if (!Interface.main.vars.made.settings) {
+				var HTML = '';
+				var settings = Interface.data.storage.settings.supported;
+				var strings = Interface.data.storage.settings.strings;
+				var l = settings.length;
+				var obj;
+				for (var i = 0; i < l; i ++) {
+					obj = {
+						"href" : "#settings-page",
+						"onclick" : "javascript:Interface.data.storage.settings.handle(this)",
+						"id" : "setting-" + settings[i],
+						"title" : strings[settings[i]].title,
+						"sub" : strings[settings[i]].desc
+					}
+					HTML += Interface.utils.html.menuItem(obj);
+				}
+				Interface.navigation.pages.setContent('settings-page', HTML);
+				Interface.data.storage.settings.init();
+				Interface.main.vars.made.settings = true;
 			}
 		}
 	},
@@ -507,9 +530,10 @@ Interface.main = {
 			"favorites_list_manager" : false,
 			"recent"                 : false,
 			"recentList"			 : false,
-			"about"                  : false, 
+			"about"                  : false,
+			"settings"               : false,
 			"index"                  : [
-				"gamelist", "coverwall", "folders", "recent", "about"
+				"gamelist", "coverwall", "folders", "recent", "about", "settings"
 			],
 			"curList"				 : ""
 		}
