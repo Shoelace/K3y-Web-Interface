@@ -1,4 +1,5 @@
 *.sublime*
-*.xml
+data.xml
 *.settings
 covers/
+beta builds/
