@@ -1,0 +1,424 @@
+/**
+	Main stuff
+*/
+html {
+	background-image : url(../img/main-texture.png);
+	font-family      : "Helvetica", "Arial";
+}
+
+/*@font-face {
+	font-family: "keyfont";
+	src: url('');
+}*/
+
+.main-container, .other-container {
+	color       : #666666;
+	top         : 0px;
+	left        : 0px;
+	right       : 0px;
+	position    : absolute;
+	width       : 100%;
+	text-align  : center;
+	padding-top : 15px;
+	z-index     : 90;
+	/* background-image:url(../img/main-texture.png); */
+	/* white-space:nowrap; */
+	/*z-index:-1;*/
+}
+
+.other-container {
+	padding-top : 0px;
+	height      : 100%;
+}
+
+.overlap {
+	z-index : 9890;
+}
+
+.logo {
+	display       : block;
+	text-align    : center;
+	margin-bottom : 20px;
+}
+
+.logo img {
+	max-width : 100%;
+}
+
+#overlay {
+	background-color : black;
+	z-index          : 9900;
+	position         : absolute;
+	top              : 0px;
+	left             : 0px;
+	width            : 100%;
+	height           : 100%;
+	opacity          : 0.8;
+}
+
+.overlayshade {
+	opacity : 0.8!important;
+}
+
+#messageBox {
+	display     : inline-block;
+	max-width   : 800px;
+	min-width   : 400px;
+	width       : 80%;
+	padding-top : 30px;
+	opacity     : 1;
+	/*position:absolute;*/
+}
+
+#messageBoxContainer {
+	opacity : 0;
+}
+
+#messageBox, .messageBox-title {
+	z-index : 9999 !important;
+}
+
+.messageBox-content {
+	z-index : 9998 !important;
+}
+
+.active {
+	display : inline-block !important;
+}
+
+.invis {
+	display : none !important;
+	opacity : 0;
+}
+
+.fullopacity {
+	opacity: 1!important;
+}
+
+.nullopacity {
+	opacity: 0!important;
+}
+
+a {
+	text-decoration : none;
+	color           : white;
+	display         : inline-block;
+}
+
+img {
+	border : none;
+}
+
+.clear {
+	clear : both;
+}
+
+.home-button, .close-button {
+	right    : 3px;
+	position : absolute;
+	top      : 2px;
+}
+
+.close-button {
+	top : 4px;
+}
+
+.back-button {
+	left     : 3px;
+	position : absolute;
+	top      : 4px;
+}
+
+.debug {
+	color : white;
+}
+
+.animate {
+	transition : opacity 0.2s ease-in-out;
+}
+
+.notify {
+	animation : notify-bounce 1s;
+}
+
+/**
+	Page
+*/
+.page {
+	display        : none;
+	padding-bottom : 10px;
+	width          : 95%;
+	max-width      : 900px;
+	min-width      : 420px;
+	opacity        : 0;
+	/* margin: 10px; */
+	/* position:relative;
+	width:100%;
+	overflow-x:hidden;
+	white-space:normal; */
+}
+
+.page-title, .messageBox-title {
+	background-image  : url(../img/xbox-bar.png);
+	background-repeat : repeat-x;
+	box-shadow        : 0 1px 5px black;
+	border-radius     : 5px 5px 0 0;
+	position          : relative;
+	height            : 30px;
+	color             : white;
+	padding-top       : 7px;
+	line-height       : 22px;
+	font-size         : 1.5em;
+	font-weight       : bold;
+	z-index           : 10;
+}
+
+.page-content, .messageBox-content {
+	background-image : url(../img/page-texture.png);
+	border-radius    : 0 0 5px 5px;
+	padding          : 10px;
+	text-align       : left;
+	position         : relative;
+	z-index          : 9;
+}
+
+/**
+	Home page items
+*/
+.main-item {
+	display       : inline-block;
+	border-left   : 1px solid #777777;
+	padding       : 0 0 0px 20px;
+	margin-bottom : 10px;
+	margin-right  : 30px;
+	width         : 385px;
+	white-space   : nowrap;
+	height        : 54px;
+	overflow      : hidden;
+}
+
+.item-text {
+	color   : #777777;
+	display : block;
+}
+
+.main-item-text {
+	font-size : 2em;
+}
+
+.letter-item-text {
+	font-size : 2.8em;
+}
+
+.secondary-item-text {
+	color      : #aaaaaa;
+	font-size  : .8em;
+	font-style : italic;
+	position   : relative;
+	bottom     : 5px;
+}
+
+.active-game, .setting-enabled {
+	padding : 0 0 0 17px;
+}
+
+/**
+	Coverwall
+*/
+.coverwall-container {
+	width : 100%;
+}
+
+.coverwall-itemcontainer {
+	display : inline-block;
+	width   : 50%;
+}
+
+.coverwall-itemcontainer a {
+	width : 100%;
+}
+
+.coverwall-imagecontainer {
+	width    : 100%;
+	right    : 10px;
+	position : relative;
+	float    : left;
+}
+
+.coverwall-item, .gamepage-item {
+	margin-right : 0px;
+	height       : 100%;
+	/*width        : 44%;*/
+	/*width : inherit;*/
+	position     : relative;
+}
+
+.coverwall-item {
+	max-width : 90%;
+	width     : 100%;
+}
+
+.coverwall-game, .gamepage-game {
+	/*float     : left;*/
+	min-width : 100%;
+	max-width : 100%;
+	/*position  : relative;*/
+	/*right     : 10px;*/
+	z-index   : 1;
+	/*width: 100%;*/
+}
+
+.coverwall-gametitle {
+	z-index     : 2;
+	background  : rgb(0, 0, 0);
+	background  : rgba(0, 0, 0, 0.6);
+	float       : left;
+	left        : 0;
+	/*padding     : 0 10px;*/
+	position    : absolute;
+	/*top         : 40%;*/
+	bottom      : 10%;
+	width       : 100%;
+}
+
+.coverwall-gametitletext {
+	padding     : 0 10px;
+	display     : block;
+	white-space : normal;
+	color       : white;
+	/*font-size   : 40px;*/
+	font-size   : 2em;
+}
+
+/**
+	Game list
+*/
+.list-cover {
+	float      : left;
+	max-height : 54px;
+	position   : relative;
+	right      : 10px;
+}
+
+.letter-item-text {
+	display : block;
+}
+
+.list-item-accent {
+	padding-left : 15px !important;
+	display      : block;
+}
+
+.list-divider-small {
+	font-size: 0.7em;
+}
+
+/**
+	Folders
+*/
+.large {
+	font-size : 2.8em;
+}
+
+/**
+	Search
+*/
+.searchinput {
+	position : relative;
+	top      : -1px;
+	width    : 96%;
+}
+/*.searchinput {
+	padding   : 6px;
+	max-width : 865px;
+	min-width : 385px;
+	width     : 97%;
+}*/
+
+/**
+	Gamepage
+*/
+.gamepage-item {
+	float : right;
+	width : 30%;
+	padding-left : 10px;
+}
+
+.gamepage-info, .gamepage-info a {
+	/*font-style : italic;*/
+	color : #888888;
+	display : inline-block;
+}
+
+.gamepage-info a {
+	text-decoration : none;
+	border-bottom: 1px solid #888888;
+}
+
+.gamepage-info a:hover {
+	text-decoration : none;
+	color : #888888!important;
+}
+
+.gamepage-buttonContainer {
+	text-align  : center;
+	padding-top : 10px;
+}
+
+/**
+	Pretty Buttons
+*/
+.prettyButton {
+	border-radius : 5px;
+	box-shadow    : 1px 2px 5px black;
+	padding       : 7px 15px;
+	font-size     : 1.2em;
+	margin-right  : 15px;
+	margin-bottom : 10px;
+	color         : white;
+	cursor        : pointer;
+	white-space   : nowrap;
+	display       : inline-block;
+}
+
+.smallButton {
+	padding       : 5px 10px!important;
+	font-size     : 1.1em!important;
+}
+
+/**
+	Lists stuff
+*/
+.gameManagerGameName {
+	font-weight : bold;
+}
+
+#textWidthCalc {
+	position    : absolute;
+	float       : left; 
+	white-space : nowrap;
+	visibility  : hidden;
+	font-size   : 2em;
+}
+
+.videoWrapper {
+	position       : relative;
+	padding-bottom : 56.25%; /* 16:9 */
+	padding-top    : 25px;
+	height         : 0;
+}
+.videoWrapper iframe {
+	position : absolute;
+	top      : 0;
+	left     : 0;
+	width    : 100%;
+	height   : 100%;
+}
+
+@keyframes notify-bounce
+{
+0%   {transform:scale(1.0);}
+25%  {transform:scale(0.95);}
+50%  {transform:scale(1.05);}
+100% {transform:scale(1.0);}
+}
