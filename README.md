@@ -1,4 +1,4 @@
-K3y-Web-Interface - beta
+K3y-Web-Interface - final
 =================
 
 Official Remote Web Interface for the *K3Y
