@@ -67,29 +67,43 @@ Interface.main = {
 				
 				summary = xml.find("summary").text();
 
-				var infoitems = "";
+				var infoitems = "<table>";
 				xml.find("infoitem").each(function() {
+					infoitems += "<tr>";
 					var item   = $(this);
 					var string = item.text();
 					if (string.indexOf('www')==0 || string.indexOf('http')==0) {
-						string = '<a href="'+string+'" target="_blank">'+string+'</a>';
+						if (string.contains('youtube.com')) {
+							var id = string.match(/([^\/]+)$/g);
+							string = '<a href="javascript:void(0);" onclick="Interface.utils.videoPopup(\'' + id + '\')">' + string + '</a>';
+						} else
+							string = '<a href="'+string+'" target="_blank">'+string+'</a>';
 					}
-					infoitems += item.attr("name") + ": "+ string+'<br/>';
+					//infoitems += item.attr("name") + ": "+ string+'<br/>';
+					infoitems += "<td>" + item.attr("name") + ": </td><td>" + string + "</td>";
+					infoitems += "</tr>";
 				});
 
-				infoitems += "<br/>";
+				infoitems += "</table><br/>";
 
-				HTML = '<div class="main-item gamepage-item active-game">';
-				HTML += '<img class="gamepage-game" src="' + cover + '"/></div>';
-				HTML += '<span class="gamepage-info">'
+				HTML = '';
+				HTML += '<div class="gamepage-info">'
 				HTML += infoitems;
-				HTML += '</span>';
-				HTML += summary;
+				HTML += '</div>';
 
-				HTML += '<br/><br/>';
+				HTML += '<div class="main-item gamepage-item active-game">';
+				HTML += '<img class="gamepage-game" src="' + cover + '" alt="Cover"/></div>';
+				// HTML += '<span class="gamepage-info">'
+				// HTML += infoitems;
+				// HTML += '</span>';
+				HTML += '<div>';
+				HTML += summary;
+				HTML += '</div>';
+
+				HTML += '<br/>';
 				HTML += '<div class="gamepage-buttonContainer">';
 				HTML += '<a href="javascript:void(0)" onclick="Interface.utils.launch(\'' + id + '\')"><span class="prettyButton">Play</span></a>';
-				HTML += '<a href="#favorites_game_manager-page?' + id + '&' + name + '"><span class="prettyButton">Manage lists</span></a>';
+				HTML += '<a href="#favorites_game_manager-page?' + id + '&' + escape(name) + '"><span class="prettyButton">Manage lists</span></a>';
 				HTML += '</div>';
 
 				HTML += '<br class="clear"/>'
@@ -107,6 +121,7 @@ Interface.main = {
 
 				var showTitles = Interface.data.storage.settings.get("coverwalltitle");
 				
+				HTML += '<div class="coverwall-container">';
 				var l      = games.length;
 				for (var i = 0; i < l; i++) {
 					name  = games[i].name;
@@ -118,13 +133,16 @@ Interface.main = {
 						activeClass = 'active-game';
 					}
 
+					HTML += '<div class="coverwall-itemcontainer">';
 					HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
 					HTML += '<div class="main-item coverwall-item '+activeClass+'">';
+					HTML += '<div class="coverwall-imagecontainer">'
 					if (showTitles)
-						HTML += '<span class="coverwall-gametitle">' + name + '</span>';
-					HTML += '<img class="coverwall-game" src="' + cover + '"/>';
-					HTML += '</div></a>';
+						HTML += '<div class="coverwall-gametitle"><span class="coverwall-gametitletext">' + name + '</span></div>';
+					HTML += '<img class="coverwall-game" src="' + cover + '" alt="Cover"/>';
+					HTML += '</div></div></a></div>';
 				}
+				HTML += '</div>';
 				Interface.navigation.pages.setContent('coverwall-page', HTML);
 				Interface.main.vars.made.coverwall = true;
 			}
@@ -248,9 +266,6 @@ Interface.main = {
 						}
 						HTMLToAppend[par] += HTML;
 					}
-					if (!document.getElementById(dir + '-item')) {
-						
-					}
 				}
 				var l = games.length;
 				for (var i = 0; i < l; i++) {
@@ -342,7 +357,7 @@ Interface.main = {
 							"href" : '#favorites-page?' + pageName,
 							"alt" : true,
 							"title" : unescape(listName),
-							"sub" : desc
+							"sub" : unescape(desc)
 						}
 
 						mainHTML += Interface.utils.html.menuItem(obj);
@@ -441,7 +456,7 @@ Interface.main = {
 
 			$('.listsDataGameID').attr('value', id);
 			$('.listsDataGameName').attr('value', name);
-			$('.gameManagerGameName').html(name);
+			$('.gameManagerGameName').html(unescape(name));
 		},
 		"favorites_list_manager" : function (args) {
 			var lists    = Interface.data.lists.getLists();
@@ -506,6 +521,9 @@ Interface.main = {
 			if (!Interface.main.vars.made.about) {
 				var HTML = '';
 				var temp;
+				HTML += '<div class="main-item list-item-accent"><span class="letter-item-text">';
+				HTML += "Device";
+				HTML += '</span></div>';
 				for (var i = 0; i < Interface.data.data.about.length; i++) {
 					temp = Interface.data.data.about[i];
 					HTML += '<div class="main-item"><span class="main-item-text item-text">';
@@ -514,6 +532,9 @@ Interface.main = {
 					HTML += temp.value;
 					HTML += '</span></div>';
 				}
+				HTML += '<div class="main-item list-item-accent"><span class="letter-item-text">';
+				HTML += "Other";
+				HTML += '</span></div>';
 				HTML += '<div onclick="Interface.utils.easter();Interface.utils.messageBox.create(Interface.data.messages.changelog);" class="main-item"><span class="main-item-text item-text">Interface version</span><span class="secondary-item-text item-text">';
 				HTML += Interface.data.version;
 				HTML += '</span></div>';
@@ -523,11 +544,15 @@ Interface.main = {
 				HTML += '</span></div>';
 
 				HTML += '<a href="http://k3yforums.com/" target="_blank"><div class="main-item"><span class="main-item-text item-text">Support</span><span class="secondary-item-text item-text">';
-				HTML += 'http://k3yforums.com/';
+				HTML += 'Get support for anything *K3y related here';
+				HTML += '</span></div></a>';
+
+				HTML += '<a href="http://xkeydownloads.com/stats" target="_blank"><div class="main-item"><span class="main-item-text item-text">Statistics</span><span class="secondary-item-text item-text">';
+				HTML += 'View the online statistics';
 				HTML += '</span></div></a>';
 
 				HTML += '<a href="https://github.com/MrWaffle/K3y-Web-Interface" target="_blank"><div class="main-item"><span class="main-item-text item-text">Source on Github</span><span class="secondary-item-text item-text">';
-				HTML += 'https://github.com/MrWaffle/K3y-Web-Interface';
+				HTML += 'Contribute or study the inner workings of this interface';
 				HTML += '</span></div></a>';
 
 				Interface.navigation.pages.setContent('about-page', HTML);

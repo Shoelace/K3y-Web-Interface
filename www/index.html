@@ -1,8 +1,9 @@
 <!DOCTYPE HTML> 
 <html>
 	<head>
-		<title>XKEY Remote Web Interface</title>
-		<meta id="viewportmeta" name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0,width=480"/>
+		<title>XKEY Web Interface</title>
+		<meta id="viewportmeta" name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0,width=480, height=728"/>
+		<meta name="description" content="Web Interface for K3y devices"/>
 		<meta charset="UTF-8">
 		<link type="text/css" rel="stylesheet" href="img/k3y.css.main.css" />
 		<link rel="shortcut icon" href="img/icon.ico">
@@ -22,7 +23,7 @@
 						Messagebox Message
 					</div>
 				</div>
-				<div id="overlay" class=""></div>
+				<div id="overlay" class="" onclick="Interface.utils.messageBox.remove()"></div>
 			</div>
 		</div>
 		
@@ -36,7 +37,7 @@
 				</div>
 				<div class="page-content">
 					<div class="logo">
-						<img src="img/logo-xbox.png"/>
+						<img src="img/logo-xkey.png" alt="Logo"/>
 					</div>
 					<a href="#coverwall-page">
 						<div class="main-item">
@@ -123,7 +124,7 @@
 					Coverwall
 				</div>
 				<div class="page-content">
-					<div class=" coverwall-container">
+					<div class="coverwall-container">
 						
 					</div>
 				</div>
@@ -147,16 +148,16 @@
 						</span>
 					</div>
 
-					<a href="javascript:void(0);" onclick="$(this).find('input').focus()">
+					<!-- <a href="javascript:void(0);" onclick="$(this).find('input').focus()"> -->
 						<div class="main-item">
 							<span class="main-item-text item-text">
 								Search
 							</span>
 							<span class="secondary-item-text item-text">
-								<input class="searchinput" type="text" onkeyup="Interface.utils.search(this.value)">
+								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.utils.search(this.value)"/>
 							</span>
 						</div>
-					</a>
+					<!-- </a> -->
 
 					<!-- <a href="javascript:void(0);">
 						<div class="main-item">
@@ -244,7 +245,7 @@
 						<a onclick="Interface.data.lists.createList()">
 							<span class="prettyButton">Go</span>
 						</a>
-						<br/><br/>
+						<br/>
 					</div>
 					<div class="gameManagerAddGame">
 						<hr/>
@@ -256,7 +257,7 @@
 						<a onclick="Interface.data.lists.addGame()">
 							<span class="prettyButton">Go</span>
 						</a>
-						<br/><br/>
+						<br/>
 					</div>
 					<div class="gameManagerRemoveGame">
 						<hr/>
@@ -268,7 +269,7 @@
 						<a onclick="Interface.data.lists.removeGame()">
 							<span class="prettyButton">Go</span>
 						</a>
-						<br/><br/>
+						<br/>
 					</div>
 					<input type="hidden" class="listsDataGameID"/>
 					<input type="hidden" class="listsDataGameName"/>
@@ -315,7 +316,6 @@
 						<a onclick="Interface.data.lists.removeList()">
 							<span class="prettyButton">Remove list</span>
 						</a>
-						<br/><br/>
 					</div>
 
 					<input type="hidden" class="listsManagerListName"/>

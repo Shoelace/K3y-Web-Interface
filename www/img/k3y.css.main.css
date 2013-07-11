@@ -102,6 +102,7 @@ html {
 a {
 	text-decoration : none;
 	color           : white;
+	display         : inline-block;
 }
 
 img {
@@ -228,35 +229,65 @@ img {
 	width : 100%;
 }
 
+.coverwall-itemcontainer {
+	display : inline-block;
+	width   : 50%;
+}
+
+.coverwall-itemcontainer a {
+	width : 100%;
+}
+
+.coverwall-imagecontainer {
+	width    : 100%;
+	right    : 10px;
+	position : relative;
+	float    : left;
+}
+
 .coverwall-item, .gamepage-item {
 	margin-right : 0px;
 	height       : 100%;
-	width        : 44%;
+	/*width        : 44%;*/
+	/*width : inherit;*/
 	position     : relative;
 }
 
+.coverwall-item {
+	max-width : 90%;
+	width     : 100%;
+}
+
 .coverwall-game, .gamepage-game {
-	float     : left;
+	/*float     : left;*/
 	min-width : 100%;
 	max-width : 100%;
-	position  : relative;
-	right     : 10px;
+	/*position  : relative;*/
+	/*right     : 10px;*/
 	z-index   : 1;
+	/*width: 100%;*/
 }
 
 .coverwall-gametitle {
 	z-index     : 2;
 	background  : rgb(0, 0, 0);
 	background  : rgba(0, 0, 0, 0.6);
-	color       : white;
 	float       : left;
-	font-size   : 40px;
 	left        : 0;
-	padding     : 0 10px;
+	/*padding     : 0 10px;*/
 	position    : absolute;
-	top         : 40%;
+	/*top         : 40%;*/
+	bottom      : 10%;
 	width       : 100%;
+}
+
+.coverwall-gametitletext {
+	padding     : 0 10px;
+	display     : block;
 	white-space : normal;
+	color       : white;
+	/*font-size   : 40px;*/
+	font-size   : 2em;
 }
 
 /**
@@ -276,6 +307,10 @@ img {
 .list-item-accent {
 	padding-left : 15px !important;
 	display      : block;
+}
+
+.list-divider-small {
+	font-size: 0.7em;
 }
 
 /**
@@ -306,15 +341,23 @@ img {
 .gamepage-item {
 	float : right;
 	width : 30%;
+	padding-left : 10px;
 }
 
 .gamepage-info, .gamepage-info a {
 	/*font-style : italic;*/
 	color : #888888;
+	display : inline-block;
 }
 
 .gamepage-info a {
-	text-decoration : underline;
+	text-decoration : none;
+	border-bottom: 1px solid #888888;
+}
+
+.gamepage-info a:hover {
+	text-decoration : none;
+	color : #888888!important;
 }
 
 .gamepage-buttonContainer {
@@ -331,8 +374,16 @@ img {
 	padding       : 7px 15px;
 	font-size     : 1.2em;
 	margin-right  : 15px;
+	margin-bottom : 10px;
 	color         : white;
 	cursor        : pointer;
+	white-space   : nowrap;
+	display       : inline-block;
+}
+
+.smallButton {
+	padding       : 5px 10px!important;
+	font-size     : 1.1em!important;
 }
 
 /**
@@ -348,6 +399,20 @@ img {
 	white-space : nowrap;
 	visibility  : hidden;
 	font-size   : 2em;
+}
+
+.videoWrapper {
+	position       : relative;
+	padding-bottom : 56.25%; /* 16:9 */
+	padding-top    : 25px;
+	height         : 0;
+}
+.videoWrapper iframe {
+	position : absolute;
+	top      : 0;
+	left     : 0;
+	width    : 100%;
+	height   : 100%;
 }
 
 @keyframes notify-bounce

@@ -10,8 +10,12 @@
 	border-left : 4px solid #137EAF!important;
 }
 
-.letter-item-text, .messageBox-content a {
+.letter-item-text, strong, .gamepage-info table tr td:last-child, .gamepage-info a {
 	color : #137EAF !important;
+}
+
+.gamepage-info a:hover {
+	border-bottom: 1px solid #137EAF;
 }
 
 .prettyButton {

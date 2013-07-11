@@ -1,4 +1,5 @@
-﻿"use strict"
+"use strict"
+var test;
 //Some initting
 window.onhashchange = function () {
 	Interface.navigation.navigateTo(window.location.hash);
@@ -112,9 +113,10 @@ var Interface = {
 				history.back();
 			}
 			//No "%"? Escape the page string to make sure we get it right
-			if (page.indexOf('%') == -1) {
-				page = escape(page);
-			}
+			// if (page.indexOf('%') == -1) {
+			// 	page = escape(page);
+			// }
+			page = escape(page);
 
 			if (!$.isFunction(allPages[page])) {
 				//PANIC
@@ -169,8 +171,8 @@ var Interface = {
 			if (page != 'home-page') {
 				var title = $(document.getElementById(page)).find('div.page-title');
 				if (!title.hasClass('_buttons')) {
-					title.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
-					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');
+					title.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png" alt="Back"/></a>')
+					.prepend('<a href="#home-page"><img class="home-button" src="img/home.png" alt="Home"/></a>');
 					title.addClass('_buttons');
 				}
 				/*$(document.getElementById(page)).find('div.page-title')
@@ -257,10 +259,11 @@ var Interface = {
 			Interface.utils.messageBox.create(message);
 		},
 		"update" : function (xml, storage, init) {
-			xml        = $(xml);
-			var drives = [], dirs = [], isos = [], about = [], lists = [];
-			var dir, par, id, name, cover, info, hdd, value;
-			Interface.data.type = xml.get(0).documentElement.nodeName.toLowerCase();
+			//console.time('Ted');
+			// xml        = $(xml);
+			var drives = [], dirs = [], isos = [], about = [], lists = [], cache = [];
+			var dir, par, id, name, cover, info, hdd, value, _KEY, _GAMES, _ABOUT, _ACTIVE;
+			Interface.data.type = xml.documentElement.nodeName.toLowerCase();
 
 			if ($.isEmptyObject(storage.games)) {
 				storage = Interface.data.storage.convert(storage);
@@ -273,24 +276,55 @@ var Interface = {
 				Interface.utils.messageBox.create(Interface.data.messages["notify-anondata"]);
 			}
 
-			xml.find('MOUNT').each(function() {
-				hdd = $(this).attr('NAME');
-				drives.push(hdd);
+			//_KEY = xml.documentElement.children;
+			_KEY = xml.documentElement.childNodes;
 
-				$(this).find('DIR').each(function() {
-					dir = $(this).attr('NAME');
-					par = $(this.parentNode).attr('NAME');
+			var l = _KEY.length;
+			var tmp, tmpDir, tmpISO;
+			for (var i = 0; i < l; i ++) {
+				tmp = _KEY[i];
+				if (tmp.nodeType == 3)
+					continue;
+
+				if (tmp.nodeName == "ACTIVE") {
+					_ACTIVE = tmp;
+				} else if (tmp.nodeName == "GAMES") {
+					_GAMES = tmp;
+				} else if (tmp.nodeName == "ABOUT") {
+					_ABOUT = tmp;
+				}
+			}
+
+			//var l = _GAMES.children.length;
+			var l = _GAMES.childNodes.length;
+			for (var i = 0; i < l; i++) {
+				//hdd = _GAMES.children[i];
+				hdd = _GAMES.childNodes[i];
+				if (hdd.nodeType == 3) 
+					continue;
+
+				drives.push(hdd.getAttribute('NAME'));
+
+				tmp = hdd.getElementsByTagName("DIR");
+				var k = tmp.length;
+				for (var o = 0; o < k; o++) {
+					tmpDir = tmp[o];
+					dir = tmpDir.getAttribute('NAME');
+					par = tmpDir.parentNode.getAttribute('NAME');
 					dirs.push({"dir" : dir, "par" : par});
-				});
+				}
 
-				$(this).find('ISO').each(function() {
-					id    = $(this).find('ID').text();
-					name  = $(this).find('TITLE').text().replace(/\.iso/gi,"");
-					par   = $(this.parentNode).attr('NAME');
+				tmp = hdd.getElementsByTagName('ISO');
+				hdd = hdd.getAttribute('NAME');
+				var k = tmp.length;
+				for (var o = 0; o < k; o++) {
+					tmpISO = tmp[o];
+					name = tmpISO.firstElementChild.firstChild.nodeValue.replace(/\.iso/gi,"");
+					id = tmpISO.lastElementChild.firstChild.nodeValue;
+					par = tmpISO.parentNode.getAttribute('NAME');
 					cover = "covers/"+id+".jpg";
-					//DEBUG
-					//cover = "img/test.jpg";
-					//DEBUG
+					// cache[o] = new Image();
+					// cache[o].src = cover;
 					info  = "covers/"+id+".xml";
 					isos.push({ 
 						"id"     : id,
@@ -308,19 +342,89 @@ var Interface = {
 						};
 					}
 					storage.games[id].hdd = hdd;
-				});
-			});
+				}
+			}
 
-			xml.find('ABOUT').find('ITEM').each(function() {
-				name = $(this).attr('NAME');
-				value = $(this).text();
+			//var l = _ABOUT.children.length;
+			var l = _ABOUT.childNodes.length;
+			for (var i = 0; i < l; i++) {
+				//tmp = _ABOUT.children[i];
+				tmp = _ABOUT.childNodes[i];
+				if (tmp.nodeType == 3)
+					continue;
+
+				name = tmp.getAttribute('NAME');
+				value = tmp.firstChild.nodeValue;
 				if (name == "App")
 					Interface.data.firmware = value;
 				about.push({"item": name, "value": value});
-			});
+			}
 
-			//Active game
-			var active = xml.find('ACTIVE').text();
+			var active;
+			if (_ACTIVE)
+				active = _ACTIVE.firstChild.nodeValue;
+			
+			// xml = $(xml);
+			// xml.find('MOUNT').each(function() {
+			// 	//hdd = $(this).attr('NAME');
+			// 	hdd = this.getAttribute('NAME');
+			// 	drives.push(hdd);
+
+			// 	$(this).find('DIR').each(function() {
+			// 		/*dir = $(this).attr('NAME');
+			// 		par = $(this.parentNode).attr('NAME');*/
+			// 		dir = this.getAttribute('NAME');
+			// 		par = this.parentNode.getAttribute('NAME');
+			// 		dirs.push({"dir" : dir, "par" : par});
+			// 	});
+				
+			// 	$(this).find('ISO').each(function() {
+			// 		/*console.time("Test");
+			// 		id    = $(this).find('ID').text();
+			// 		name  = $(this).find('TITLE').text().replace(/\.iso/gi,"");
+			// 		par   = $(this.parentNode).attr('NAME');
+			// 		console.timeEnd("Test");
+			// 		console.time("Test2");*/
+			// 		name = this.firstElementChild.firstChild.nodeValue.replace(/\.iso/gi,"");
+			// 		id = this.lastElementChild.firstChild.nodeValue;
+			// 		par = this.parentNode.getAttribute('NAME');
+			// 		//console.timeEnd("Test2");
+					
+			// 		cover = "covers/"+id+".jpg";
+			// 		//DEBUG
+			// 		//cover = "img/test.jpg";
+			// 		//DEBUG
+			// 		info  = "covers/"+id+".xml";
+			// 		isos.push({ 
+			// 			"id"     : id,
+			// 			"name"   : name,
+			// 			"parent" : par,
+			// 			"hdd"    : hdd,
+			// 			"cover"  : cover,
+			// 			"info"   : info
+			// 		});
+			// 		if ($.isEmptyObject(storage.games[id])) {
+			// 			storage.games[id] = {
+			// 				"lastPlayed" : 0,
+			// 				"timesPlayed" : 0,
+			// 				"known" : false
+			// 			};
+			// 		}
+			// 		storage.games[id].hdd = hdd;
+			// 	});
+			// });
+
+			// xml.find('ABOUT').find('ITEM').each(function() {
+			// 	name = $(this).attr('NAME');
+			// 	value = $(this).text();
+			// 	if (name == "App")
+			// 		Interface.data.firmware = value;
+			// 	about.push({"item": name, "value": value});
+			// });
+
+			// //Active game
+			// var active = xml.find('ACTIVE').text();
+
 			//Lists
 			if (storage.favLists != undefined) {
 				lists = storage.favLists;
@@ -341,7 +445,7 @@ var Interface = {
 					return -1
 				return 0;
 			});
-
+			
 			Interface.data.data = {
 				"games"   : isos,
 				"sorted"  : sorted,
@@ -353,22 +457,22 @@ var Interface = {
 				"storage" : storage
 			};
 
-			$.each(Interface.main.vars.made, function(key){
-				if (key != "index") {
-					Interface.main.vars.made[key] = false;
-				}
-			});
-
 			if (init) {
 				if (window.location.hash != '') {
 					Interface.navigation.navigateTo(window.location.hash);
 				}
+				Interface.utils.messageBox.remove();
 				Interface.main.init();
 				if (Interface.data.storage.settings.get("updatecheck")) {
 					Interface.utils.checkUpdate();
 				}
 			}
 			else if (!init) {
+				$.each(Interface.main.vars.made, function(key){
+					if (key != "index") {
+						Interface.main.vars.made[key] = false;
+					}
+				});
 				if (window.location.hash != '') {
 					Interface.navigation.navigateTo('');
 				}
@@ -378,7 +482,7 @@ var Interface = {
 				Interface.main.create.gamelist();
 				Interface.main.create.folders([]);
 			}
-			Interface.utils.messageBox.remove();
+			//console.timeEnd('Ted');
 		},
 		"lists" : {
 			"getLists" : function (id) {
@@ -582,7 +686,7 @@ var Interface = {
 						var msg = {};
 						msg.title = message.title;
 						msg.content = message.content;
-						msg.content = message.content.replace(/%s/g, listName);
+						msg.content = message.content.replace(/%s/g, unescape(listName));
 						Interface.utils.messageBox.create(msg);
 						return;
 					}
@@ -590,7 +694,7 @@ var Interface = {
 					Interface.utils.messageBox.remove();
 				}
 				var index = this.indexOf(listName);
-				Interface.data.data.storage.favLists[index].name = newName;
+				Interface.data.data.storage.favLists[index].name = escape(newName);
 				Interface.data.storage.save();
 				if (Interface.navigation.current().indexOf('favorites') != -1) {
 					window.onhashchange();
@@ -612,7 +716,7 @@ var Interface = {
 					Interface.utils.messageBox.remove();
 				}
 				var index = this.indexOf(listName);
-				Interface.data.data.storage.favLists[index].desc = desc;
+				Interface.data.data.storage.favLists[index].desc = escape(desc);
 				Interface.data.storage.save();
 			},
 			"massAddToList" : function (listName, games) {
@@ -622,14 +726,14 @@ var Interface = {
 						var games = Interface.data.data.sorted;
 						var l = games.length;
 						var name, id, value;
-						var HTML = 'Mass adding to list: ' + listName + '<br/><br/>';
+						var HTML = 'Mass adding to list: <b>' + unescape(listName) + '</b><br/><br/>';
 						for (var i = 0; i < l; i ++) {
 							name = games[i].name;
 							id = games[i].id;
 							value = id + '&' + escape(name);
 							HTML += '<input type="checkbox" value="' + value + '" ' + (this.isInList(id, listName) ? "checked" : "") + '>' + name + '<br/>';
 						}
-						HTML += '<br/><a onclick="Interface.data.lists.massAddToList(\'' + listName + '\')"><span class="prettyButton">Go</span></a><a onclick="history.back();"><span class="prettyButton">Cancel</span></a><br/><br/>';
+						HTML += '<br/><a onclick="Interface.data.lists.massAddToList(\'' + listName + '\')"><span class="prettyButton">Go</span></a><a onclick="history.back();"><span class="prettyButton">Cancel</span></a><br/>';
 						Interface.navigation.pages.setContent('favorites_mass_add-page', HTML);
 						//Interface.navigation.navigateTo('favorites_mass_add-page');
 						window.location.hash = "#favorites_mass_add-page";
@@ -830,7 +934,7 @@ var Interface = {
 				}
 				if (!$.isEmptyObject(storage.Settings))
 					newStorage.settings = storage.Settings;
-				//Interface.utils.messageBox.create(Interface.data.messages['notify-convert']);
+				Interface.utils.messageBox.create(Interface.data.messages['notify-convert']);
 				return newStorage;
 			},
 			"get" : function () {
@@ -857,10 +961,14 @@ var Interface = {
 		},
 		"pollTime"  : 10000,
 		"pollTimer" : 0,
-		"version"   : "beta 11",
+		"version"   : "beta 12",
 		"type"      : "xbox",
 		"firmware"  : "00.00",
 		"messages"  : {
+			"notify-loading" : {
+				"title"   : "Loading...",
+				"content" : "Loading, please wait..."
+			},
 			"notify-xbox" : {
 				"title"   : "Xbox IE Settings",
 				"content" : "I see you're using your Xbox to view this interface. I'm prepared for that!<br/><br/>Can I just recommend that you tick the option \"Use my whole TV to show the webpage\" in IE's settings? Thanks!"
@@ -871,7 +979,7 @@ var Interface = {
 			},
 			"notify-pollError" : {
 				"title"   : "Poll error",
-				"content" : "There has been an error while retreiving data. Make sure the *K3y is turned on!<br/>Polling has been paused, press \"Restart\" to restart polling.<br/><br/><a onclick=\"Interface.data.startPoll(); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Restart</span></a><br/><br/>"
+				"content" : "There has been an error while retreiving data. Make sure the *K3y is turned on!<br/>Polling has been paused, press \"Restart\" to restart polling.<br/><br/><a onclick=\"Interface.data.startPoll(); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Restart</span></a><br/>"
 			},
 			"notify-opentray" : {
 				"title"   : "Loading Notification",
@@ -891,15 +999,15 @@ var Interface = {
 			},
 			"notify-list-rename" : {
 				"title"   : "Rename list",
-				"content" : "Old name: <em>%s</em><br/>New name:<br/><input type=\"text\" class=\"listsRenameListInput\"/> <a onclick=\"Interface.data.lists.renameList('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+				"content" : "Old name: <em>%s</em><br/>New name:<br/><input type=\"text\" class=\"listsRenameListInput\"/> <a onclick=\"Interface.data.lists.renameList('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
 			},
 			"notify-list-desc" : {
 				"title"   : "Change description",
-				"content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"/> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+				"content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"/> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
 			},
 			"notify-list-massadd" : {
 				"title"   : "Mass Adding",
-				"content" : "Mass adding for list: %s<br/><br/>%l<br/><a onclick=\"Interface.data.lists.massAddToList('%s')\"><span class=\"prettyButton\">Go</span></a><br/><br/>"
+				"content" : "Mass adding for list: %s<br/><br/>%l<br/><a onclick=\"Interface.data.lists.massAddToList('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
 			},
 			"notify-convert" : {
 				"title"   : "Storage converted",
@@ -907,11 +1015,11 @@ var Interface = {
 			},
 			"notify-clear" : {
 				"title"   : "Clearing data",
-				"content" : "This will clear all your data, are you sure?<br/><br/><a href=\"#settings-page\" onclick=\"Interface.data.storage.clear(true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><br/><br/>"
+				"content" : "This will clear all your data, are you sure?<br/><br/><a href=\"#settings-page\" onclick=\"Interface.data.storage.clear(true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><br/>"
 			},
 			"notify-anondata" : {
-				"title"   : "Anonymous usage data",
-				"content" : "Allow anonymous usage data to be collected for informational purposes?<br/><br/><a onclick=\"Interface.data.storage.settings.set('anondata', true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes</span></a><a onclick=\"Interface.data.storage.settings.set('anondata', false);Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">No</span></a><br/><br/>"
+				"title"   : "Anonymous data",
+				"content" : "<strong>Wait!</strong> Before you go and close this, I want to ask you something. I swear this will be the only time I'll ask you about it!<br/><br/>We made a <strong>pretty awesome</strong> page showing off some statistics among WiFi dongle users, you guys! In order to expand these statistics, I'm only asking you to allow me sending your current firmware and your game count. <strong>Nothing harmful!</strong> Whaddya say?<br/><br/><a onclick=\"Interface.data.storage.settings.set('anondata', true); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Yes! Awesome! Allow!</span></a><a onclick=\"Interface.data.storage.settings.set('anondata', false);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">No, I'm boring!</span></a><br/><br/>It's always possible to change your opinion, just go to the Settings menu!<br/><br/><strong>You can find the statistics page in the About menu</strong><br/><br/>"
 			},
 			"notify-init" : {
 				"title"   : "Loading",
@@ -931,7 +1039,7 @@ var Interface = {
 			},
 			"changelog" : {
 				"title"   : "Changelog",
-				"content" : "Beta 11<br/>- Fixed saving of lastUpdateCheck<br/>- Updated update return message<br/>- Added poll error handling<br/><br/>Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager"
+				"content" : "Beta 12<br/>- Added video popup for YouTube links<br/>- Changed anchor CSS to cover correct area<br/>- Changed Coverwall title CSS position and font size<br/>- Custom escape function to prevent accidentally double escaping<br/>- Changed button CSS a bit to fix button breaking on small resolutions<br/>- Cleaned up HTML to be 100% valid HTML5<br/>- Fixed some (un)escaping<br/>- Fix HDD issue in parser<br/>- Enhance Coverwall CSS<br/>- Added click overlay to close popup<br/>- Style game page infoitems some more<br/>- Clean up About screen</br>- Fix wrong default logo link<br/>- Added Statistics item in About<br/>- Slightly changed anondata message<br/>- Change firmware download button<br/><br/>Beta 11<br/>- Fixed saving of lastUpdateCheck<br/>- Updated update return message<br/>- Added poll error handling<br/><br/>Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager<br/>- Added changelog"
 			},
 			"test" : {
 				"title"   : "Testing",
@@ -966,9 +1074,9 @@ var Interface = {
 					obj.id = "";
 
 				HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '" title="' + (obj.alt ? obj.title : "") + '">';
-				HTML += '<div id="' + obj.id + '" class="main-item ' + (obj.active ? 'active-game' : '') +'">';
+				HTML += '<div ' + (obj.id != "" ? 'id="' + obj.id + '" ' : '') + 'class="main-item' + (obj.active ? ' active-game' : '') +'">';
 				if (obj.image)
-					HTML += '<img class="list-cover" src="' + obj.image + '"/>';
+					HTML += '<img class="list-cover" src="' + obj.image + '" alt="Cover"/>';
 
 				var longTitle = '';
 				if (fixTitle) {
@@ -1017,7 +1125,7 @@ var Interface = {
 						var msg = {};
 						msg.title = message.title;
 						msg.content = message.content;
-						msg.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/><br/>';
+						msg.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\''+id+'\')"><span class="prettyButton">Reload</span></a><br/>';
 						Interface.utils.messageBox.create(msg);
 					}
 				}
@@ -1064,7 +1172,7 @@ var Interface = {
 					var messageBox = $('#messageBox');
 
 					messageBox.find('.messageBox-title').html(message.title)
-						.append('<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove()"><img class="close-button" src="img/close.png"/></a>');
+						.append('<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove()"><img class="close-button" src="img/close.png" alt="Close"/></a>');
 					messageBox.find('.messageBox-content').html(message.content);
 					this.active = message;
 
@@ -1159,6 +1267,7 @@ var Interface = {
 			"end" : function (callback) {
 				//$('#messageBox').addClass("invis");
 				$('.other-container').removeClass("overlap");
+				$('.messageBox-content').html('');
 				if (callback) {
 					callback();
 				}
@@ -1199,6 +1308,12 @@ var Interface = {
 			},
 			"t" : 0
 		},
+		"videoPopup" : function (id) {
+			var message = {};
+			message.title = "Video Popup";
+			message.content = '<div class="videoWrapper"><iframe type="text/html" height="440" width="780" src="http://www.youtube.com/embed/'+id+'?autoplay=1&autohide=1&fs=1&html5=1" frameborder="0" ></iframe></div>';
+			this.messageBox.create(message);
+		},
 		"checkUpdate" : function () {
 			var lastCheck = Interface.data.data.storage.vars.lastUpdateCheck;
 			var today = new Date();
@@ -1232,17 +1347,19 @@ var Interface = {
 						"device" : device,
 						"guid" : guid,
 						"version" : version,
-						"games" : games
+						"games" : games,
+						"origin" : "officialweb"
 					}
 				}
-				 else {
+				else {
 				 	params = {
 				 		"device" : device,
-				 		"guid" : guid
+				 		"guid" : guid,
+				 		"origin" : "officialweb"
 				 	}
-				 }
+				}
 
-				 $.post(url, params, function (data) {
+				$.post(url, params, function (data) {
 				 	var result = {};
 				 	try {
 				 		result = JSON.parse(data);
@@ -1259,13 +1376,13 @@ var Interface = {
 				 		msg.content = message.content;
 				 		msg.content += "Your version: " + Interface.data.firmware + "<br/>";
 				 		msg.content += "New version: " + fw + "<br/><br/>";
-				 		msg.content += "<a href='" + link + "' target='_BLANK'>Click here to download the new firmware!</a><br/><br/>";
+				 		msg.content += "<a href='" + link + "' target='_BLANK'><span class=\"prettyButton\">Download</span></a></a><br/>";
 				 		Interface.utils.messageBox.create(msg);
 				 	}
-				 });
-				 Interface.data.data.storage.vars.lastUpdateCheck = today.toDateString();
-				 Interface.data.storage.save();
+				});
 			}
+			Interface.data.data.storage.vars.lastUpdateCheck = today.toDateString();
+			Interface.data.storage.save();
 		},
 		"easter" : function () {
 			var type = Interface.data.type;
@@ -1296,7 +1413,8 @@ var Interface = {
 			else {
 				var games   = Interface.data.data.sorted;
 				var pattern = new RegExp(input,"i");
-				var name, id, cover, timesPlayed, lastPlayed, letter;
+				var name, id, cover, timesPlayed, lastPlayed, letter, activeClass, obj;
+				var active     = Interface.data.data.active;
 				var lastLetter ='';
 				var l       = Interface.data.data.sorted.length;
 				for (var i = 0; i < l; i++) {
@@ -1324,12 +1442,28 @@ var Interface = {
 							lastLetter = letter;
 						}
 
-						HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-						HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-						HTML  += name;
-						HTML  += '</span><span class="secondary-item-text item-text">';
-						HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-						HTML  += '</span></div></a>';
+						activeClass = false;
+						if (id == active) {
+							activeClass = true;
+						}
+
+						// HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
+						// HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
+						// HTML  += name;
+						// HTML  += '</span><span class="secondary-item-text item-text">';
+						// HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
+						// HTML  += '</span></div></a>';
+
+						obj = {
+							"onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+							"alt" : true,
+							"active" : activeClass,
+							"image" : cover,
+							"title" : name,
+							"sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+						}
+
+						HTML += Interface.utils.html.menuItem(obj);
 					}
 				}
 			}
