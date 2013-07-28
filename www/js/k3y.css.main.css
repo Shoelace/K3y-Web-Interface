@@ -129,6 +129,12 @@ img {
 	top      : 4px;
 }
 
+.nav-button-prev, .nav-button-next {
+	position : relative;
+	bottom : 8px;
+	vertical-align : middle;
+}
+
 .debug {
 	color : white;
 }
@@ -171,6 +177,7 @@ img {
 	font-size         : 1.5em;
 	font-weight       : bold;
 	z-index           : 10;
+	width: 100%;
 }
 
 .page-content, .messageBox-content {
@@ -197,6 +204,11 @@ img {
 	overflow      : hidden;
 }
 
+.main-item-large {
+	width : 770px!important;
+	height : 100px!important;
+}
+
 .item-text {
 	color   : #777777;
 	display : block;
@@ -204,6 +216,11 @@ img {
 
 .main-item-text {
 	font-size : 2em;
+}
+
+.main-item-text-dot {
+	overflow : hidden;
+	text-overflow : ellipsis;
 }
 
 .letter-item-text {
@@ -300,6 +317,10 @@ img {
 	right      : 10px;
 }
 
+.list-cover-large {
+	max-height : 100px!important;
+}
+
 .letter-item-text {
 	display : block;
 }
@@ -365,6 +386,21 @@ img {
 	padding-top : 10px;
 }
 
+#game-title {
+	width: 80%;
+	height: 25px;
+	display: inline-block;
+}
+
+.game-title-text {
+	display: inline-block;
+	height: 100%;
+	max-width: 75%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 /**
 	Pretty Buttons
 */
@@ -415,10 +451,9 @@ img {
 	height   : 100%;
 }
 
-@keyframes notify-bounce
-{
-0%   {transform:scale(1.0);}
-25%  {transform:scale(0.95);}
-50%  {transform:scale(1.05);}
-100% {transform:scale(1.0);}
+@keyframes notify-bounce {
+	0%   {transform:scale(1.0);}
+	25%  {transform:scale(0.95);}
+	50%  {transform:scale(1.05);}
+	100% {transform:scale(1.0);}
 }
