@@ -6,12 +6,21 @@
             var type      = Interface.data.type,
                 headID    = document.getElementsByTagName("head")[0],
                 cssNode   = document.createElement('link'),
-                title = type.toUpperCase() + ' Remote Web Interface';
+                iconNode  = document.createElement('link'),
+                oldNode   = document.getElementById('dynamic-favicon'),
+                title = type.toUpperCase() + ' Web Interface';
             cssNode.type  = 'text/css';
             cssNode.rel   = 'stylesheet';
             cssNode.href  = 'js/k3y.css.' + type + '.css';
             cssNode.media = 'screen';
             headID.appendChild(cssNode);
+            iconNode.id   = 'dynamic-favicon';
+            iconNode.rel  = 'shortcut icon';
+            iconNode.href = 'img/icon-' + type + '.ico';
+            if (oldNode) {
+                headID.removeChild(oldNode);
+            }
+            headID.appendChild(iconNode);
 
             $('.logo > img').attr('src', 'img/logo-' + type + '.png');
             /*var title = 'xK3y Remote Web Interface';
@@ -34,6 +43,7 @@
                     URL   = "covers/" + id + ".xml",
                     page = $("#game-page"),
                     title,
+                    titleHTML,
                     summary,
                     HTML = '',
                     cover,
@@ -78,7 +88,7 @@
                         item   = $(this);
                         string = item.text();
                         if (string.indexOf('www') == 0 || string.indexOf('http') == 0) {
-                            if (string.contains('youtube.com')) {
+                            if (string.indexOf('youtube.com') != -1) {
                                 //var id = string.match(/([^\/]+)$/g);
                                 var id = Interface.utils.parseYouTubeURL(string);
                                 if (id != '') {
@@ -118,7 +128,15 @@
 
                     HTML += '<br class="clear"/>';
 
-                    page.find("#game-title").html(title);
+                    if (Interface.data.storage.settings.get("gamenavigation")) {
+                        titleHTML = '<a onclick="Interface.utils.selectPrev(\'' + id + '\')" href="javascript:void(0)"><img alt="Previous" src="img/back.png" class="nav-button-prev"></a>';
+                        titleHTML += '<span class="game-title-text">' + title + '</span>';
+                        titleHTML += '<a onclick="Interface.utils.selectNext(\'' + id + '\')" href="javascript:void(0)"><img alt="Previous" src="img/next.png" class="nav-button-next"></a>';
+                    } else {
+                        titleHTML = '<span class="game-title-text">' + title + '</span>';
+                    }
+
+                    page.find("#game-title").html(titleHTML);
                     page.find(".page-content").html(HTML);
                 }
             },
@@ -233,7 +251,8 @@
                                 "active" : activeClass,
                                 "image" : cover,
                                 "title" : name,
-                                "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+                                "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed,
+                                "supportLarge" : true
                             };
 
                             HTML += Interface.utils.html.menuItem(obj);
@@ -280,7 +299,8 @@
                                 "id" : dir + '-item',
                                 "alt" : true,
                                 "title" : unescape(dir),
-                                "sub" : "Folder"
+                                "sub" : "Folder",
+                                "supportLarge" : true
                             };
 
                             HTML = Interface.utils.html.menuItem(obj);
@@ -317,7 +337,8 @@
                             "active" : activeClass,
                             "image" : cover,
                             "title" : name,
-                            "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+                            "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed,
+                            "supportLarge" : true
                         };
 
                         HTML = Interface.utils.html.menuItem(obj);
@@ -408,7 +429,7 @@
                         gameHTML = '';
                         for (j = 0; j < k; j += 1) {
                             id    = gameList[j].id;
-                            name  = gameList[j].name;
+                            name  = unescape(gameList[j].name);
                             cover = 'covers/' + id + '.jpg';
 
                             timesPlayed = Interface.data.storage.getTimesPlayed(id);
@@ -431,7 +452,8 @@
                                 "active" : activeClass,
                                 "image" : cover,
                                 "title" : name,
-                                "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+                                "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed,
+                                "supportLarge" : true
                             };
 
                             gameHTML += Interface.utils.html.menuItem(obj);
@@ -445,7 +467,8 @@
                         "href" : "#favorites_list_manager-page",
                         "title" : "List manager",
                         "sub" : "Manage your lists",
-                        "active" : true
+                        "active" : true,
+                        "supportLarge" : true
                     };
                     mainHTML += Interface.utils.html.menuItem(obj);
                 }
@@ -550,7 +573,8 @@
                             "active" : activeClass,
                             "image" : cover,
                             "title" : name,
-                            "sub" : 'Newly added'
+                            "sub" : 'Newly added',
+                            "supportLarge" : true
                         };
 
                         HTML += Interface.utils.html.menuItem(obj);

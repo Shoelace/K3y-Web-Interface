@@ -95,7 +95,7 @@ var Interface = {
                 args = page.split('?', 2);
                 page = args[0];
 
-                if (page == "folders-page" || page == "favorites-page") {
+                if (page == "folders-page" || page == "favorites-page" || (page == "game-page" && this.previous == "game-page")) {
                     /*console.log(args);
                     page = args[1];*/
                     allPages[page](args);
@@ -174,15 +174,23 @@ var Interface = {
                     .prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');*/
             }
 
+            this.previous = this.currentStr;
+            if (this.currentStr != 'game-page') {
+                this.prevMenu = this.currentStr;
+            }
+            this.currentStr = page;
+
             //Call function related to page
             allPages[page](args);
         },
         "previous" : "",
+        "prevMenu" : "",
         "current" : function () {
             var page = window.location.hash;
             page = page.slice(1, page.length);
             return page;
         },
+        "currentStr" : "",
         "bareTitle" : ""
     },
     /**
@@ -212,7 +220,7 @@ var Interface = {
             });
         },
         "pollSuccess" : function (xml, init) {
-            var HDDcount = $(xml).find('MOUNT').length,
+            var HDDcount = $(xml).find('GAMES').children('MOUNT').length,
                 ACTIVE   = $(xml).find('ACTIVE').text();
 
             //Check for change in HDD's
@@ -249,7 +257,7 @@ var Interface = {
             Interface.utils.messageBox.create(message);
         },
         "update" : function (xml, storage, init) {
-            //console.time('Ted');
+            // console.time('Ted');
             // xml        = $(xml);
             var drives = [], dirs = [],
                 isos = [], about = [],
@@ -273,7 +281,6 @@ var Interface = {
                 storage.vars.askedAnon = true;
                 Interface.utils.messageBox.create(Interface.data.messages["notify-anondata"]);
             }
-
             //_KEY = xml.documentElement.children;
             _KEY = xml.documentElement.childNodes;
             l = _KEY.length;
@@ -281,7 +288,7 @@ var Interface = {
                 tmp = _KEY[i];
                 if (tmp.nodeType == 3) {
                     i += 0;
-                } else {
+                } else if (tmp.nodeType == 1) {
                     if (tmp.nodeName == "ACTIVE") {
                         _ACTIVE = tmp;
                     } else if (tmp.nodeName == "GAMES") {
@@ -299,16 +306,20 @@ var Interface = {
                 hdd = _GAMES.childNodes[i];
                 if (hdd.nodeType == 3) {
                     i += 0;
-                } else {
+                } else if (hdd.nodeType == 1) {
                     drives.push(hdd.getAttribute('NAME'));
 
                     tmp = hdd.getElementsByTagName("DIR");
                     k = tmp.length;
                     for (o = 0; o < k; o += 1) {
                         tmpDir = tmp[o];
-                        dir = tmpDir.getAttribute('NAME');
-                        par = tmpDir.parentNode.getAttribute('NAME');
-                        dirs.push({"dir" : dir, "par" : par});
+                        if (tmpDir.firstElementChild.nodeName == 'MOUNT') {
+                            o += 0;
+                        } else {
+                            dir = tmpDir.getAttribute('NAME');
+                            par = tmpDir.parentNode.getAttribute('NAME');
+                            dirs.push({"dir" : dir, "par" : par});
+                        }
                     }
 
                     tmp = hdd.getElementsByTagName('ISO');
@@ -320,8 +331,6 @@ var Interface = {
                         id = tmpISO.lastElementChild.firstChild.nodeValue;
                         par = tmpISO.parentNode.getAttribute('NAME');
                         cover = "covers/" + id + ".jpg";
-                        // cache[o] = new Image();
-                        // cache[o].src = cover;
                         info  = "covers/" + id + ".xml";
                         isos.push({
                             "id"     : id,
@@ -352,7 +361,12 @@ var Interface = {
                     i += 0;
                 } else {
                     name = tmp.getAttribute('NAME');
-                    value = tmp.firstChild.nodeValue;
+                    value = tmp.firstChild;
+                    if (value) {
+                        value = value.nodeValue;
+                    } else {
+                        value = "-";
+                    }
                     if (name == "App") {
                         Interface.data.firmware = value;
                     }
@@ -472,7 +486,8 @@ var Interface = {
                 });
                 Interface.main.vars.curList = "";
                 if (window.location.hash != '') {
-                    Interface.navigation.navigateTo('');
+                    //Interface.navigation.navigateTo('');
+                    window.location.hash = '';
                 }
             }
             Interface.data.storage.save();
@@ -490,7 +505,7 @@ var Interface = {
                 }
                 Interface.utils.messageBox.remove();
             }
-            //console.timeEnd('Ted');
+            // console.timeEnd('Ted');
         },
         "lists" : {
             "getLists" : function (id) {
@@ -848,6 +863,15 @@ var Interface = {
                     "prebuild" : function () {
                         return;
                     },
+                    "largeitems" : function () {
+                        return;
+                    },
+                    "dottext" : function () {
+                        return;
+                    },
+                    "gamenavigation" : function () {
+                        return;
+                    },
                     "cacheImages" : function () {
                         return;
                     },
@@ -866,6 +890,9 @@ var Interface = {
                     "dynamicfont"    : false,
                     "coverwalltitle" : true,
                     "prebuild"       : false,
+                    "largeitems"     : false,
+                    "dottext"        : false,
+                    "gamenavigation" : false,
                     "cacheImages"    : false,
                     "animations"     : true,
                     "updatecheck"    : true,
@@ -876,6 +903,9 @@ var Interface = {
                     "dynamicfont",
                     "coverwalltitle",
                     "prebuild",
+                    "largeitems",
+                    "dottext",
+                    "gamenavigation",
                     "cacheImages",
                     "animations",
                     "updatecheck",
@@ -898,6 +928,18 @@ var Interface = {
                     "prebuild" : {
                         "title" : "Prebuild",
                         "desc"  : "Prebuild Folders &amp; Lists during init"
+                    },
+                    "largeitems" : {
+                        "title" : "Large list items",
+                        "desc"  : "List items take up the entire width"
+                    },
+                    "dottext" : {
+                        "title" : "Show dots for clipped titles",
+                        "desc"  : "Show '...' instead of cutting off titles"
+                    },
+                    "gamenavigation" : {
+                        "title" : "Game navigation",
+                        "desc"  : "Navigate to the next or previous game in the list or folder"
                     },
                     "cacheImages" : {
                         "title" : "Cache covers",
@@ -1018,7 +1060,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.0",
+        "version"   : "1.1",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1100,7 +1142,11 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.0<br/>- Initial release"
+                "content" : "1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+            },
+            "changelogdev" : {
+                "title"   : "Changelog",
+                "content" : "Final 1<br/>- Get storage only on an update to decrease network activity<br/>- JSLint everything<br/>- Added caching option<br/>- Fixed some variable stuff<br/>- Add 3key nocover.jpg<br/><br/>Beta 12<br/>- Attempted fix for WP8 launching of games<br/>- Added video popup for YouTube links<br/>- Changed anchor CSS to cover correct area<br/>- Changed Coverwall title CSS position and font size<br/>- Custom escape function to prevent accidentally double escaping<br/>- Changed button CSS a bit to fix button breaking on small resolutions<br/>- Cleaned up HTML to be 100% valid HTML5<br/>- Fixed some (un)escaping<br/>- Fix HDD issue in parser<br/>- Enhance Coverwall CSS<br/>- Added click overlay to close popup<br/>- Overhaul the parser<br/>- Style game page infoitems some more<br/>- Clean up About screen</br>- Fix wrong default logo link<br/>- Added Statistics item in About<br/>- Slightly changed anondata message<br/>- Change firmware download button<br/><br/>Beta 11<br/>- Fixed saving of lastUpdateCheck<br/>- Updated update return message<br/>- Added poll error handling<br/><br/>Beta 10<br/>- Mass adding<br/>- Anchor title<br/>- Coverwall title overlay option<br/>- Fixed duplicate navigation buttons<br/>- Slightly changed width CSS<br/><br/>Beta 9<br/>- Links in game info is correctly colored and underlined<br/>- Changed update check submitted data<br/><br/>Beta 8<br/>- Only show animations if supported<br/>- Added version checking<br/><br/>Beta 7<br/>- Fixed Search<br/>- Fixed Recently Added<br/>- Replaced jQuery animations with CSS3<br/>- Added extra animation for secondary popup<br/>- Changed messageBox popup CSS<br/>- Slightly darkened main text<br/>- Added list manager<br/>- Added changelog"
             },
             "test" : {
                 "title"   : "Testing",
@@ -1126,6 +1172,8 @@ var Interface = {
                 */
                 var HTML = '',
                     fixTitle = Interface.data.storage.settings.get("dynamicfont"),
+                    bigWidth = (Interface.data.storage.settings.get("largeitems") && obj.supportLarge),
+                    dotText = Interface.data.storage.settings.get("dottext"),
                     longTitle = '',
                     width,
                     size;
@@ -1141,9 +1189,9 @@ var Interface = {
                 }
 
                 HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '" title="' + (obj.alt ? obj.title : "") + '">';
-                HTML += '<div ' + (obj.id != "" ? 'id="' + obj.id + '" ' : '') + 'class="main-item' + (obj.active ? ' active-game' : '') + '">';
+                HTML += '<div ' + (obj.id != "" ? 'id="' + obj.id + '" ' : '') + 'class="main-item' + (obj.active ? ' active-game' : '') + (bigWidth ? ' main-item-large' : '') + '">';
                 if (obj.image) {
-                    HTML += '<img class="list-cover" src="' + obj.image + '" alt="Cover"/>';
+                    HTML += '<img class="list-cover' + (bigWidth ? ' list-cover-large' : '') + '" src="' + obj.image + '" alt="Cover"/>';
                 }
 
                 if (fixTitle) {
@@ -1153,7 +1201,7 @@ var Interface = {
                         longTitle = ' style="font-size:' + size + 'em"';
                     }
                 }
-                HTML += '<span class="main-item-text item-text"' + longTitle + '>' + obj.title + '</span>';
+                HTML += '<span class="main-item-text item-text' + (dotText ? ' main-item-text-dot' : '') + '"' + longTitle + '>' + obj.title + '</span>';
                 HTML += '<span class="secondary-item-text item-text">' + obj.sub + '</span>';
                 HTML += '</div></a>';
                 return HTML;
@@ -1165,6 +1213,52 @@ var Interface = {
             } else {
                 //Interface.navigation.navigateTo("#game-page?"+args)
                 window.location.hash = "#game-page?" + args;
+            }
+        },
+        "selectNext" : function (id) {
+            var prevPage = Interface.navigation.prevMenu,
+                game,
+                args;
+
+            if (prevPage != "") {
+                if (prevPage == "coverwall-page") {
+                    game = $('[id=' + prevPage + '] a[onclick*=' + id + ']').parent().next().children('a[onclick^=Interface]');
+                } else {
+                    game = $('[id=' + prevPage + '] a[onclick*=' + id + ']').nextAll('a[onclick^=Interface]').eq(0);
+                }
+                if (game.length < 1) {
+                    game = $('[id=' + prevPage + '] a[onclick^=Interface]').first();
+                }
+                if (game.length < 1) {
+                    window.location.hash = "#" + prevPage;
+                } else {
+                    game.click();
+                }
+            } else {
+                window.location.hash = '';
+            }
+        },
+        "selectPrev" : function (id) {
+            var prevPage = Interface.navigation.prevMenu,
+                game,
+                args;
+
+            if (prevPage != "") {
+                if (prevPage == "coverwall-page") {
+                    game = $('[id=' + prevPage + '] a[onclick*=' + id + ']').parent().prev().children('a[onclick^=Interface]');
+                } else {
+                    game = $('[id=' + prevPage + '] a[onclick*=' + id + ']').prevAll('a[onclick^=Interface]').eq(0);
+                }
+                if (game.length < 1) {
+                    game = $('[id=' + prevPage + '] a[onclick^=Interface]').last();
+                }
+                if (game.length < 1) {
+                    window.location.hash = "#" + prevPage;
+                } else {
+                    game.click();
+                }
+            } else {
+                window.location.hash = '';
             }
         },
         "launch" : function (id) {
