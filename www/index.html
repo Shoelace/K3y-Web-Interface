@@ -124,9 +124,34 @@
 					Coverwall
 				</div>
 				<div class="page-content">
-					<div class="coverwall-container">
+					<div class="main-item">
+						<span class="main-item-text item-text">
+							Columns
+						</span>
+						<span class="secondary-item-text item-text">
+							<select id="coverColumnsSelect" class="searchinput" onchange="Interface.main.create.coverwall()">
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+							</select>
+						</span>
+					</div>
+					<div class="main-item">
+							<span class="main-item-text item-text">
+								Search
+							</span>
+							<span class="secondary-item-text item-text">
+								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.coverwall(true, this.value)"/>
+							</span>
+						</div>
+					<div id="coverwall-container">
 						
 					</div>
+					<div id="coverwallSearch"></div>
 				</div>
 			</div>
 			
@@ -140,7 +165,7 @@
 							Sort
 						</span>
 						<span class="secondary-item-text item-text">
-							<select id="gameSortSelect" class="searchinput" onchange="Interface.main.create.gamelist()">
+							<select id="listSortSelect" class="searchinput" onchange="Interface.main.create.gamelist()">
 								<option value="alphabetic">Alphabetic</option>
 								<option value="mostplayed">Most Played</option>
 								<option value="lastplayed">Last Played</option>
@@ -154,7 +179,7 @@
 								Search
 							</span>
 							<span class="secondary-item-text item-text">
-								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.utils.search(this.value)"/>
+								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.gamelist(true, this.value)"/>
 							</span>
 						</div>
 					<!-- </a> -->
@@ -171,7 +196,7 @@
 					</a> -->
 
 					<div id="listContent"></div>
-					<div id="searchResults"></div>
+					<div id="listSearch"></div>
 				</div>
 			</div>
 

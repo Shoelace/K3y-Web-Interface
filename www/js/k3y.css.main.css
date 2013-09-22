@@ -164,6 +164,10 @@ img {
 	white-space:normal; */
 }
 
+.page-double {
+	max-width : 1800px;
+}
+
 .page-title, .messageBox-title {
 	background-image  : url(../img/xbox-bar.png);
 	background-repeat : repeat-x;
@@ -305,6 +309,82 @@ img {
 	color       : white;
 	/*font-size   : 40px;*/
 	font-size   : 2em;
+}
+
+.page-double .coverwall-gametitletext {
+	font-size : 4em;
+}
+
+.coverwall-columns-3 {
+	width : 33%!important;
+}
+
+.coverwall-columns-3 .coverwall-gametitletext  {
+	font-size : 1.7em!important;
+}
+
+.page-double .coverwall-columns-3 .coverwall-gametitletext  {
+	font-size : 3.4em!important;
+}
+
+.coverwall-columns-4 {
+	width : 25%!important;
+}
+
+.coverwall-columns-4 .coverwall-gametitletext  {
+	font-size : 1.5em!important;
+}
+
+.page-double .coverwall-columns-4 .coverwall-gametitletext  {
+	font-size : 3.0em!important;
+}
+
+.coverwall-columns-5 {
+	width : 20%!important;
+}
+
+.coverwall-columns-5 .coverwall-gametitletext  {
+	font-size : 1.2em!important;
+}
+
+.page-double .coverwall-columns-5 .coverwall-gametitletext  {
+	font-size : 2.4em!important;
+}
+
+.coverwall-columns-6 {
+	width : 16.6%!important;
+}
+
+.coverwall-columns-6 .coverwall-gametitletext  {
+	font-size : 1.0em!important;
+}
+
+.page-double .coverwall-columns-6 .coverwall-gametitletext  {
+	font-size : 2.0em!important;
+}
+
+.coverwall-columns-7 {
+	width : 14.2%!important;
+}
+
+.coverwall-columns-7 .coverwall-gametitletext  {
+	font-size : 0.8em!important;
+}
+
+.page-double .coverwall-columns-7 .coverwall-gametitletext  {
+	font-size : 1.6em!important;
+}
+
+.coverwall-columns-8 {
+	width : 12.5%!important;
+}
+
+.coverwall-columns-8 .coverwall-gametitletext  {
+	font-size : 0.6em!important;
+}
+
+.page-double .coverwall-columns-8 .coverwall-gametitletext  {
+	font-size : 1.2em!important;
 }
 
 /**

@@ -1,6 +1,6 @@
 "use strict";
 
-var tempStorage = JSON.parse('{"games":{"1ad214f9143283a89c207f4d870fd5bbd24915ed":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"eecc99971efbb838522c31337da068323655a880":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"27808d3ffd6cc37f95780e8d8c962b929b15351f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"49a217cb1a6e879b8a7308e3e5ead480f460e472":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"f3aaf6c154948d51d65bc7a45155871c14cd7b07":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"20ebde8c190d00bf984c09fc9b30dff98cf5197d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"ed8c27c72df81e5dfdb3a74319407ab58989b0b9":{"known":true,"lastPlayed":1363698350000,"timesPlayed":1,"hdd":"My Book"},"17877d6a5a56953e718f62296e28353d150fc6a4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"fe4b0175639b21eed78625e23f76de0acb60c0e8":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"2a3cec920c56909559adc4cf19f8e62109ec5faf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"a76ccaa648d25e19b52868b5098ae415c6795adc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8da77abcb7f97dd3c46e30e4174d958b12d5080d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8b7950435a207f6ca424bd73f28df3f894e7b6a1":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"03055cd0317422ed3bd3212f28a4d50981de5a0b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cb0995bd155c18106d2875f598d4bc4ae9a3009f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"921cb10ec486adf97dfaed66468b378c56769b93":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9b182a4b4c0ebc3dfe7fe696cdee11a74cc18dbf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"8edef05d3eae48e0463452d53c8cce88031ca644":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d1ba1bbe85d95329a27666e2ad33a27a9aab6624":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"ef1e2fd91ed15c9a316b85bb189a4743476adb58":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9e2f4e07d49f9e9c436cbbbddc62afb59093defc":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"b2a53a44ff9f8efe75139f521ab4a49eed0b1834":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"2022b9cbf91ffd1c8b1e8ec7d4fefccd47fd4808":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"0c2dab94a8fd423b61c5b3d2cc76f2e876b72faf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"ad510ca8d6d6467a01608afb9aab8e24008ddf45":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"538b824034f52f57017231ca5a72aa5b740cdd06":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"722f2b8ecda48fe326ff78a43f57e6bceef7c04c":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"29fc25852851bdb874adb8191acd8d60f24543dc":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"1945cac203e9a03bde9f9d1e7350565b4f74f757":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"817f29773e6878285b420e9e8ee8f12f6a12f2e3":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"9ef95c926299e0f6af88fddf0390dbb912165f01":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f16028eb36eccdb691a4f668d2c67b1dfbce7cf9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"49c415b035b7d8e0593baad0f7b52a80954194d5":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"22f4b23e18cde5c34f69b623f96bd0e8b0292406":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"55d035e6e08e7f5e5e137604e0dffff58b551ed7":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"24114d7e66c47ce476e4eb6bb48f4cc1165792f0":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"966b0c9b6e033f7736f0a56b9fe530d79c352372":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"63f582ed2321610b01ce09709fd51d9c08d29fb9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cd7139c54832c6b15e5a89dc9fb1ec01924ef93c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aae30ac6f9d06b5d20bddec3312d1feb1f86ff2a":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aca07b659fef7b41bf3fd64f09a3f7198927fe8b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"20270cce12b5cc17d3887cd93ba055720fe6c1da":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"70cfdf0c9e8679815f8260cb75519467fcaf7c01":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"19dccaa6dd5d75fcb4f4139a04322a45e1ee401d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"14c68d77b33da6415cdefe64c9a3011fcf90968d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"45dd7ac85393b503f8ea117d32b7b0b10a07feee":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"d937f6040ea2141db832fb2c5b58546e222e4c66":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3b296de66161ec1946d51c6adea54c01f70a021d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"eb0af5f14486fdd28ebffcdac21a3c49e8338fc3":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"a0c539e167df88a8cc4cb652bc5f16d2233fdf82":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"aac1d40b29cbe173fc079f1c4f0e136750d6746b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"4596614439da8abad9de6342936d056ce80ad7cb":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"d8808554429ec953c56344f13c2246a024e16313":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"fc5e4d3d9684768817cf715562955bd1d6651e2f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e8ed8cc8aff3c542a58ac36f0d6ed63069e6c4c3":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"10f8b9a1f9f0803c59202c52d7115c8e92a05bc9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"6cb2c2e5d7ae0f30bdbf04551886ce3578633c82":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a309db163478e0c542961eaece83a26dbc7786bb":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"24d81c87f75170068bf4887ca9de90f9f0cf099b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"ecb9d3f80f04a7985508567b04372a421bc5c6c0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a40206c501411aaf8cba74f12cd3f509aae0ec35":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"0d4ffd85a16efec07edbc60fd04bc1a166f8fe13":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"99a427cbc5cb193741e12ea43251723dc40b6584":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e51e3a1cbc5dbce3b663cd8ba566506f1dd96766":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cb4a7710270d209bf1860eee937d8a944cad967f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"246090b169be8ed6e1f8448cf96aa2167e050960":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9b4f7282309dcec6403809a8d5373f8b833acbee":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2986390017bf34375724cf36648b9ce3350b3dd6":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b6aecaf976c663ad2dbc8c7464d74035dbc61538":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1d99141dbb49350ca3d3a9e5f41c4864f4958f54":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"4b3f97a1b14bf470a2cabded2b9212be3651eb72":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"62c3401db5acb1905072cf34f11e3f5b75196974":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"628afe27b64f4e4e94a165a65852d1aca4a1c920":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"bd16de59dee4f2bc1fd122c68e39737816d4f4e8":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2623ec8ba138a18bd1f7f441d270cc566339d815":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"5ad5e4cae5729d7c9d96c58deb39205ad9d5d040":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aef69965ab97eace2b85f729e30297fe8aee8fc5":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e9826d4cd8b09d8f06454268751c0d2438afbf9b":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"df4fea8fce85a77884829938e8958956a5e91fae":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d6330aa716c985312a0a4e4986d3f7b1fd995dc4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1bf21eec453a1eaf8ecc04a54c68283f0883882d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f66e5a8f464ecc71e96562b6f3cd1918b2469344":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"140d5928da7a06bbabd09f638bd672f053feec80":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"11deb6dcaf48480e3215f475ea26fb303d71aa39":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8abc3f7be32b24baecca74cef8402704994932bb":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2912b4afe8595fe417161cabc259691b70a6eff9":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e9431a66c3bff887b84f81b3b6ade8b0581eadda":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"7fc6519f3619b3ecd293edd8ceadd72a07614288":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"38841b7f5ff36c3a40ec96da30ecfb466c8011d0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b05e18c41faf9d1d12d0d9314d45df01bab5f657":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"4ae33589be68d34d0ff8ae3aa25242dfe61db888":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3cba284cb468db496d4cf1aa6ffb7d316ce19715":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c7c87f5b0ebb2f706da0fcc606933288fc8b0312":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"772b38dd9685fb730dbd81b8009d367350abc739":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"acb634e951626b40d316c8ef9c41ddac33e7110d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f00f2ea3c8f0d5aced0e953f3c9272f9c8030b27":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"9a54a6cf2b836a6c0ba2f65200e367777a7b205d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2fef52209a6ca08d89458b09231a94bea5150565":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3bb6cc479ea5f39f5038188ee49be964186f462c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3b91dd77323a8face25ccfbc68db7207f6543ef0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a6dc73e32c0bad3fbab9fd3019ed5de24ea301b5":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8f53ec14274ec3af0e507ecef18a28b9cb41a0dc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"09834ce1795306a740ab3f8fb865c04bd7415932":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c682c0436c9b69ffdb89bee30db33fbb5e18b1ed":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0":{"known":true,"lastPlayed":1363368112000,"timesPlayed":1,"hdd":"My Book"},"3954a72fddee9122631eb8dabf95ad445394da35":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d70dfd7c39331fda8a006c32c9b7cc3e3589447a":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"41d0d5b6489878b7a77b5ec95ccf57d0fe79b908":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2a4eb4c5155d0c605240082acc8207ba685f0410":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"fd06f24b8b184ef95ab6d639c028c99a20c6b95e":{"known":true,"lastPlayed":1364586943000,"timesPlayed":1,"hdd":"My Book"},"8dc3891c06f22f4e56ef5f4284c80a5c8be69f56":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"43885cbbeb26493dc9a07f17f9db3baab9ce6a6c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"4236cbaf8093bd99395596a7fd4f4fa660607fe4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c9be79ab9f653e3e08e53ebd101994da3e09527f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d11be4e9eb3aea311ddeb1bfaf51a90ba84406dc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1dcf450b8036e8d39773e5b8dcc367517264aa97":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b3473c0156fe39f2721bb7fd93ddb5b5f35075c3":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"12801f3dcdcedcff7b68f7a65774d9597a3ba6e0":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"63b3b81ba51c6a4cbb3337757427553f330445f6":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"d70ec08d82d3fa66f5b583587cb61a93ac11ed63":{"lastPlayed":1364587711000,"timesPlayed":1,"known":true,"hdd":"My Book"},"70b05060341d6fadf38725cc28e85ad28fc470c0":{"lastPlayed":1369867589000,"timesPlayed":1,"known":true,"hdd":"My Book"},"b960261445b12e436f606a4ceb3b404143253c13":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"271158f5230318fa5ac7918e16298139786f8c61":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"01b24b9f6521ff70e2c0bb00074feae62268c3e0":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"ac4f5dbb829a0eaf0042c873903d47d1c93f5be8":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"}},"settings":{"oneclickload":false,"dynamicfont":false,"coverwalltitle":true,"prebuild":false,"animations":true,"updatecheck":false,"largeitems":false,"anondata":true,"accent":"purple","metro":true,"language":"English","slideChance":"100","orientationNotification":false},"favLists":[{"name":"Recently%20Added","content":[{"id":"b960261445b12e436f606a4ceb3b404143253c13","name":"Assassin\'s Creed III Disc 1","hdd":"My Book"},{"id":"271158f5230318fa5ac7918e16298139786f8c61","name":"Assassin\'s Creed III Disc 2","hdd":"My Book"},{"id":"70b05060341d6fadf38725cc28e85ad28fc470c0","name":"GRID 2","hdd":"My Book"},{"id":"01b24b9f6521ff70e2c0bb00074feae62268c3e0","name":"Minecraft","hdd":"My Book"},{"id":"ac4f5dbb829a0eaf0042c873903d47d1c93f5be8","name":"The Elder Scrolls V Skyrim - DLC disc","hdd":"My Book"}],"desc":"System list"},{"name":"RPG","content":[{"name":"The Elder Scrolls V Skyrim","id":"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf","hdd":""},{"name":"Fable III","id":"8edef05d3eae48e0463452d53c8cce88031ca644","hdd":""},{"name":"Fable II -- Game of the Year Edition","id":"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f","hdd":""}],"desc":"Test list"},{"name":"List%202","content":[{"name":"Borderlands 2","id":"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0","hdd":""},{"name":"Brink","id":"ed8c27c72df81e5dfdb3a74319407ab58989b0b9","hdd":""},{"name":"Hitman Absolution","id":"4236cbaf8093bd99395596a7fd4f4fa660607fe4","hdd":""},{"name":"Gears of War 3","id":"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7","hdd":""}],"desc":"Test list"},{"name":"List%203","content":[{"name":"Rage Disc 3","id":"c7c87f5b0ebb2f706da0fcc606933288fc8b0312","hdd":""},{"name":"Syndicate","id":"99a427cbc5cb193741e12ea43251723dc40b6584","hdd":""},{"name":"Max Payne 3 Disc 1","id":"e9431a66c3bff887b84f81b3b6ade8b0581eadda","hdd":""},{"name":"Army of Two The 40th Day","id":"9b4f7282309dcec6403809a8d5373f8b833acbee","hdd":""}],"desc":"Test list"}],"Settings":{"orientationNotification":true},"guid":"w4fflew4-ffle-w4ff-lew4-fflew4fflew4","vars":{"askedAnon":true,"lastUpdateCheck":"Tue Jun 25 2013"},"lastUpdateCheck":"2013-06-11T22:00:00.000Z"}');
+var tempStorage = JSON.parse('{"games":{"1ad214f9143283a89c207f4d870fd5bbd24915ed":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"eecc99971efbb838522c31337da068323655a880":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"27808d3ffd6cc37f95780e8d8c962b929b15351f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"49a217cb1a6e879b8a7308e3e5ead480f460e472":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"f3aaf6c154948d51d65bc7a45155871c14cd7b07":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"20ebde8c190d00bf984c09fc9b30dff98cf5197d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"ed8c27c72df81e5dfdb3a74319407ab58989b0b9":{"known":true,"lastPlayed":1363698350000,"timesPlayed":1,"hdd":"My Book"},"17877d6a5a56953e718f62296e28353d150fc6a4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"fe4b0175639b21eed78625e23f76de0acb60c0e8":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"2a3cec920c56909559adc4cf19f8e62109ec5faf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"a76ccaa648d25e19b52868b5098ae415c6795adc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8da77abcb7f97dd3c46e30e4174d958b12d5080d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8b7950435a207f6ca424bd73f28df3f894e7b6a1":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"03055cd0317422ed3bd3212f28a4d50981de5a0b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cb0995bd155c18106d2875f598d4bc4ae9a3009f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"921cb10ec486adf97dfaed66468b378c56769b93":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9b182a4b4c0ebc3dfe7fe696cdee11a74cc18dbf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"8edef05d3eae48e0463452d53c8cce88031ca644":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d1ba1bbe85d95329a27666e2ad33a27a9aab6624":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"ef1e2fd91ed15c9a316b85bb189a4743476adb58":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9e2f4e07d49f9e9c436cbbbddc62afb59093defc":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"b2a53a44ff9f8efe75139f521ab4a49eed0b1834":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"2022b9cbf91ffd1c8b1e8ec7d4fefccd47fd4808":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"0c2dab94a8fd423b61c5b3d2cc76f2e876b72faf":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"ad510ca8d6d6467a01608afb9aab8e24008ddf45":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"538b824034f52f57017231ca5a72aa5b740cdd06":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"722f2b8ecda48fe326ff78a43f57e6bceef7c04c":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"29fc25852851bdb874adb8191acd8d60f24543dc":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"1945cac203e9a03bde9f9d1e7350565b4f74f757":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"817f29773e6878285b420e9e8ee8f12f6a12f2e3":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"9ef95c926299e0f6af88fddf0390dbb912165f01":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f16028eb36eccdb691a4f668d2c67b1dfbce7cf9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"49c415b035b7d8e0593baad0f7b52a80954194d5":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"22f4b23e18cde5c34f69b623f96bd0e8b0292406":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"55d035e6e08e7f5e5e137604e0dffff58b551ed7":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"24114d7e66c47ce476e4eb6bb48f4cc1165792f0":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"966b0c9b6e033f7736f0a56b9fe530d79c352372":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"63f582ed2321610b01ce09709fd51d9c08d29fb9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cd7139c54832c6b15e5a89dc9fb1ec01924ef93c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aae30ac6f9d06b5d20bddec3312d1feb1f86ff2a":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aca07b659fef7b41bf3fd64f09a3f7198927fe8b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"20270cce12b5cc17d3887cd93ba055720fe6c1da":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"70cfdf0c9e8679815f8260cb75519467fcaf7c01":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"19dccaa6dd5d75fcb4f4139a04322a45e1ee401d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"14c68d77b33da6415cdefe64c9a3011fcf90968d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"45dd7ac85393b503f8ea117d32b7b0b10a07feee":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"d937f6040ea2141db832fb2c5b58546e222e4c66":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3b296de66161ec1946d51c6adea54c01f70a021d":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"eb0af5f14486fdd28ebffcdac21a3c49e8338fc3":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"a0c539e167df88a8cc4cb652bc5f16d2233fdf82":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"aac1d40b29cbe173fc079f1c4f0e136750d6746b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"4596614439da8abad9de6342936d056ce80ad7cb":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"d8808554429ec953c56344f13c2246a024e16313":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"fc5e4d3d9684768817cf715562955bd1d6651e2f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e8ed8cc8aff3c542a58ac36f0d6ed63069e6c4c3":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"10f8b9a1f9f0803c59202c52d7115c8e92a05bc9":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"6cb2c2e5d7ae0f30bdbf04551886ce3578633c82":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a309db163478e0c542961eaece83a26dbc7786bb":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"24d81c87f75170068bf4887ca9de90f9f0cf099b":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"ecb9d3f80f04a7985508567b04372a421bc5c6c0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a40206c501411aaf8cba74f12cd3f509aae0ec35":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"0d4ffd85a16efec07edbc60fd04bc1a166f8fe13":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"99a427cbc5cb193741e12ea43251723dc40b6584":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e51e3a1cbc5dbce3b663cd8ba566506f1dd96766":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"cb4a7710270d209bf1860eee937d8a944cad967f":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"246090b169be8ed6e1f8448cf96aa2167e050960":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"9b4f7282309dcec6403809a8d5373f8b833acbee":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2986390017bf34375724cf36648b9ce3350b3dd6":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b6aecaf976c663ad2dbc8c7464d74035dbc61538":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1d99141dbb49350ca3d3a9e5f41c4864f4958f54":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"4b3f97a1b14bf470a2cabded2b9212be3651eb72":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"62c3401db5acb1905072cf34f11e3f5b75196974":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"628afe27b64f4e4e94a165a65852d1aca4a1c920":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"bd16de59dee4f2bc1fd122c68e39737816d4f4e8":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2623ec8ba138a18bd1f7f441d270cc566339d815":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"5ad5e4cae5729d7c9d96c58deb39205ad9d5d040":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"aef69965ab97eace2b85f729e30297fe8aee8fc5":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e9826d4cd8b09d8f06454268751c0d2438afbf9b":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"df4fea8fce85a77884829938e8958956a5e91fae":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d6330aa716c985312a0a4e4986d3f7b1fd995dc4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1bf21eec453a1eaf8ecc04a54c68283f0883882d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f66e5a8f464ecc71e96562b6f3cd1918b2469344":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"140d5928da7a06bbabd09f638bd672f053feec80":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"11deb6dcaf48480e3215f475ea26fb303d71aa39":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8abc3f7be32b24baecca74cef8402704994932bb":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2912b4afe8595fe417161cabc259691b70a6eff9":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"e9431a66c3bff887b84f81b3b6ade8b0581eadda":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"7fc6519f3619b3ecd293edd8ceadd72a07614288":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"38841b7f5ff36c3a40ec96da30ecfb466c8011d0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b05e18c41faf9d1d12d0d9314d45df01bab5f657":{"known":false,"lastPlayed":0,"timesPlayed":0,"hdd":""},"4ae33589be68d34d0ff8ae3aa25242dfe61db888":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3cba284cb468db496d4cf1aa6ffb7d316ce19715":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c7c87f5b0ebb2f706da0fcc606933288fc8b0312":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"772b38dd9685fb730dbd81b8009d367350abc739":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"acb634e951626b40d316c8ef9c41ddac33e7110d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"f00f2ea3c8f0d5aced0e953f3c9272f9c8030b27":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"9a54a6cf2b836a6c0ba2f65200e367777a7b205d":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2fef52209a6ca08d89458b09231a94bea5150565":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3bb6cc479ea5f39f5038188ee49be964186f462c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"3b91dd77323a8face25ccfbc68db7207f6543ef0":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"a6dc73e32c0bad3fbab9fd3019ed5de24ea301b5":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"8f53ec14274ec3af0e507ecef18a28b9cb41a0dc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"09834ce1795306a740ab3f8fb865c04bd7415932":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c682c0436c9b69ffdb89bee30db33fbb5e18b1ed":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0":{"known":true,"lastPlayed":1363368112000,"timesPlayed":1,"hdd":"My Book"},"3954a72fddee9122631eb8dabf95ad445394da35":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d70dfd7c39331fda8a006c32c9b7cc3e3589447a":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"41d0d5b6489878b7a77b5ec95ccf57d0fe79b908":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"2a4eb4c5155d0c605240082acc8207ba685f0410":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"fd06f24b8b184ef95ab6d639c028c99a20c6b95e":{"known":true,"lastPlayed":1364586943000,"timesPlayed":1,"hdd":"My Book"},"8dc3891c06f22f4e56ef5f4284c80a5c8be69f56":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"43885cbbeb26493dc9a07f17f9db3baab9ce6a6c":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"4236cbaf8093bd99395596a7fd4f4fa660607fe4":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"c9be79ab9f653e3e08e53ebd101994da3e09527f":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"d11be4e9eb3aea311ddeb1bfaf51a90ba84406dc":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"1dcf450b8036e8d39773e5b8dcc367517264aa97":{"known":true,"lastPlayed":0,"timesPlayed":0,"hdd":"My Book"},"b3473c0156fe39f2721bb7fd93ddb5b5f35075c3":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"12801f3dcdcedcff7b68f7a65774d9597a3ba6e0":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"63b3b81ba51c6a4cbb3337757427553f330445f6":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"d70ec08d82d3fa66f5b583587cb61a93ac11ed63":{"lastPlayed":1364587711000,"timesPlayed":1,"known":true,"hdd":"My Book"},"70b05060341d6fadf38725cc28e85ad28fc470c0":{"lastPlayed":1369867589000,"timesPlayed":1,"known":true,"hdd":"My Book"},"b960261445b12e436f606a4ceb3b404143253c13":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"271158f5230318fa5ac7918e16298139786f8c61":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"01b24b9f6521ff70e2c0bb00074feae62268c3e0":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"},"ac4f5dbb829a0eaf0042c873903d47d1c93f5be8":{"lastPlayed":0,"timesPlayed":0,"known":true,"hdd":"My Book"}},"settings":{"oneclickload":false,"dynamicfont":false,"coverwalltitle":true,"prebuild":false,"animations":true,"updatecheck":false,"largeitems":false,"doublewidth":false,"anondata":true,"accent":"purple","metro":true,"language":"English","slideChance":"100","orientationNotification":false},"favLists":[{"name":"Recently%20Added","content":[{"id":"b960261445b12e436f606a4ceb3b404143253c13","name":"Assassin\'s Creed III Disc 1","hdd":"My Book"},{"id":"271158f5230318fa5ac7918e16298139786f8c61","name":"Assassin\'s Creed III Disc 2","hdd":"My Book"},{"id":"70b05060341d6fadf38725cc28e85ad28fc470c0","name":"GRID 2","hdd":"My Book"},{"id":"01b24b9f6521ff70e2c0bb00074feae62268c3e0","name":"Minecraft","hdd":"My Book"},{"id":"ac4f5dbb829a0eaf0042c873903d47d1c93f5be8","name":"The Elder Scrolls V Skyrim - DLC disc","hdd":"My Book"}],"desc":"System list"},{"name":"RPG","content":[{"name":"The Elder Scrolls V Skyrim","id":"61cb592a19e6fdb4c9fab8d7d989e42593ef5acf","hdd":""},{"name":"Fable III","id":"8edef05d3eae48e0463452d53c8cce88031ca644","hdd":""},{"name":"Fable II -- Game of the Year Edition","id":"670682f5a7e5f8a88e2a6350552f1c7d0d095d4f","hdd":""}],"desc":"Test list"},{"name":"List%202","content":[{"name":"Borderlands 2","id":"07f85dedf8cbeaf4be9cd3e1c51e4216f8e0fce0","hdd":""},{"name":"Brink","id":"ed8c27c72df81e5dfdb3a74319407ab58989b0b9","hdd":""},{"name":"Hitman Absolution","id":"4236cbaf8093bd99395596a7fd4f4fa660607fe4","hdd":""},{"name":"Gears of War 3","id":"76c95b2d57a0fb2bbc68158ff6ff8b4383a439b7","hdd":""}],"desc":"Test list"},{"name":"List%203","content":[{"name":"Rage Disc 3","id":"c7c87f5b0ebb2f706da0fcc606933288fc8b0312","hdd":""},{"name":"Syndicate","id":"99a427cbc5cb193741e12ea43251723dc40b6584","hdd":""},{"name":"Max Payne 3 Disc 1","id":"e9431a66c3bff887b84f81b3b6ade8b0581eadda","hdd":""},{"name":"Army of Two The 40th Day","id":"9b4f7282309dcec6403809a8d5373f8b833acbee","hdd":""}],"desc":"Test list"}],"Settings":{"orientationNotification":true},"guid":"w4fflew4-ffle-w4ff-lew4-fflew4fflew4","vars":{"askedAnon":true,"lastUpdateCheck":"Tue Jun 25 2013", "coverwallColumns" : "4"},"lastUpdateCheck":"2013-06-11T22:00:00.000Z"}');
 
 var Interface = {
     /**
@@ -33,7 +33,8 @@ var Interface = {
                 if (id.indexOf('%') == -1) {
                     id = escape(id);
                 }
-                var page = '<div id="' + id + '" class="page"><div class="page-title">' + unescape(name) + '</div><div class="page-content"></div></div>';
+                var dW = Interface.data.storage.settings.get("doublewidth");
+                var page = '<div id="' + id + '" class="page' + (dW ? " page-double" : "") + '"><div class="page-title">' + unescape(name) + '</div><div class="page-content"></div></div>';
                 //#main is the main container, append page to there
                 $('#main').append(page);
                 if (!func) {
@@ -216,8 +217,8 @@ var Interface = {
                     Interface.utils.log("Poll success!");
                     Interface.data.pollSuccess(xml, init);  
                 },
-                error : function () {
-                    Interface.data.pollError();
+                error : function (jqXHR, textStatus, error) {
+                    Interface.data.pollError(textStatus, error);
                 }
             });
         },
@@ -251,9 +252,11 @@ var Interface = {
             //Check for change in active game
             if (ACTIVE != this.active) {
                 this.data.active = ACTIVE;
+                Interface.utils.updateActive();
             }
         },
-        "pollError" : function () {
+        "pollError" : function (textStatus, error) {
+            var errorString = "Error: " + textStatus + "<br/>" + error;
             clearInterval(this.pollTimer);
             var message = Interface.data.messages["notify-pollError"];
             Interface.utils.messageBox.create(message);
@@ -869,10 +872,10 @@ var Interface = {
                         return;
                     },
                     "largeitems" : function () {
-                        return;
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     },
                     "dottext" : function () {
-                        return;
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     },
                     "gamenavigation" : function () {
                         return;
@@ -888,6 +891,9 @@ var Interface = {
                     },
                     "anondata" : function () {
                         return;
+                    },
+                    "doublewidth" : function() {
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     }
                 },
                 "settings" : {
@@ -901,7 +907,8 @@ var Interface = {
                     "cacheImages"    : false,
                     "animations"     : true,
                     "updatecheck"    : true,
-                    "anondata"       : false
+                    "anondata"       : false,
+                    "doublewidth"      : false,
                 },
                 "supported" : [
                     "oneclickload",
@@ -915,6 +922,7 @@ var Interface = {
                     "animations",
                     "updatecheck",
                     "anondata",
+                    "doublewidth",
                     "clear"
                 ],
                 "strings" : {
@@ -961,6 +969,10 @@ var Interface = {
                     "anondata" : {
                         "title" : "Anonymous data",
                         "desc"  : "Allow anonymous usage data collection with the random GUID"
+                    },
+                    "doublewidth" : {
+                        "title" : "Double page width",
+                        "desc"  : "Double the maximum width of the page"
                     },
                     "clear" : {
                         "title" : "Clear data",
@@ -1065,7 +1077,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.1",
+        "version"   : "1.1.1",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1147,7 +1159,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
@@ -1299,6 +1311,11 @@ var Interface = {
                     }
                 }
             });
+        },
+        "updateActive" : function () {
+            var active = Interface.data.data.active;
+            $('.active-game').removeClass('active-game');
+            $('a[onclick*="' + active + '"] > div').addClass('active-game');
         },
         "updateGameInfo" : function (id) {
             var timesPlayed = Interface.data.storage.updateTimesPlayed(id),
@@ -1491,8 +1508,8 @@ var Interface = {
             var lastCheck = Interface.data.data.storage.vars.lastUpdateCheck,
                 today = new Date(new Date().toDateString()),
                 doUpdate = false,
-                url = "http://bwerkt.nl/k3y/update/check.php",
-                //url = "http://xkeydownloads.com/check.php",
+                //url = "http://bwerkt.nl/k3y/update/check.php",
+                url = "http://xkeydownloads.com/check.php",
                 params,
                 device,
                 guid,
@@ -1584,13 +1601,14 @@ var Interface = {
             return !isNaN(o - 0);
         },
         "isHDD" : function (dir) {
-            return (Interface.data.data.drives.toString().indexOf(dir) != -1);
+            return (Interface.data.data.drives.indexOf(dir) != -1 ? true : false);
         },
         "search" : function (input) {
-            var HTML = '';
-            if (input.length == 0) {
-                $('#searchResults').hide();
-            } else {
+            var HTML = '',
+                result = [];
+            // if (input.length == 0) {
+            //     $('#searchResults').hide();
+            // } else {
                 var games   = Interface.data.data.sorted,
                     pattern = new RegExp(input, "i"),
                     name,
@@ -1606,61 +1624,63 @@ var Interface = {
                     i;
                 for (i = 0; i < l; i += 1) {
                     if (pattern.test(games[i].name)) {
-                        name  = games[i].name;
-                        id    = games[i].id;
-                        cover = games[i].cover;
+                        result.push(games[i]);
+                        // name  = games[i].name;
+                        // id    = games[i].id;
+                        // cover = games[i].cover;
 
-                        timesPlayed = Interface.data.storage.getTimesPlayed(id);
-                        lastPlayed  = Interface.data.storage.getLastPlayed(id);
-                        if (lastPlayed == 0) {
-                            lastPlayed = 'never';
-                        } else {
-                            lastPlayed = new Date(lastPlayed);
-                            lastPlayed = lastPlayed.toLocaleDateString();
-                        }
-                        letter = name.charAt(0).toUpperCase();
-                        if (Interface.utils.isNumber(letter)) {
-                            letter = '#';
-                        }
-                        if (HTML.indexOf('list-divider-' + letter) == -1) {
-                            HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
-                            HTML       += letter;
-                            HTML       += '</span></div>';
-                        }
+                        // timesPlayed = Interface.data.storage.getTimesPlayed(id);
+                        // lastPlayed  = Interface.data.storage.getLastPlayed(id);
+                        // if (lastPlayed == 0) {
+                        //     lastPlayed = 'never';
+                        // } else {
+                        //     lastPlayed = new Date(lastPlayed);
+                        //     lastPlayed = lastPlayed.toLocaleDateString();
+                        // }
+                        // letter = name.charAt(0).toUpperCase();
+                        // if (Interface.utils.isNumber(letter)) {
+                        //     letter = '#';
+                        // }
+                        // if (HTML.indexOf('list-divider-' + letter) == -1) {
+                        //     HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
+                        //     HTML       += letter;
+                        //     HTML       += '</span></div>';
+                        // }
 
-                        activeClass = false;
-                        if (id == active) {
-                            activeClass = true;
-                        }
+                        // activeClass = false;
+                        // if (id == active) {
+                        //     activeClass = true;
+                        // }
 
-                        // HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-                        // HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-                        // HTML  += name;
-                        // HTML  += '</span><span class="secondary-item-text item-text">';
-                        // HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-                        // HTML  += '</span></div></a>';
+                        // // HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
+                        // // HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
+                        // // HTML  += name;
+                        // // HTML  += '</span><span class="secondary-item-text item-text">';
+                        // // HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
+                        // // HTML  += '</span></div></a>';
 
-                        obj = {
-                            "onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
-                            "alt" : true,
-                            "active" : activeClass,
-                            "image" : cover,
-                            "title" : name,
-                            "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
-                        };
+                        // obj = {
+                        //     "onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+                        //     "alt" : true,
+                        //     "active" : activeClass,
+                        //     "image" : cover,
+                        //     "title" : name,
+                        //     "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+                        // };
 
-                        HTML += Interface.utils.html.menuItem(obj);
+                        // HTML += Interface.utils.html.menuItem(obj);
                     }
                 }
-            }
-            if (HTML == '') {
-                $('#searchResults').hide();
-                $('#listContent').show();
-            } else {
-                document.getElementById('searchResults').innerHTML = HTML;
-                $('#listContent').hide();
-                $('#searchResults').show();
-            }
+            // }
+            return result;
+            // if (HTML == '') {
+            //     $('#searchResults').hide();
+            //     $('#listContent').show();
+            // } else {
+            //     document.getElementById('searchResults').innerHTML = HTML;
+            //     $('#listContent').hide();
+            //     $('#searchResults').show();
+            // }
         },
         "supportsAnimation" : function () {
             var s = document.body.style;
