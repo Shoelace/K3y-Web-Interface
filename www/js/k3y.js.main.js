@@ -21,6 +21,9 @@
                 headID.removeChild(oldNode);
             }
             headID.appendChild(iconNode);
+            if (Interface.data.storage.settings.get("doublewidth")) {
+                $('.page').addClass('page-double');
+            }
 
             $('.logo > img').attr('src', 'img/logo-' + type + '.png');
             /*var title = 'xK3y Remote Web Interface';
@@ -140,29 +143,53 @@
                     page.find(".page-content").html(HTML);
                 }
             },
-            "coverwall" : function () {
-                if (!Interface.main.vars.made.coverwall) {
-                    var name, id, cover, activeClass,
-                        HTML   = '',
-                        games  = Interface.data.data.sorted,
-                        active = Interface.data.data.active,
-                        showTitles = Interface.data.storage.settings.get("coverwalltitle"),
-                        l = games.length,
-                        i;
+            "coverwall" : function (force, search) {
+                // if (!Interface.main.vars.made.coverwall) {
 
-                    HTML += '<div class="coverwall-container">';
+                var name, id, cover, activeClass,
+                    args   = document.getElementById('coverColumnsSelect').value,
+                    HTML   = '',
+                    games  = Interface.data.data.sorted,
+                    active = Interface.data.data.active,
+                    showTitles = Interface.data.storage.settings.get("coverwalltitle"),
+                    columnCount = Interface.data.data.storage.vars.coverwallColumns,
+                    l,
+                    i,
+                    columnClass = '';
 
+                // HTML += '<div class="coverwall-container">';
+                if ((force && search) && search.length > 0) {
+                    if (search.length > 0) {
+                        games = Interface.utils.search(search);
+                        args = "search";
+                    } else if (search.length == 0) {
+                        args = "alphabetic";
+                    }
+                }
+
+                if ((args && args != columnCount) && Interface.main.vars.made.coverwall) {
+                    columnCount = args;
+                    Interface.data.data.storage.vars.coverwallColumns = args;
+                    Interface.data.storage.save();
+                } else {
+                    document.getElementById('coverColumnsSelect').value = columnCount;
+                }
+
+                if (Interface.utils.isNumber(columnCount)) {
+                    columnClass = 'coverwall-columns-' + columnCount;
+                }
+                if (args != Interface.main.vars.curCoverSort || force) {
+                    l = games.length;
                     for (i = 0; i < l; i += 1) {
                         name  = games[i].name;
                         id    = games[i].id;
                         cover = games[i].cover;
-
                         activeClass = '';
                         if (id == active) {
                             activeClass = 'active-game';
                         }
 
-                        HTML += '<div class="coverwall-itemcontainer">';
+                        HTML += '<div class="coverwall-itemcontainer ' + columnClass + '">';
                         HTML += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
                         HTML += '<div class="main-item coverwall-item ' + activeClass + '">';
                         HTML += '<div class="coverwall-imagecontainer">';
@@ -172,15 +199,25 @@
                         HTML += '<img class="coverwall-game" src="' + cover + '" alt="Cover"/>';
                         HTML += '</div></div></a></div>';
                     }
-                    HTML += '</div>';
-                    Interface.navigation.pages.setContent('coverwall-page', HTML);
+                    if (search && search.length > 0) {
+                        $('#coverwall-container').hide();
+                        $('#coverwallSearch').show().html(HTML);
+                    } else {
+                        $('#coverwallSearch').hide();
+                        $('#coverwall-container').show().html(HTML);
+                    }
                     Interface.main.vars.made.coverwall = true;
+                    Interface.main.vars.curCoverSort = args;
                 }
+                    // HTML += '</div>';
+                    // Interface.navigation.pages.setContent('coverwall-page', HTML);
+                    // Interface.main.vars.made.coverwall = true;
+                // }
             },
-            "gamelist" : function (force) {
+            "gamelist" : function (force, search) {
                 //var args = args[1];
                 //console.time("gamelist");
-                var args = document.getElementById('gameSortSelect').value,
+                var args = document.getElementById('listSortSelect').value,
                     games = [],
                     showLetters = true,
                     name,
@@ -196,6 +233,16 @@
                     l,
                     i;
 
+                if ((force && search) && search.length > 0) {
+                    if (search.length > 0) {
+                        games = Interface.utils.search(search);
+                        showLetters = true;
+                        args = "search";
+                    } else if (search.length == 0) {
+                        args = "alphabetic";
+                    }
+                } 
+
                 if (args == "alphabetic") {
                     games = Interface.data.data.sorted;
                     showLetters = true;
@@ -208,7 +255,7 @@
                     showLetters = false;
                 }
 
-                if (args != Interface.main.vars.curList || force) {
+                if (args != Interface.main.vars.curListSort || force) {
                     l = games.length;
                     for (i = 0; i < l; i += 1) {
                         name   = games[i].name;
@@ -258,9 +305,16 @@
                             HTML += Interface.utils.html.menuItem(obj);
                         }
                     }
-                    $('#listContent').html(HTML);
+                    if (search && search.length > 0) {
+                        $('#listContent').hide();
+                        $('#listSearch').show().html(HTML);
+                    } else {
+                        $('#listSearch').hide();
+                        $('#listContent').show().html(HTML);
+                    }
+
                     Interface.main.vars.made.gamelist = true;
-                    Interface.main.vars.curList = args;
+                    Interface.main.vars.curListSort = args;
                     //console.timeEnd("gamelist");
                 }
             },
@@ -354,8 +408,10 @@
                         if (HTMLToAppend.hasOwnProperty(i)) {
                             //Get the HTML
                             HTML = HTMLToAppend[i];
+                            //console.log(i);
                             //If dir is HDD, put into main container
                             if (Interface.utils.isHDD(i)) {
+                                //console.log("Is HDD: " + i);
                                 htmlPar = 'folders-page';
                             } else {
                                 //Otherwise prep html parent ID
@@ -667,7 +723,8 @@
             "index" : [
                 "gamelist", "coverwall", "folders", "recent", "about", "settings"
             ],
-            "curList" : ""
+            "curListSort" : "",
+            "curCoverSort" : ""
         }
     };
 }());

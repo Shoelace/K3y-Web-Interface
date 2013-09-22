@@ -31,7 +31,8 @@ var Interface = {
                 if (id.indexOf('%') == -1) {
                     id = escape(id);
                 }
-                var page = '<div id="' + id + '" class="page"><div class="page-title">' + unescape(name) + '</div><div class="page-content"></div></div>';
+                var dW = Interface.data.storage.settings.get("doublewidth");
+                var page = '<div id="' + id + '" class="page' + (dW ? " page-double" : "") + '"><div class="page-title">' + unescape(name) + '</div><div class="page-content"></div></div>';
                 //#main is the main container, append page to there
                 $('#main').append(page);
                 if (!func) {
@@ -95,7 +96,7 @@ var Interface = {
                 args = page.split('?', 2);
                 page = args[0];
 
-                if (page == "folders-page" || page == "favorites-page" || (page == "game-page" && this.previous == "game-page")) {
+                if (page == "folders-page" || page == "favorites-page" || (page == "game-page" && this.currentStr == "game-page")) {
                     /*console.log(args);
                     page = args[1];*/
                     allPages[page](args);
@@ -214,8 +215,8 @@ var Interface = {
                     Interface.utils.log("Poll success!");
                     Interface.data.pollSuccess(xml, init);  
                 },
-                error : function () {
-                    Interface.data.pollError();
+                error : function (jqXHR, textStatus, error) {
+                    Interface.data.pollError(textStatus, error);
                 }
             });
         },
@@ -249,9 +250,11 @@ var Interface = {
             //Check for change in active game
             if (ACTIVE != this.active) {
                 this.data.active = ACTIVE;
+                Interface.utils.updateActive();
             }
         },
-        "pollError" : function () {
+        "pollError" : function (textStatus, error) {
+            var errorString = "Error: " + textStatus + "<br/>" + error;
             clearInterval(this.pollTimer);
             var message = Interface.data.messages["notify-pollError"];
             Interface.utils.messageBox.create(message);
@@ -864,10 +867,10 @@ var Interface = {
                         return;
                     },
                     "largeitems" : function () {
-                        return;
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     },
                     "dottext" : function () {
-                        return;
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     },
                     "gamenavigation" : function () {
                         return;
@@ -883,6 +886,9 @@ var Interface = {
                     },
                     "anondata" : function () {
                         return;
+                    },
+                    "doublewidth" : function() {
+                        Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
                     }
                 },
                 "settings" : {
@@ -896,7 +902,8 @@ var Interface = {
                     "cacheImages"    : false,
                     "animations"     : true,
                     "updatecheck"    : true,
-                    "anondata"       : false
+                    "anondata"       : false,
+                    "doublewidth"      : false,
                 },
                 "supported" : [
                     "oneclickload",
@@ -910,6 +917,7 @@ var Interface = {
                     "animations",
                     "updatecheck",
                     "anondata",
+                    "doublewidth",
                     "clear"
                 ],
                 "strings" : {
@@ -956,6 +964,10 @@ var Interface = {
                     "anondata" : {
                         "title" : "Anonymous data",
                         "desc"  : "Allow anonymous usage data collection with the random GUID"
+                    },
+                    "doublewidth" : {
+                        "title" : "Double page width",
+                        "desc"  : "Double the maximum width of the page"
                     },
                     "clear" : {
                         "title" : "Clear data",
@@ -1060,7 +1072,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.1",
+        "version"   : "1.1.1",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1142,7 +1154,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
@@ -1294,6 +1306,11 @@ var Interface = {
                     }
                 }
             });
+        },
+        "updateActive" : function () {
+            var active = Interface.data.data.active;
+            $('.active-game').removeClass('active-game');
+            $('a[onclick*="' + active + '"] > div').addClass('active-game');
         },
         "updateGameInfo" : function (id) {
             var timesPlayed = Interface.data.storage.updateTimesPlayed(id),
@@ -1579,13 +1596,14 @@ var Interface = {
             return !isNaN(o - 0);
         },
         "isHDD" : function (dir) {
-            return (Interface.data.data.drives.toString().indexOf(dir) != -1);
+            return (Interface.data.data.drives.indexOf(dir) != -1 ? true : false);
         },
         "search" : function (input) {
-            var HTML = '';
-            if (input.length == 0) {
-                $('#searchResults').hide();
-            } else {
+            var HTML = '',
+                result = [];
+            // if (input.length == 0) {
+            //     $('#searchResults').hide();
+            // } else {
                 var games   = Interface.data.data.sorted,
                     pattern = new RegExp(input, "i"),
                     name,
@@ -1601,61 +1619,63 @@ var Interface = {
                     i;
                 for (i = 0; i < l; i += 1) {
                     if (pattern.test(games[i].name)) {
-                        name  = games[i].name;
-                        id    = games[i].id;
-                        cover = games[i].cover;
+                        result.push(games[i]);
+                        // name  = games[i].name;
+                        // id    = games[i].id;
+                        // cover = games[i].cover;
 
-                        timesPlayed = Interface.data.storage.getTimesPlayed(id);
-                        lastPlayed  = Interface.data.storage.getLastPlayed(id);
-                        if (lastPlayed == 0) {
-                            lastPlayed = 'never';
-                        } else {
-                            lastPlayed = new Date(lastPlayed);
-                            lastPlayed = lastPlayed.toLocaleDateString();
-                        }
-                        letter = name.charAt(0).toUpperCase();
-                        if (Interface.utils.isNumber(letter)) {
-                            letter = '#';
-                        }
-                        if (HTML.indexOf('list-divider-' + letter) == -1) {
-                            HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
-                            HTML       += letter;
-                            HTML       += '</span></div>';
-                        }
+                        // timesPlayed = Interface.data.storage.getTimesPlayed(id);
+                        // lastPlayed  = Interface.data.storage.getLastPlayed(id);
+                        // if (lastPlayed == 0) {
+                        //     lastPlayed = 'never';
+                        // } else {
+                        //     lastPlayed = new Date(lastPlayed);
+                        //     lastPlayed = lastPlayed.toLocaleDateString();
+                        // }
+                        // letter = name.charAt(0).toUpperCase();
+                        // if (Interface.utils.isNumber(letter)) {
+                        //     letter = '#';
+                        // }
+                        // if (HTML.indexOf('list-divider-' + letter) == -1) {
+                        //     HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
+                        //     HTML       += letter;
+                        //     HTML       += '</span></div>';
+                        // }
 
-                        activeClass = false;
-                        if (id == active) {
-                            activeClass = true;
-                        }
+                        // activeClass = false;
+                        // if (id == active) {
+                        //     activeClass = true;
+                        // }
 
-                        // HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-                        // HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-                        // HTML  += name;
-                        // HTML  += '</span><span class="secondary-item-text item-text">';
-                        // HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-                        // HTML  += '</span></div></a>';
+                        // // HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
+                        // // HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
+                        // // HTML  += name;
+                        // // HTML  += '</span><span class="secondary-item-text item-text">';
+                        // // HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
+                        // // HTML  += '</span></div></a>';
 
-                        obj = {
-                            "onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
-                            "alt" : true,
-                            "active" : activeClass,
-                            "image" : cover,
-                            "title" : name,
-                            "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
-                        };
+                        // obj = {
+                        //     "onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
+                        //     "alt" : true,
+                        //     "active" : activeClass,
+                        //     "image" : cover,
+                        //     "title" : name,
+                        //     "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
+                        // };
 
-                        HTML += Interface.utils.html.menuItem(obj);
+                        // HTML += Interface.utils.html.menuItem(obj);
                     }
                 }
-            }
-            if (HTML == '') {
-                $('#searchResults').hide();
-                $('#listContent').show();
-            } else {
-                document.getElementById('searchResults').innerHTML = HTML;
-                $('#listContent').hide();
-                $('#searchResults').show();
-            }
+            // }
+            return result;
+            // if (HTML == '') {
+            //     $('#searchResults').hide();
+            //     $('#listContent').show();
+            // } else {
+            //     document.getElementById('searchResults').innerHTML = HTML;
+            //     $('#listContent').hide();
+            //     $('#searchResults').show();
+            // }
         },
         "supportsAnimation" : function () {
             var s = document.body.style;
