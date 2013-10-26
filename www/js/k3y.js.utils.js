@@ -383,7 +383,9 @@ var Interface = {
             }
 
             if (_ACTIVE) {
-                active = _ACTIVE.firstChild.nodeValue;
+                if (_ACTIVE.firstChild) {
+                    active = _ACTIVE.firstChild.nodeValue;
+                }
             }
 
             // xml = $(xml);
@@ -894,6 +896,9 @@ var Interface = {
                     },
                     "doublewidth" : function() {
                         Interface.utils.messageBox.create(Interface.data.messages["notify-pagereload"]);
+                    },
+                    "seperatehdd" : function() {
+                        return;
                     }
                 },
                 "settings" : {
@@ -908,7 +913,8 @@ var Interface = {
                     "animations"     : true,
                     "updatecheck"    : true,
                     "anondata"       : false,
-                    "doublewidth"      : false,
+                    "doublewidth"    : false,
+                    "seperatehdd"    : false
                 },
                 "supported" : [
                     "oneclickload",
@@ -923,6 +929,7 @@ var Interface = {
                     "updatecheck",
                     "anondata",
                     "doublewidth",
+                    "seperatehdd",
                     "clear"
                 ],
                 "strings" : {
@@ -973,6 +980,10 @@ var Interface = {
                     "doublewidth" : {
                         "title" : "Double page width",
                         "desc"  : "Double the maximum width of the page"
+                    },
+                    "seperatehdd" : {
+                        "title" : "Seperate HDDs in Folders",
+                        "desc"  : "Seperate the HDDs instead of merging the folders"
                     },
                     "clear" : {
                         "title" : "Clear data",
@@ -1159,7 +1170,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
@@ -1293,7 +1304,7 @@ var Interface = {
                     tray = (Interface.data.type == "ps3key" ? 0 : $(xml).find('TRAYSTATE').text());
                     //var tray = $(xml).find('TRAYSTATE').text();
                     guistate = $(xml).find("GUISTATE").text();
-                    if (tray == 0) {
+                    if (tray == 0 && guistate == 1) {
                         $.get(url);
                         Interface.utils.messageBox.create(Interface.data.messages["notify-gameloaded"]);
                         Interface.utils.updateGameInfo(id);
@@ -1352,6 +1363,16 @@ var Interface = {
                 return b - a;
             });
             return games;
+        },
+        "getGame" : function (id) {
+            var data = Interface.data.data.games,
+                l = data.length,
+                i;
+            for (i = 0; i < l; i++) {
+                if (data[i].id == id) {
+                    return data[i];
+                }
+            }
         },
         "messageBox" : {
             "create" : function (message) {
