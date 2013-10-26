@@ -52,6 +52,7 @@
                     cover,
                     infoitems,
                     item,
+                    data = Interface.utils.getGame(id),
                     string;
 
                 page.find("#game-title").html("Loading " + unescape(name));
@@ -85,7 +86,7 @@
                     if (title == "No Title") {
                         title = unescape(name);
                     }
-
+                    infoitems += "<tr><td>HDD: </td><td>" + data.hdd + "</td></tr>";
                     xml.find("infoitem").each(function () {
                         infoitems += "<tr>";
                         item   = $(this);
@@ -338,14 +339,30 @@
                         active  = Interface.data.data.active,
                         games   = Interface.data.data.games,
                         folders = Interface.data.data.folders,
+                        drives  = Interface.data.data.drives,
+                        seperate = Interface.data.storage.settings.get('seperatehdd'),
+                        seperateLoop = false,
                         HTML = '',
                         HTMLToAppend = {},
                         l = folders.length,
                         i;
 
                     for (i = 0; i < l; i += 1) {
-                        dir = escape(folders[i].dir);
-                        par = folders[i].par;
+                        if (i < folders.length && !seperateLoop) {
+                            dir = escape(folders[i].dir);
+                            par = folders[i].par;
+                        }
+                        if (i == (folders.length - 1) && !seperateLoop) {
+                            i = 0;
+                            l = drives.length;
+                            seperateLoop = true;
+                        }
+
+                        if(seperate && seperateLoop) {
+                            dir = escape(drives[i]);
+                            par = 'folders-page';
+                        }
+                        
                         if (!document.getElementById(dir + '-dir')) {
                             Interface.navigation.pages.create(dir + '-dir', dir);
                             obj = {
@@ -410,12 +427,16 @@
                             HTML = HTMLToAppend[i];
                             //console.log(i);
                             //If dir is HDD, put into main container
-                            if (Interface.utils.isHDD(i)) {
+                            if (!seperate && Interface.utils.isHDD(i)) {
                                 //console.log("Is HDD: " + i);
                                 htmlPar = 'folders-page';
                             } else {
-                                //Otherwise prep html parent ID
-                                htmlPar = escape(i + '-dir');
+                                if (i == 'folders-page') {
+                                    htmlPar = i;
+                                } else {
+                                    //Otherwise prep html parent ID
+                                    htmlPar = escape(i + '-dir');
+                                }
                             }
                             //Append all HTML at once to parent container
                             Interface.navigation.pages.addContent(htmlPar, HTML);

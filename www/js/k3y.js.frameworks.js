@@ -19,3 +19,13 @@ if(typeof JSON!=="object"){JSON={}}(function(){"use strict";function f(e){return
 String.prototype.width=function(){var o=$('div#textWidthCalc').html(this),w=o.width();return w}
 var nativeEscape = escape;
 escape = function(a){if(a.indexOf("%")==-1){return nativeEscape(a)}else{return a}};
+/**
+ * DOM-Batch
+ *
+ * Eliminates layout thrashing
+ * by batching DOM read/write
+ * interactions.
+ *
+ * @author Wilson Page <wilsonpage@me.com>
+ */
+(function(b){var c=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.msRequestAnimationFrame||function(e){return window.setTimeout(e,1000/60)};var a=window.cancelAnimationFrame||window.cancelRequestAnimationFrame||window.mozCancelAnimationFrame||window.mozCancelRequestAnimationFrame||window.webkitCancelAnimationFrame||window.webkitCancelRequestAnimationFrame||window.msCancelAnimationFrame||window.msCancelRequestAnimationFrame||function(e){window.clearTimeout(e)};function d(){this.lastId=0;this.jobs={};this.mode=null;this.pending=false;this.queue={read:[],write:[]}}d.prototype.read=function(f,e){var g=this.add("read",f,e);this.queue.read.push(g.id);this.request("read");return g.id};d.prototype.write=function(f,e){var g=this.add("write",f,e);this.queue.write.push(g.id);this.request("write");return g.id};d.prototype.clear=function(h){var g=this.jobs[h];if(!g){return}delete this.jobs[h];if(g.type==="defer"){a(g.timer);return}var f=this.queue[g.type];var e=f.indexOf(h);if(~e){f.splice(e,1)}};d.prototype.request=function(f){var g=this.mode;var e=this;if(g==="writing"&&f==="write"){return}if(g==="reading"&&f==="read"){return}if(g==="reading"&&f==="write"){return}if(this.pending){return}c(function(){e.frame()});this.pending=true};d.prototype.uniqueId=function(){return ++this.lastId};d.prototype.flush=function(e){var f;while(f=e.shift()){this.run(this.jobs[f])}};d.prototype.frame=function(){this.pending=false;this.mode="reading";this.flush(this.queue.read);this.mode="writing";this.flush(this.queue.write);this.mode=null};d.prototype.defer=function(j,h,e){if(j<0){return}var i=this.add("defer",h,e);var g=this;(function f(){if(!(j--)){g.run(i);return}i.timer=c(f)})();return i.id};d.prototype.add=function(g,f,e){var h=this.uniqueId();return this.jobs[h]={id:h,fn:f,ctx:e,type:g}};d.prototype.onError=function(){};d.prototype.run=function(g){var f=g.ctx||this;delete this.jobs[g.id];try{g.fn.call(f)}catch(h){this.onError(h)}};b=b||new d();if(typeof exports==="object"){module.exports=b}else{if(typeof define==="function"&&define.amd){define(function(){return b})}else{window.fastdom=b}}})(window.fastdom);
