@@ -1088,7 +1088,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.1.1",
+        "version"   : "1.1.3",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1170,7 +1170,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.1.3<br/>- Fix columns on coverwall search<br/><br/>1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
