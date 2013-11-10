@@ -13,8 +13,8 @@
 	</head>
 	<body>
 		<!-- Overlay Placeholder -->
-		<div class="other-container">
-			<div id="messageBoxContainer" class="invis">
+		<div class="other-container" id="other">
+			<div id="messageBoxContainer" class="">
 				<div id="messageBox" class="page">
 					<div class="messageBox-title">
 						Messagebox Title
@@ -34,6 +34,7 @@
 			<div id="home-page" class="page active fullopacity">
 				<div class="page-title">
 					Home
+					<a class="tray-status-link" href="javascript:void(0);"><img class="tray-status-icon tray-status-icon-home invis" src="img/disc.png" alt="Game loaded"/></a>
 				</div>
 				<div class="page-content">
 					<div class="logo">
@@ -145,7 +146,7 @@
 								Search
 							</span>
 							<span class="secondary-item-text item-text">
-								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.coverwall(true, this.value)"/>
+								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.coverwall(true, this.value)"></input>
 							</span>
 						</div>
 					<div id="coverwall-container">
@@ -179,7 +180,7 @@
 								Search
 							</span>
 							<span class="secondary-item-text item-text">
-								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.gamelist(true, this.value)"/>
+								<input class="searchinput" type="text" placeholder="Enter search query..." onkeyup="Interface.main.create.gamelist(true, this.value)"></input>
 							</span>
 						</div>
 					<!-- </a> -->
@@ -265,7 +266,7 @@
 					<br/><br/>
 					<div class="gameManagerCreateList">
 						Create a new list to add this game to:<br/>
-						<input type="text" class="listsNewListInput"/>
+						<input type="text" class="listsNewListInput"></input>
 						<br/><br/>
 						<a onclick="Interface.data.lists.createList()">
 							<span class="prettyButton">Go</span>
@@ -296,10 +297,10 @@
 						</a>
 						<br/>
 					</div>
-					<input type="hidden" class="listsDataGameID"/>
-					<input type="hidden" class="listsDataGameName"/>
-					<input type="hidden" class="listsDataAddListName"/>
-					<input type="hidden" class="listsDataRemoveListName"/>
+					<input type="hidden" class="listsDataGameID"></input>
+					<input type="hidden" class="listsDataGameName"></input>
+					<input type="hidden" class="listsDataAddListName"></input>
+					<input type="hidden" class="listsDataRemoveListName"></input>
 				</div>
 			</div>
 
@@ -321,7 +322,7 @@
 					</div>
 					<div class="listManagerCreateList invis">
 						Create a new list:<br/>
-						<input type="text" class="listsNewListInput"/>
+						<input type="text" class="listsNewListInput"></input>
 						<a onclick="Interface.data.lists.createList()">
 							<span class="prettyButton">Go</span>
 						</a>
@@ -343,7 +344,7 @@
 						</a>
 					</div>
 
-					<input type="hidden" class="listsManagerListName"/>
+					<input type="hidden" class="listsManagerListName"></input>
 				</div>
 			</div>
 

@@ -115,7 +115,7 @@
                     HTML += infoitems;
                     HTML += '</div>';
 
-                    HTML += '<div class="main-item gamepage-item active-game">';
+                    HTML += '<div class="main-item gamepage-item thicked-line">';
                     HTML += '<img class="gamepage-game" src="' + cover + '" alt="Cover"/></div>';
                     // HTML += '<span class="gamepage-info">'
                     // HTML += infoitems;
