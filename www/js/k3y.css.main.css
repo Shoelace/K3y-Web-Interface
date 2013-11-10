@@ -2,7 +2,8 @@
 	Main stuff
 */
 html {
-	background-image : url(../img/main-texture.png);
+	/*background-image : url(../img/main-texture.png);*/
+	background-color: #373737;
 	font-family      : "Helvetica", "Arial";
 }
 
@@ -82,10 +83,6 @@ html {
 	z-index : 9998 !important;
 }
 
-.active {
-	display : inline-block !important;
-}
-
 .invis {
 	display : none !important;
 	opacity : 0;
@@ -113,7 +110,7 @@ img {
 	clear : both;
 }
 
-.home-button, .close-button {
+.home-button, .close-button, .tray-status-icon {
 	right    : 3px;
 	position : absolute;
 	top      : 2px;
@@ -121,6 +118,15 @@ img {
 
 .close-button {
 	top : 4px;
+}
+
+.tray-status-icon {
+	right: 36px!important;
+	top: 3px!important;
+}
+
+.tray-status-icon-home {
+	right: 3px!important;
 }
 
 .back-button {
@@ -140,23 +146,35 @@ img {
 }
 
 .animate {
-	transition : opacity 0.2s ease-in-out;
+	transition : opacity 0.2s ease-in-out 0s;
 }
 
 .notify {
 	animation : notify-bounce 1s;
 }
 
+#main {
+	transition : top 0.4s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
+}
+
+#other {
+
+}
+
 /**
 	Page
 */
+.active {
+	display : inline-block !important;
+}
+
 .page {
 	display        : none;
 	padding-bottom : 10px;
 	width          : 95%;
 	max-width      : 900px;
 	min-width      : 420px;
-	opacity        : 0;
+	opacity        : 1;
 	/* margin: 10px; */
 	/* position:relative;
 	width:100%;
@@ -169,10 +187,10 @@ img {
 }
 
 .page-title, .messageBox-title {
-	background-image  : url(../img/xbox-bar.png);
+	/*background-image  : url(../img/xbox-bar.png);
 	background-repeat : repeat-x;
 	box-shadow        : 0 1px 5px black;
-	border-radius     : 5px 5px 0 0;
+	border-radius     : 5px 5px 0 0;*/
 	position          : relative;
 	height            : 30px;
 	color             : white;
@@ -185,8 +203,9 @@ img {
 }
 
 .page-content, .messageBox-content {
-	background-image : url(../img/page-texture.png);
-	border-radius    : 0 0 5px 5px;
+	/*background-image : url(../img/page-texture.png);*/
+	background-color: white;
+	/*border-radius    : 0 0 5px 5px;*/
 	padding          : 10px;
 	text-align       : left;
 	position         : relative;
@@ -239,7 +258,7 @@ img {
 	bottom     : 5px;
 }
 
-.active-game, .setting-enabled {
+.active-game, .setting-enabled, .thicked-line {
 	padding : 0 0 0 17px;
 }
 
@@ -485,8 +504,9 @@ img {
 	Pretty Buttons
 */
 .prettyButton {
-	border-radius : 5px;
-	box-shadow    : 1px 2px 5px black;
+	/*border-radius : 5px;
+	box-shadow    : 1px 2px 5px black;*/
+	background-color: #74AB11;
 	padding       : 7px 15px;
 	font-size     : 1.2em;
 	margin-right  : 15px;
@@ -495,6 +515,10 @@ img {
 	cursor        : pointer;
 	white-space   : nowrap;
 	display       : inline-block;
+}
+
+.prettyButton:active {
+    transform: scale(0.95);
 }
 
 .smallButton {
@@ -533,7 +557,7 @@ img {
 
 @keyframes notify-bounce {
 	0%   {transform:scale(1.0);}
-	25%  {transform:scale(0.95);}
-	50%  {transform:scale(1.05);}
+	25%  {transform:scale(0.98);}
+	50%  {transform:scale(1.02);}
 	100% {transform:scale(1.0);}
 }

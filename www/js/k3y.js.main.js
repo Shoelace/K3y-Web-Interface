@@ -115,7 +115,7 @@
                     HTML += infoitems;
                     HTML += '</div>';
 
-                    HTML += '<div class="main-item gamepage-item active-game">';
+                    HTML += '<div class="main-item gamepage-item thicked-line">';
                     HTML += '<img class="gamepage-game" src="' + cover + '" alt="Cover"/></div>';
                     // HTML += '<span class="gamepage-info">'
                     // HTML += infoitems;
@@ -148,7 +148,7 @@
                 // if (!Interface.main.vars.made.coverwall) {
 
                 var name, id, cover, activeClass,
-                    args   = document.getElementById('coverColumnsSelect').value,
+                    colargs   = document.getElementById('coverColumnsSelect').value,
                     HTML   = '',
                     games  = Interface.data.data.sorted,
                     active = Interface.data.data.active,
@@ -156,6 +156,7 @@
                     columnCount = Interface.data.data.storage.vars.coverwallColumns,
                     l,
                     i,
+                    args = 'alphabetic',
                     columnClass = '';
 
                 // HTML += '<div class="coverwall-container">';
@@ -168,9 +169,9 @@
                     }
                 }
 
-                if ((args && args != columnCount) && Interface.main.vars.made.coverwall) {
-                    columnCount = args;
-                    Interface.data.data.storage.vars.coverwallColumns = args;
+                if ((colargs && colargs != columnCount) && Interface.main.vars.made.coverwall) {
+                    columnCount = colargs;
+                    Interface.data.data.storage.vars.coverwallColumns = colargs;
                     Interface.data.storage.save();
                 } else {
                     document.getElementById('coverColumnsSelect').value = columnCount;

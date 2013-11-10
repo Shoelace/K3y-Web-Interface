@@ -1,12 +1,13 @@
 .page-title, .messageBox-title {
-	background-image : url(../img/xbox-bar.png)!important;
+	/*background-image : url(../img/xbox-bar.png)!important;*/
+    background-color: #74AB11!important;
 }
 
 .list-item-accent {
 	border-left : 6px solid #74AB11!important;
 }
 
-.active-game, .setting-enabled {
+.active-game, .setting-enabled, .thicked-line {
 	border-left : 4px solid #74AB11!important;
 }
 
@@ -19,9 +20,11 @@
 }
 
 .prettyButton {
-	background : url(../img/xbox-button.png) 0 36px !important;
+	/*background : url(../img/xbox-button.png) 0 36px !important;*/
+    background-color: #74AB11!important;
 }
 
 .prettyButton:hover {
-	background : url(../img/xbox-button.png) 0 0px !important;
+	/*background : url(../img/xbox-button.png) 0 0px !important;*/
+    background-color: #66950F!important;
 }

@@ -64,24 +64,17 @@ var Interface = {
                 return false;
             },
             "setContent" : function (id, HTML) {
-                //$('#' + id).children('.page-content').html(HTML);
                 $('[id="' + id + '"]').children('.page-content').html(HTML);
             },
             "addContent" : function (id, HTML, prepend) {
-                //$('#' + id + ' > .page-content').html(HTML);
-                //$(document.getElementById(id)).children('.page-content').html(HTML);
-                //$('#' + id).children('.page-content').html(HTML);
                 if (!prepend) {
                     $('[id="' + id + '"]').children('.page-content').append(HTML);
-                    //$('#' + id).children('.page-content').append(HTML);
                 } else {
                     $('#' + id).children('.page-content').prepend(HTML);
                 }
             }
         },
         "navigateTo" : function (page) {
-            //console.log(page);
-            //console.time("navigate");
             var allPages = this.pages.list,
                 args = [];
             if (!page) {
@@ -97,8 +90,6 @@ var Interface = {
                 page = args[0];
 
                 if (page == "folders-page" || page == "favorites-page" || (page == "game-page" && this.currentStr == "game-page")) {
-                    /*console.log(args);
-                    page = args[1];*/
                     allPages[page](args);
                     return;
                 }
@@ -108,9 +99,6 @@ var Interface = {
                 history.back();
             }
             //No "%"? Escape the page string to make sure we get it right
-            // if (page.indexOf('%') == -1) {
-            //     page = escape(page);
-            // }
             page = escape(page);
 
             if (!$.isFunction(allPages[page])) {
@@ -123,58 +111,31 @@ var Interface = {
                 return;
             }
 
-            /*if (Interface.data.storage.settings.get("animations")) {
-                //$('.page.active').fadeOut(200, function() {
-                    Interface.navigation.postTransition(page, args, allPages);
-                //});
-            } else {*/
             Interface.navigation.transition(page, args, allPages);
-            //}
-            //console.timeEnd("navigate");
         },
         "transition" : function (page, args, allPages) {
-            //$('.page.active').removeClass('active').hide();
-            //Show requested page
-            //$(document.getElementById(page)).addClass('active');
-            //this.previous = $('.page.active').attr('id');
-
             if (Interface.utils.supportsAnimation()) {
-                $('.page.active').addClass('animate').removeClass('fullopacity');
+                $('#main').css({'opacity':0});
                 setTimeout(function () {
                     $('.page.active').removeClass('active');
-                    $(document.getElementById(page)).addClass('animate active');
-                    setTimeout(function () {$(document.getElementById(page)).addClass('fullopacity'); }, 20);
-                }, 200);
-                //$(document.getElementById(page)).fadeIn(200).addClass('active');
-                //$(document.getElementById(page)).addClass('active fullopacity');
-                //$(document.getElementById(page)).addClass('active');
-                //setTimeout(function(){$(document.getElementById(page)).addClass('fullopacity')}, 2000);
-                //$('[id="' + page +'"]').fadeIn(200).addClass('active');
-                //Sometimes animation is a bitch, so we force opacity
-                //document.getElementById(page).style.opacity = 1;
+                    $(document.getElementById(page)).addClass('active');
+                    $('#main').css({'opacity':1});
+                }, 250);
             } else {
-                $('.page.active').removeClass('active animate');
-                $(document.getElementById(page)).removeClass('animate').addClass('active fullopacity');
-                //$('[id="' + page +'"]').addClass('active');
+                $('.page.active').removeClass('active');
+                $(document.getElementById(page)).addClass('active');
             }
-
-            /*if (!this.bareTitle) {
-                this.bareTitle = document.title;
-            }
-            document.title = this.bareTitle + ' - ' + $(document.getElementById(page)).find('div.page-title').html();*/
 
             if (page != 'home-page') {
                 var title = $(document.getElementById(page)).find('div.page-title');
                 if (!title.hasClass('_buttons')) {
-                    title.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png" alt="Back"/></a>').prepend('<a href="#home-page"><img class="home-button" src="img/home.png" alt="Home"/></a>');
+                    title.prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png" alt="Back"/></a>')
+                    .prepend('<a class="tray-status-link" href="javascript:void(0);"><img class="tray-status-icon invis" src="img/disc.png" alt="Game loaded"/></a>')
+                    .prepend('<a href="#home-page"><img class="home-button" src="img/home.png" alt="Home"/></a>');
                     title.addClass('_buttons');
                 }
-                /*$(document.getElementById(page)).find('div.page-title')
-                //$('[id="' + page +'"]').find('div.page-title')
-                    .prepend('<a href="javascript:void(0)" onclick="history.back()"><img class="back-button" src="img/back.png"/></a>')
-                    .prepend('<a href="#home-page"><img class="home-button" src="img/home.png"/></a>');*/
             }
-
+            Interface.utils.updateTrayIcon();
             this.previous = this.currentStr;
             if (this.currentStr != 'game-page') {
                 this.prevMenu = this.currentStr;
@@ -784,7 +745,7 @@ var Interface = {
                             name = games[i].name;
                             id = games[i].id;
                             value = id + '&' + escape(name);
-                            HTML += '<input type="checkbox" value="' + value + '" ' + (this.isInList(id, listName) ? "checked" : "") + '>' + name + '<br/>';
+                            HTML += '<input type="checkbox" value="' + value + '" ' + (this.isInList(id, listName) ? "checked" : "") + '></input>' + name + '<br/>';
                         }
                         HTML += '<br/><a onclick="Interface.data.lists.massAddToList(\'' + listName + '\')"><span class="prettyButton">Go</span></a><a onclick="history.back();"><span class="prettyButton">Cancel</span></a><br/>';
                         Interface.navigation.pages.setContent('favorites_mass_add-page', HTML);
@@ -1083,7 +1044,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.1.2",
+        "version"   : "1.2",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1100,8 +1061,8 @@ var Interface = {
                 "content" : "It looks like the number of HDD's changed. This also means that the games have changed. In order to make sure that I continue to function properly, I updated myself, and reset you to the homepage to prevent any errors. <br/>Thanks for understanding!"
             },
             "notify-pollError" : {
-                "title"   : "Poll error",
-                "content" : "There has been an error while retreiving data. Make sure the *K3y is turned on!<br/>Polling has been paused, press \"Restart\" to restart polling.<br/><br/><a onclick=\"Interface.data.startPoll(); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Restart</span></a><br/>"
+                "title"   : "Data error",
+                "content" : "There has been an error while retrieving data. Make sure the *K3y is turned on!<br/>Retrieving has been paused, press \"Restart\" to restart retrieving.<br/><br/><a onclick=\"Interface.data.startPoll(); Interface.utils.messageBox.remove();\"><span class=\"prettyButton\">Restart</span></a><br/>"
             },
             "notify-opentray" : {
                 "title"   : "Loading Notification",
@@ -1121,11 +1082,11 @@ var Interface = {
             },
             "notify-list-rename" : {
                 "title"   : "Rename list",
-                "content" : "Old name: <em>%s</em><br/>New name:<br/><input type=\"text\" class=\"listsRenameListInput\"/> <a onclick=\"Interface.data.lists.renameList('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
+                "content" : "Old name: <em>%s</em><br/>New name:<br/><input type=\"text\" class=\"listsRenameListInput\"></input> <a onclick=\"Interface.data.lists.renameList('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
             },
             "notify-list-desc" : {
                 "title"   : "Change description",
-                "content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"/> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
+                "content" : "New description:<br/><input type=\"text\" class=\"listsListDescInput\"></input> <a onclick=\"Interface.data.lists.changeListDescription('%s')\"><span class=\"prettyButton\">Go</span></a><br/>"
             },
             "notify-list-massadd" : {
                 "title"   : "Mass Adding",
@@ -1165,7 +1126,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.2<br/>- Update jQuery<br/>- Remove a load of old commented code<br/>- Change poll error message to be more understandable<br/>- Add tray icon that links to game<br/>- Fixed colored line disappearing in game page<br/>- Cleaned animations up a bit<br/>- UI overhaul, cleaner<br/><br/>1.1.3<br/>- Fix columns on coverwall search<br/><br/>1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
@@ -1321,7 +1282,21 @@ var Interface = {
         "updateActive" : function () {
             var active = Interface.data.data.active;
             $('.active-game').removeClass('active-game');
-            $('a[onclick*="' + active + '"] > div').addClass('active-game');
+            if (active.length > 0) {
+                $('a[onclick*="' + active + '"] > div').addClass('active-game');
+            }
+            this.updateTrayIcon();
+        },
+        "updateTrayIcon" : function () {
+            var a = Interface.data.data.active;
+            if (a.length > 0) {
+                var g = Interface.utils.getGame(a);
+                var link = "Interface.utils.select('" + g.id + "&" + escape(g.name) + "');";
+                $('.tray-status-icon').removeClass('invis');
+                $('.tray-status-link').attr('onclick', link);
+                return;
+            }
+            $('.tray-status-icon').addClass('invis');
         },
         "updateGameInfo" : function (id) {
             var timesPlayed = Interface.data.storage.updateTimesPlayed(id),
@@ -1379,11 +1354,6 @@ var Interface = {
                     messageBox.find('.messageBox-content').html(message.content);
                     this.active = message;
 
-                    /*Interface.utils.overlay.show();
-                    this.t = setTimeout(function() {
-                        Interface.utils.messageBox.show();
-                    }, 200);*/
-                    // this.show();
                     this.show();
 
                     this.scroll = window.scrollY;
@@ -1420,50 +1390,29 @@ var Interface = {
             "show" : function () {
                 $('.other-container').addClass("overlap");
                 if (Interface.utils.supportsAnimation()) {
-                    /*//$('#messageBox').fadeIn(200).css("display", "inline-block").removeClass("invis");
-                    $('#messageBox').css("display", "inline-block").addClass('active animate');
-                    this.t = setTimeout(function() {
-                        $('#messageBox').addClass('fullopacity');
-                    }, 10);*/
-                    $('#messageBoxContainer').removeClass('invis').addClass('animate');
-                    this.t = setTimeout(function () {
-                        $('#messageBoxContainer').addClass('fullopacity');
-                    }, 10);
+                    $('#messageBoxContainer').addClass('fullopacity');
+                    $('#other').addClass('animate').css('opacity', 1);
                 } else {
-                    /*$('#messageBox').css("display", "inline-block").removeClass('animate').addClass('active fullopacity');*/
-                    //$('#messageBox').css("display", "inline-block").removeClass("invis");
-                    $('#messageBoxContainer').removeClass('invis animate').addClass('fullopacity');
+                    $('#messageBoxContainer').addClass('fullopacity');
+                    $('#other').css('opacity', 1);
                 }
                 $('#overlay').css('height', $(document).height());
             },
             "hide" : function (callback) {
                 if (Interface.utils.supportsAnimation()) {
-                    /*$('#messageBox').addClass('animate').removeClass('fullopacity');
-                    clearTimeout(this.t);
-                    setTimeout(function() {
-                        $('#messageBox').removeClass('active');
-                        $('#messageBox').css("display", "");
-                        Interface.utils.messageBox.end(callback);
-                    }, 200);*/
-                    /*$('#messageBox').fadeOut(200, function(){
-                        Interface.utils.messageBox.end(callback);
-                    });*/
-                    clearTimeout(this.t);
-                    $('#messageBoxContainer').addClass('animate').removeClass('fullopacity');
+                    $('#other').css({'opacity':0});
                     setTimeout(function () {
-                        $('#messageBoxContainer').addClass('invis');
+                        $('#messageBoxContainer').removeClass('fullopacity');
+                        $('#other').removeClass('animate');
                         Interface.utils.messageBox.end(callback);
-                    }, 200);
+                    }, 300);
                 } else {
-                    //$('#messageBox').hide();
-                    /*$('#messageBox').removeClass('animate fullopacity active').css('display', '');
-                    Interface.utils.messageBox.end(callback);*/
-                    $('#messageBoxContainer').removeClass('fullopacity animate').addClass('invis');
+                    $('#messageBoxContainer').removeClass('fullopacity');
+                    $('#other').css('opacity', 0);
                     Interface.utils.messageBox.end(callback);
                 }
             },
             "end" : function (callback) {
-                //$('#messageBox').addClass("invis");
                 $('.other-container').removeClass("overlap");
                 $('.messageBox-content').html('');
                 if (callback) {
@@ -1477,31 +1426,29 @@ var Interface = {
         },
         "overlay" : {
             "show" : function () {
+                $('.other-container').addClass("overlap");
+                $('#messageBox').addClass('invis');
                 if (Interface.utils.supportsAnimation()) {
-                    //$('#overlay').fadeIn(200).removeClass("invis");
-                    $('#overlay').removeClass('invis').addClass('animate');
-                    this.t = setTimeout(function () {
-                        $('#overlay').addClass('overlayshade');
-                    }, 10);
+                    $('#messageBoxContainer').addClass('fullopacity');
+                    $('#other').addClass('animate').css('opacity', 1);
                 } else {
-                    $('#overlay').removeClass('animate invis').addClass('overlayshade');
-                    //$('#overlay').show().removeClass("invis");
+                    $('#messageBoxContainer').addClass('fullopacity');
+                    $('#other').css('opacity', 1);
                 }
                 $('#overlay').css('height', $(document).height());
             },
             "hide" : function () {
                 if (Interface.utils.supportsAnimation()) {
-                    /*$('#overlay').fadeOut(200, function(){
-                        $(this).addClass("invis");
-                    });*/
-                    $('#overlay').addClass('animate').removeClass('overlayshade');
-                    clearTimeout(this.t);
+                    $('#other').css({'opacity':0});
                     setTimeout(function () {
-                        $('#overlay').addClass('invis');
-                    }, 200);
+                        $('#messageBoxContainer').removeClass('fullopacity');
+                        $('#other').removeClass('animate');
+                        $('#messageBox').removeClass('invis');
+                    }, 300);
                 } else {
-                    //$('#overlay').hide().addClass("invis");
-                    $('#overlay').removeClass('animate overlayshade').addClass('invis');
+                    $('#messageBoxContainer').removeClass('fullopacity');
+                    $('#other').css('opacity', 0);
+                    $('#messageBox').removeClass('invis');
                 }
             },
             "t" : 0
@@ -1621,82 +1568,28 @@ var Interface = {
         },
         "search" : function (input) {
             var HTML = '',
-                result = [];
-            // if (input.length == 0) {
-            //     $('#searchResults').hide();
-            // } else {
-                var games   = Interface.data.data.sorted,
-                    pattern = new RegExp(input, "i"),
-                    name,
-                    id,
-                    cover,
-                    timesPlayed,
-                    lastPlayed,
-                    letter,
-                    activeClass,
-                    obj,
-                    active = Interface.data.data.active,
-                    l = Interface.data.data.sorted.length,
-                    i;
-                for (i = 0; i < l; i += 1) {
-                    if (pattern.test(games[i].name)) {
-                        result.push(games[i]);
-                        // name  = games[i].name;
-                        // id    = games[i].id;
-                        // cover = games[i].cover;
+                result = [],
+                games   = Interface.data.data.sorted,
+                pattern = new RegExp(input, "i"),
+                name,
+                id,
+                cover,
+                timesPlayed,
+                lastPlayed,
+                letter,
+                activeClass,
+                obj,
+                active = Interface.data.data.active,
+                l = Interface.data.data.sorted.length,
+                i;
 
-                        // timesPlayed = Interface.data.storage.getTimesPlayed(id);
-                        // lastPlayed  = Interface.data.storage.getLastPlayed(id);
-                        // if (lastPlayed == 0) {
-                        //     lastPlayed = 'never';
-                        // } else {
-                        //     lastPlayed = new Date(lastPlayed);
-                        //     lastPlayed = lastPlayed.toLocaleDateString();
-                        // }
-                        // letter = name.charAt(0).toUpperCase();
-                        // if (Interface.utils.isNumber(letter)) {
-                        //     letter = '#';
-                        // }
-                        // if (HTML.indexOf('list-divider-' + letter) == -1) {
-                        //     HTML       += '<div class="main-item list-item-accent list-divider-' + letter + '"><span class="letter-item-text">';
-                        //     HTML       += letter;
-                        //     HTML       += '</span></div>';
-                        // }
-
-                        // activeClass = false;
-                        // if (id == active) {
-                        //     activeClass = true;
-                        // }
-
-                        // // HTML  += '<a href="javascript:void(0);" onclick="Interface.utils.select(\'' + id + '&' + escape(name) + '\')">';
-                        // // HTML  += '<div class="main-item"><img class="list-cover" src="' + cover + '"/><span class="main-item-text item-text">';
-                        // // HTML  += name;
-                        // // HTML  += '</span><span class="secondary-item-text item-text">';
-                        // // HTML  += 'Played ' + timesPlayed + ' times, last ' + lastPlayed;
-                        // // HTML  += '</span></div></a>';
-
-                        // obj = {
-                        //     "onclick" : 'Interface.utils.select(\'' + id + '&' + escape(name) + '\')',
-                        //     "alt" : true,
-                        //     "active" : activeClass,
-                        //     "image" : cover,
-                        //     "title" : name,
-                        //     "sub" : 'Played ' + timesPlayed + ' times, last ' + lastPlayed
-                        // };
-
-                        // HTML += Interface.utils.html.menuItem(obj);
-                    }
+            for (i = 0; i < l; i += 1) {
+                if (pattern.test(games[i].name)) {
+                    result.push(games[i]);
                 }
-            // }
+            }
+
             return result;
-            // if (HTML == '') {
-            //     $('#searchResults').hide();
-            //     $('#listContent').show();
-            // } else {
-            //     document.getElementById('searchResults').innerHTML = HTML;
-            //     $('#listContent').hide();
-            //     $('#searchResults').show();
-            // }
         },
         "supportsAnimation" : function () {
             var s = document.body.style;
