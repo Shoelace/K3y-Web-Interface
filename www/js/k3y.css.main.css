@@ -146,7 +146,10 @@ img {
 }
 
 .animate {
-	transition : opacity 0.2s ease-in-out 0s;
+	transition-property: opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in-out;
+	transition-delay: 0s; 
 }
 
 .notify {
@@ -154,7 +157,10 @@ img {
 }
 
 #main {
-	transition : top 0.4s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
+	transition-property: opacity;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-in-out;
+	transition-delay: 0s;
 }
 
 #other {
@@ -191,6 +197,7 @@ img {
 	background-repeat : repeat-x;
 	box-shadow        : 0 1px 5px black;
 	border-radius     : 5px 5px 0 0;*/
+	background-color  : #74AB11!important;
 	position          : relative;
 	height            : 30px;
 	color             : white;
@@ -515,6 +522,10 @@ img {
 	cursor        : pointer;
 	white-space   : nowrap;
 	display       : inline-block;
+}
+
+.prettyButton:hover {
+    background-color: #66950F;
 }
 
 .prettyButton:active {
