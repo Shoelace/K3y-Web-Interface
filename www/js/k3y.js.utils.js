@@ -1294,7 +1294,7 @@ var Interface = {
         },
         "updateTrayIcon" : function () {
             var a = Interface.data.data.active;
-            if (a.length > 0) {
+            if (a && a.length > 0) {
                 var g = Interface.utils.getGame(a);
                 var link = "Interface.utils.select('" + g.id + "&" + escape(g.name) + "');";
                 $('.tray-status-icon').removeClass('invis');
