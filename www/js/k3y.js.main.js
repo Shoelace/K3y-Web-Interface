@@ -34,9 +34,14 @@
             $('title').html(title);
 
             //Notify Xbox users that they should change their settings
+            
             if (navigator.userAgent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; Xbox)") {
-                Interface.utils.messageBox.create(Interface.data.messages["notify-xbox"]);
+                if (!Interface.data.data.storage.vars['notified-xbox']) {
+                    Interface.utils.messageBox.create(Interface.data.messages["notify-xbox"]);
+                    Interface.data.data.storage.vars['notified-xbox'] = true;
+                }
             }
+            
         },
         "create" : {
             "gamepage" : function (args, xml) {

@@ -1044,7 +1044,7 @@ var Interface = {
         },
         "pollTime"  : 10000,
         "pollTimer" : 0,
-        "version"   : "1.2",
+        "version"   : "1.2.1",
         "type"      : "xbox",
         "firmware"  : "00.00",
         "messages"  : {
@@ -1126,7 +1126,7 @@ var Interface = {
             },
             "changelog" : {
                 "title"   : "Changelog",
-                "content" : "1.2<br/>- Update jQuery<br/>- Remove a load of old commented code<br/>- Change poll error message to be more understandable<br/>- Add tray icon that links to game<br/>- Fixed colored line disappearing in game page<br/>- Cleaned animations up a bit<br/>- UI overhaul, cleaner<br/><br/>1.1.3<br/>- Fix columns on coverwall search<br/><br/>1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
+                "content" : "1.2.1</br>- TODO: fix nasty messagebox bug<br/>- Save Xbox notify message read<br/>- Fix for new ACTIVE tag behaviour<br/><br/>1.2<br/>- Update jQuery<br/>- Remove a load of old commented code<br/>- Change poll error message to be more understandable<br/>- Add tray icon that links to game<br/>- Fixed colored line disappearing in game page<br/>- Cleaned animations up a bit<br/>- UI overhaul, cleaner<br/><br/>1.1.3<br/>- Fix columns on coverwall search<br/><br/>1.1.2<br/>- Fix empty active node error<br/>- Fix game load message on 3k3y<br/>- Add HDD source to game details<br/>- Add options to seperate HDDs in Folder Structure<br/><br/>1.1.1<br/>- Double width option added<br/>- Search in coverwall<br/>- Column selection in coverwall<br/>- Properly update active game<br/>- Fix method for detecting HDD<br/><br/>1.1<br/>- Fix for empty folders<br/>- Fix for empty About nodes<br/>- Added larger item option<br/>- Added dots for clipped titles option<br/>- Added game navigation option<br/>- Fix title wrapping for large titles on small screens in game page<br/>- Added favicons and change them for each device.<br/><br/>1.0<br/>- Initial release<br/><br/><a onclick=\"Interface.utils.messageBox.create(Interface.data.messages.changelogdev);Interface.utils.messageBox.remove();\"><span class=\"prettyButton smallButton\">More...</span></a>"
             },
             "changelogdev" : {
                 "title"   : "Changelog",
@@ -1245,12 +1245,19 @@ var Interface = {
                 window.location.hash = '';
             }
         },
-        "launch" : function (id) {
+        "launch" : function (id, isreload) {
             var url = "launchgame.sh?" + id,
                 tray,
-                guistate,
+                active,
                 message,
                 msg;
+            if (isreload) {
+                Interface.utils.messageBox.remove();
+                setTimeout(function() {
+                    Interface.utils.launch(id);
+                }, 500);
+                return;
+            }
             $.ajax({
                 type: "GET",
                 url: "data.xml",
@@ -1259,21 +1266,22 @@ var Interface = {
                 success: function (xml) {
                     tray = (Interface.data.type == "ps3key" ? 0 : $(xml).find('TRAYSTATE').text());
                     //var tray = $(xml).find('TRAYSTATE').text();
-                    guistate = $(xml).find("GUISTATE").text();
-                    if (tray == 0 && guistate == 1) {
+                    //guistate = $(xml).find("GUISTATE").text();
+                    active = $(xml).find('ACTIVE').text();
+                    if (tray == 0 && active.length < 1) {
                         $.get(url);
                         Interface.utils.messageBox.create(Interface.data.messages["notify-gameloaded"]);
                         Interface.utils.updateGameInfo(id);
-                    } else if (tray == 1 && guistate == 1) {
+                    } else if (tray == 1 && active.length < 1) {
                         $.get(url);
                         Interface.utils.messageBox.create(Interface.data.messages["notify-opentray"]);
                         Interface.utils.updateGameInfo(id);
-                    } else if (guistate == 2) {
+                    } else if (active.length > 1) {
                         message = Interface.data.messages["notify-reload"];
                         msg = {};
                         msg.title = message.title;
                         msg.content = message.content;
-                        msg.content += '<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove();launchGame(\'' + id + '\')"><span class="prettyButton">Reload</span></a><br/>';
+                        msg.content += '<a href="javascript:void(0)" onclick="Interface.utils.launch(\'' + id + '\', true);"><span class="prettyButton">Reload</span></a><br/>';
                         Interface.utils.messageBox.create(msg);
                     }
                 }
@@ -1289,7 +1297,7 @@ var Interface = {
         },
         "updateTrayIcon" : function () {
             var a = Interface.data.data.active;
-            if (a.length > 0) {
+            if (a && a.length > 0) {
                 var g = Interface.utils.getGame(a);
                 var link = "Interface.utils.select('" + g.id + "&" + escape(g.name) + "');";
                 $('.tray-status-icon').removeClass('invis');
@@ -1347,12 +1355,12 @@ var Interface = {
         "messageBox" : {
             "create" : function (message) {
                 if (this.active == "") {
+                    this.active = message;
                     var messageBox = $('#messageBox');
 
                     messageBox.find('.messageBox-title').html(message.title)
                         .append('<a href="javascript:void(0)" onclick="Interface.utils.messageBox.remove()"><img class="close-button" src="img/close.png" alt="Close"/></a>');
                     messageBox.find('.messageBox-content').html(message.content);
-                    this.active = message;
 
                     this.show();
 
@@ -1369,7 +1377,6 @@ var Interface = {
                 }
             },
             "remove" : function () {
-                this.active = "";
                 if (this.queue.length > 0) {
                     if (Interface.utils.supportsAnimation()) {
                         $('#messageBox').removeClass('notify');
@@ -1377,7 +1384,6 @@ var Interface = {
                             $('#messageBox').addClass('notify');
                         }, 10);
                     }
-
                     Interface.utils.messageBox.create(Interface.utils.messageBox.queue.shift());
                 } else {
                     $('#messageBox').removeClass('notify');
@@ -1386,6 +1392,7 @@ var Interface = {
                     $(document).keydown(function () {return; });
                     window.scrollTo(0, this.scroll);
                 }
+                this.active = "";
             },
             "show" : function () {
                 $('.other-container').addClass("overlap");
