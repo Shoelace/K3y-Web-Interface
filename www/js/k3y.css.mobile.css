@@ -1,0 +1,184 @@
+/**
+	Mobile devices
+*/
+@media (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2), /* iOS 6 & 7 iPhone 5 */
+       (device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2), /* iOS 6 & 7 iPhone (retina) */
+       (device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)  /* iOS 6 iPhone */ {
+
+    /**
+        All iPhones in portrait and landscape.
+
+        Changes to UI:
+            - .page fits within resolution
+            - No padding/margin around container
+            - Fixed header
+            - .page-content is scrollable div (allows browser chrome to not be exposed)
+            - .main-items optimised for single column view (portrait), full titles shown (no fixed height)
+            - Font size optimised for space & word wrapping
+            - Logo amended to prevent menu item overlap at bottom of home screen:
+                - iPhone 5, all items are shown
+                - iPhone, Settings is below the fold
+    */
+
+    .main-container, .other-container {
+        position: static;
+    }
+
+    .main-container {
+        padding-top: 0;
+        display: block !important;
+    }
+
+    .logo img {
+        max-width : 90%;
+    }
+
+    #overlay {
+        height: 100% !important;
+    }
+
+    #messageBox {
+        min-width   : 256px;
+    }
+
+    .active {
+        display: block !important;
+    }
+
+    .page {
+        padding-bottom : 0;
+        width          : 100%;
+        min-width      : 304px;
+    }
+
+    .page-title {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .page-title, .messageBox-title {
+        font-size: 1.2em;
+    }
+
+    .page-content {
+        position: absolute;
+        top: 37px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: auto;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .main-item {
+        width: 260px;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 6px;
+        white-space: normal;
+    }
+
+    .item-text-wrap {
+        float: left;
+        white-space: normal;
+    }
+
+    .main-item-text {
+        font-size : 1em;
+        float: left;
+        width: 260px;
+    }
+
+    .main-item-has-cover .item-text-wrap,
+    .main-item-has-cover .main-item-text {
+        width: 215px;
+    }
+
+    .secondary-item-text {
+        clear: both;
+        display: block;
+        padding: 4px 0 0 0;
+    }
+
+    .list-cover {
+        width: 39px;
+        height: 54px;
+    }
+
+}
+
+@media (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) /* iOS 6 & 7 iPhone 5 */ {
+    .logo img {
+        max-width : 98%;
+    }
+    .main-item {
+        min-height: 44px;
+    }
+}
+
+@media (device-width: 320px) and (device-height: 480px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2), /* iOS 6 & 7 iPhone (retina, landscape) */
+       (device-width: 320px) and (device-height: 480px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)  /* iOS 6 iPhone (landscape) */ {
+
+    /**
+        iPhones < 5 in landscape.
+
+        Changes to UI:
+            - .main-items optimised for two column view, titles over two lines cause overflow (fixed height)
+            - Font size optimised for space & word wrapping
+            - Logo adjusted to not fill screen & for all items to be shown
+    */
+
+    .logo img {
+        max-width : 30%;
+    }
+
+    .main-item {
+        width: 195px;
+        max-height: 54px;
+    }
+
+    .main-item-text {
+        font-size : 1em;
+        width: 195px;
+    }
+
+    .main-item-has-cover .item-text-wrap,
+    .main-item-has-cover .main-item-text {
+        width: 150px;
+    }
+
+    .secondary-item-text {
+        font-size: 0.6em;
+    }
+
+}
+
+@media (device-width: 320px) and (device-height: 568px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2) /* iOS 6 & 7 iPhone 5 (landscape) */ {
+
+    /**
+        iPhone 5 in landscape.
+    */
+
+    .logo img {
+        max-width : 20%;
+    }
+
+    .main-item {
+        width: 250px;
+        min-height: 0;
+        max-height: 54px;
+    }
+
+    .main-item-text {
+        font-size : 1em;
+        width: 250px;
+    }
+
+    .main-item-has-cover .item-text-wrap,
+    .main-item-has-cover .main-item-text {
+        width: 205px;
+    }
+
+}

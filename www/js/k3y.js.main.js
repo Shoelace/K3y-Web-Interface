@@ -41,7 +41,21 @@
                     Interface.data.data.storage.vars['notified-xbox'] = true;
                 }
             }
-            
+
+            // Fixed elements and scrolling divs for iPhones
+            if((navigator.userAgent.match(/iPhone/i))) { /* (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i)) */
+                // Prevent header from being draggable and revealing browser chrome
+                document.addEventListener('touchmove', function(event) {
+                    if(event.target.parentNode.className.indexOf('page-title') != -1 || event.target.className.indexOf('page-title') != -1 ) {
+                        event.preventDefault(); }
+                }, false);
+
+                // Rubber band scroll area instead of the browser, when at top or bottom and user tries to scroll up or down respectively
+                $('.page-content').each(function() {
+                    ScrollFix(this);
+                });
+            }
+
         },
         "create" : {
             "gamepage" : function (args, xml) {

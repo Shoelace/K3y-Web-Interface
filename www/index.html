@@ -1,15 +1,64 @@
 <!DOCTYPE HTML> 
 <html>
 	<head>
-		<title>XKEY Web Interface</title>
-		<meta id="viewportmeta" name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0,width=480, height=728"/>
-		<meta name="description" content="Web Interface for K3y devices"/>
-		<meta charset="UTF-8">
-		<link type="text/css" rel="stylesheet" href="js/k3y.css.main.css" />
-		<link id="dynamic-favicon" rel="shortcut icon" href="img/icon.ico">
-		<script type="text/javascript" src="js/k3y.js.frameworks.js"></script>
-		<script type="text/javascript" src="js/k3y.js.utils.js"></script>
-		<script type="text/javascript" src="js/k3y.js.main.js"></script>
+        <meta charset="utf-8">
+
+        <title>XKEY Web Interface</title>
+
+        <meta name="description" content="Web Interface for K3y devices"/>
+
+        <link type="text/css" rel="stylesheet" href="js/k3y.css.main.css"/>
+        <link type="text/css" rel="stylesheet" href="js/k3y.css.mobile.css"/>
+        <link id="dynamic-favicon" rel="shortcut icon" href="img/icon.ico">
+
+        <script type="text/javascript" src="js/k3y.js.frameworks.js"></script>
+        <script type="text/javascript" src="js/k3y.js.utils.js"></script>
+        <script type="text/javascript" src="js/k3y.js.main.js"></script>
+
+        <!-- Android Web App -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="shortcut icon" sizes="196x196" href="img/android-icon-196x196.png">
+
+        <!-- Windows 8 Tile Pinning -->
+        <meta name="application-name" content="K3y Web">
+        <meta name="msapplication-TileColor" content="#161817">
+        <meta name="msapplication-TileImage" content="img/msapplication-TileImage.png">
+        <meta name="msapplication-square70x70logo" content="img/msapplication-square70x70logo.png">
+        <meta name="msapplication-square150x150logo" content="img/msapplication-square150x150logo.png">
+        <meta name="msapplication-wide310x150logo" content="img/msapplication-wide310x150logo.png">
+        <meta name="msapplication-square310x310logo" content="img/msapplication-square310x310logo.png">
+
+        <!-- iOS >= 7.0.3 Web App -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="K3y Web">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <style>html { -webkit-text-size-adjust: 100%; }</style>
+
+        <link href="img/apple-touch-icon-152x152.png" sizes="152x152" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-144x144.png" sizes="144x144" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-120x120.png" sizes="120x120" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-76x76.png" sizes="76x76" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon">
+        <link href="img/apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon">
+
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-1536x2008.png"
+              media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-1496x2048.png"
+              media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-768x1004.png"
+              media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-748x1024.png"
+              media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-640x1096.png"
+              media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-640x920.png"
+              media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)">
+        <link rel="apple-touch-startup-image" href="img/apple-touch-startup-image-320x460.png"
+              media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)">
+
 	</head>
 	<body>
 		<!-- Overlay Placeholder -->

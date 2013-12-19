@@ -1178,10 +1178,11 @@ var Interface = {
                 }
 
                 HTML += '<a href="' + obj.href + '" onclick="' + obj.onclick + '" title="' + (obj.alt ? obj.title : "") + '">';
-                HTML += '<div ' + (obj.id != "" ? 'id="' + obj.id + '" ' : '') + 'class="main-item' + (obj.active ? ' active-game' : '') + (bigWidth ? ' main-item-large' : '') + '">';
+                HTML += '<div ' + (obj.id != "" ? 'id="' + obj.id + '" ' : '') + 'class="main-item' + (obj.active ? ' active-game' : '') + (bigWidth ? ' main-item-large' : '') + (obj.image ? ' main-item-has-cover' : '') + '">';
                 if (obj.image) {
                     HTML += '<img class="list-cover' + (bigWidth ? ' list-cover-large' : '') + '" src="' + obj.image + '" alt="Cover"/>';
                 }
+                HTML += '<div class="item-text-wrap">';
 
                 if (fixTitle) {
                     width = obj.title.width();
@@ -1192,7 +1193,7 @@ var Interface = {
                 }
                 HTML += '<span class="main-item-text item-text' + (dotText ? ' main-item-text-dot' : '') + '"' + longTitle + '>' + obj.title + '</span>';
                 HTML += '<span class="secondary-item-text item-text">' + obj.sub + '</span>';
-                HTML += '</div></a>';
+                HTML += '</div></div></a>';
                 return HTML;
             }
         },
