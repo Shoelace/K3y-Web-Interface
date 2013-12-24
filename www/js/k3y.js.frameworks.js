@@ -19,3 +19,12 @@ if(typeof JSON!=="object"){JSON={}}(function(){"use strict";function f(e){return
 String.prototype.width=function(){var o=$('div#textWidthCalc').html(this),w=o.width();return w}
 var nativeEscape = escape;
 escape = function(a){if(a.indexOf("%")==-1){return nativeEscape(a)}else{return a}};
+/*
+ * ScrollFix v0.1
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2011, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+var ScrollFix=function(e){var t,n;e=e||document.querySelector(e);if(!e)return;e.addEventListener("touchstart",function(r){t=r.touches[0].pageY;n=e.scrollTop;if(n<=0)e.scrollTop=1;if(n+e.offsetHeight>=e.scrollHeight)e.scrollTop=e.scrollHeight-e.offsetHeight-1},false)}
